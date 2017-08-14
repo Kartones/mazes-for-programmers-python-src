@@ -1,0 +1,5 @@
+mypy
+
+# test only
+# pytest<4.0
+# flake8<4.0
