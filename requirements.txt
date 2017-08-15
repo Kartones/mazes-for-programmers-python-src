@@ -1,5 +1,6 @@
 mypy
+Pillow==4.2.1
 
 # test only
-# pytest<4.0
-# flake8<4.0
+pytest<4.0
+flake8<4.0
