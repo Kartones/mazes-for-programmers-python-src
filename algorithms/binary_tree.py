@@ -1,12 +1,10 @@
 from random import choice
 
-from typing import List, Union  # noqa: F401
-
-from base.cell import Cell   # noqa: F401
 from base.grid import Grid
 
 """
-A binary tree visits each cell in the grid and chooses to carve a passage either north or east.
+A binary tree visits each cell in the grid and chooses to carve a passage either north or east with a simple random.
+Causes topmost row and rightmost column to always be straight lines.
 """
 
 
@@ -15,7 +13,7 @@ class BinaryTree:
     @staticmethod
     def on(grid: Grid) -> Grid:
         for cell in grid.each_cell():
-            neighbors = []         # type: List[Union[None, Cell]]
+            neighbors = []
             if cell.north:
                 neighbors.append(cell.north)
             if cell.east:

@@ -2,7 +2,14 @@
 
 ## Introduction
 
-I'm reading the [Mazes for Programmers](http://www.mazesforprogrammers.com) book, but source code comes in Ruby and I like Python, so I decided to rewrite them as I read. And along the way add tests, both to make sure the conversion is ok and to see a more continuous way than having to write all basic stuff and an "ASCII renderer" to see anything.
+I'm reading the [Mazes for Programmers](http://www.mazesforprogrammers.com) book, but source code comes in Ruby and I like Python, so I decided to rewrite them as I read. And along the way add tests, both to make sure the conversion is ok and to see a more continuous way than having to write all basic stuff and an "ASCII renderer" before being able to see anything.
+
+## Implemented algorithms
+
+- Binary Tree
+- Sidewinder
+
+Note: This list will grow as I progress with the book.
 
 ## Setup
 

@@ -58,6 +58,8 @@ class Cell:
             neighbors_list.append(self.west)
         return neighbors_list
 
+    # The following methods actually lie because don't take into account neighbors/linked-cells, but for now is enough
+
     def __hash__(self) -> int:
         return hash((self.column, self.row))
 
