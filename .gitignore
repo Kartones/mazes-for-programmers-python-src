@@ -1,1 +1,4 @@
-*/.mypy_cache/*
+*.py[c|o]
+*.mypy_cache/
+*__pycache__/
+*.cache/

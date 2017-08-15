@@ -1,5 +1,5 @@
 
-from cell import Cell
+from base.cell import Cell
 
 
 def test_equality() -> None:
@@ -13,17 +13,17 @@ def test_linking() -> None:
     another_cell = Cell(1, 2)
     yet_another_cell = Cell(2, 1)
 
-    assert a_cell.is_linked(another_cell) is False
-    assert another_cell.is_linked(a_cell) is False
-    assert a_cell.is_linked(yet_another_cell) is False
-    assert another_cell.is_linked(yet_another_cell) is False
+    assert a_cell.linked_to(another_cell) is False
+    assert another_cell.linked_to(a_cell) is False
+    assert a_cell.linked_to(yet_another_cell) is False
+    assert another_cell.linked_to(yet_another_cell) is False
 
     a_cell.link(another_cell)
 
-    assert a_cell.is_linked(another_cell) is True
-    assert another_cell.is_linked(a_cell) is True
-    assert a_cell.is_linked(yet_another_cell) is False
-    assert another_cell.is_linked(yet_another_cell) is False
+    assert a_cell.linked_to(another_cell) is True
+    assert another_cell.linked_to(a_cell) is True
+    assert a_cell.linked_to(yet_another_cell) is False
+    assert another_cell.linked_to(yet_another_cell) is False
 
 
 def test_unlinking() -> None:
@@ -34,16 +34,16 @@ def test_unlinking() -> None:
     a_cell.link(another_cell)
     a_cell.link(yet_another_cell)
 
-    assert a_cell.is_linked(another_cell) is True
-    assert another_cell.is_linked(a_cell) is True
-    assert a_cell.is_linked(yet_another_cell) is True
+    assert a_cell.linked_to(another_cell) is True
+    assert another_cell.linked_to(a_cell) is True
+    assert a_cell.linked_to(yet_another_cell) is True
 
     a_cell.unlink(another_cell)
 
-    assert a_cell.is_linked(another_cell) is False
-    assert another_cell.is_linked(a_cell) is False
-    assert a_cell.is_linked(yet_another_cell) is True
-    assert yet_another_cell.is_linked(a_cell) is True
+    assert a_cell.linked_to(another_cell) is False
+    assert another_cell.linked_to(a_cell) is False
+    assert a_cell.linked_to(yet_another_cell) is True
+    assert yet_another_cell.linked_to(a_cell) is True
 
 
 def test_links_listing() -> None:
@@ -60,8 +60,7 @@ def test_links_listing() -> None:
 
 
 def test_has_no_neighbors() -> None:
-    a_cell = Cell(1, 1)
-    assert a_cell.neighbors() == []
+    assert Cell(1, 1).neighbors() == []
 
 
 def test_has_neighbors() -> None:

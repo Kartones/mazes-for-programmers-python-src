@@ -43,18 +43,18 @@ class Cell:
             cell.unlink(self, False)
         return self
 
-    def is_linked(self, cell: "Cell") -> bool:
+    def linked_to(self, cell: "Cell") -> bool:
         return cell in self._links
 
     def neighbors(self) -> List[Union[None, "Cell"]]:
         neighbors_list = []         # type: List[Union[None, Cell]]
-        if self.north is not None:
+        if self.north:
             neighbors_list.append(self.north)
-        if self.south is not None:
+        if self.south:
             neighbors_list.append(self.south)
-        if self.east is not None:
+        if self.east:
             neighbors_list.append(self.east)
-        if self.west is not None:
+        if self.west:
             neighbors_list.append(self.west)
         return neighbors_list
 
