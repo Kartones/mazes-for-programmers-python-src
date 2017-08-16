@@ -46,6 +46,7 @@ Each demo will, whenever possible, use the following renders:
 ```
 
 - PNG renderer: outputs to a PNG file on the project root folder (filename will be current datetime)
+
 ![](doc/sample_binary_tree.png)
 
 
