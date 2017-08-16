@@ -21,23 +21,33 @@ pip install -r requirements.txt
 
 ## Running
 
+To run any demo:
 ```
-> PYTHONPATH=. python3 demos/binary_tree_demo.py
+PYTHONPATH=. python3 demos/binary_tree_demo.py
+```
+
+Each demo will, whenever possible, use the following renders:
+
+- ASCII renderer: outputs to console
+```
 +---+---+---+---+---+---+
 |                       |
-+---+   +---+---+   +   +
-|       |           |   |
-+   +   +   +---+---+   +
-|   |   |   |           |
++   +   +---+   +---+   +
+|   |   |       |       |
 +---+   +---+   +   +   +
 |       |       |   |   |
-+---+   +   +   +---+   +
-|       |   |   |       |
-+   +   +   +   +---+   +
-|   |   |   |   |       |
++   +   +---+---+---+   +
+|   |   |               |
++---+   +---+   +---+   +
+|       |       |       |
++   +---+   +---+   +   +
+|   |       |       |   |
 +---+---+---+---+---+---+
-
 ```
+
+- PNG renderer: outputs to a PNG file on the project root folder (filename will be current datetime)
+![](doc/sample_binary_tree.png)
+
 
 Renderers do not share any interface, just a `render()` method which also varies in parameters, as some output to console while others save to a PNG file.
 

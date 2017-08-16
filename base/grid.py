@@ -35,18 +35,6 @@ class Grid:
     def prepare_grid(self) -> List[List[Cell]]:
         return [[Cell(row, column) for column in range(self.columns)] for row in range(self.rows)]
 
-    def _configure_cells(self) -> None:
-        for row in range(self.rows):
-            for column in range(self.columns):
-                cell = self.get_cell(row, column)
-                if cell is None:
-                    raise IndexError(
-                        "Cell ({},{}) out of grid bounds ({},{})".format(column, row, self.columns, self.rows))
-                cell.north = self.get_cell(row - 1, column)
-                cell.south = self.get_cell(row + 1, column)
-                cell.east = self.get_cell(row, column + 1)
-                cell.west = self.get_cell(row, column - 1)
-
     def configure_cells(self) -> None:
         for cell in self.each_cell():
             cell.north = self.get_cell(cell.row - 1, cell.column)
