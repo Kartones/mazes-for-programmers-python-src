@@ -1,3 +1,5 @@
+from typing import cast
+
 from base.cell import Cell
 from base.grid import Grid
 
@@ -25,7 +27,7 @@ def render(grid: Grid) -> None:
 
         output = JUNCTIONS[12]
         for x in range(grid.columns - 1):
-            output += (horizontal_wall * 3 + get_topmost_junction(grid.get_cell(row=0, column=x)))
+            output += (horizontal_wall * 3 + get_topmost_junction(cast(Cell, grid.get_cell(row=0, column=x))))
         output += horizontal_wall * 3 + JUNCTIONS[10] + "\n"
 
         for row in grid.each_row():
@@ -68,7 +70,7 @@ def get_topmost_junction(cell: Cell) -> str:
     #
     junction = EAST + WEST
 
-    if not cell.linked_to(cell.east):
+    if not cell.linked_to(cast(Cell, cell.east)):
         junction += SOUTH
 
     return JUNCTIONS[junction]
@@ -100,7 +102,7 @@ def get_south_east_junction(cell: Cell) -> str:
         junction += WEST
 
     if cell.east and cell.south:
-        south_east_cell = cell.south.east
+        south_east_cell = cast(Cell, cell.south.east)
         if not cell.east.linked_to(south_east_cell):
             junction += EAST
         if not cell.south.linked_to(south_east_cell):
