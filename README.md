@@ -32,16 +32,16 @@ Each demo will, whenever possible, use the following renders:
 ```
 +---+---+---+---+---+---+
 |                       |
-+   +   +---+   +---+   +
-|   |   |       |       |
-+---+   +---+   +   +   +
-|       |       |   |   |
-+   +   +---+---+---+   +
-|   |   |               |
-+---+   +---+   +---+   +
-|       |       |       |
-+   +---+   +---+   +   +
-|   |       |       |   |
++   +   +   +---+---+   +
+|   |   |   |           |
++---+   +---+---+   +   +
+|       |           |   |
++---+---+---+---+   +   +
+|                   |   |
++   +---+   +   +---+   +
+|   |       |   |       |
++   +   +   +   +---+   +
+|   |   |   |   |       |
 +---+---+---+---+---+---+
 ```
 
@@ -50,8 +50,22 @@ Each demo will, whenever possible, use the following renders:
 ![](doc/sample_binary_tree.png)
 
 
-Renderers do not share any interface, just a `render()` method which also varies in parameters, as some output to console while others save to a PNG file.
-
+- UNICODE renderer: outputs to console
+```
+┏━━━━━━━━━━━━━━━━━━━━━━━┓
+┃                       ┃
+┃           ┏━━━━━━━    ┃
+┃   ┃   ┃   ┃           ┃
+┣━━━┛   ┣━━━┻━━━        ┃
+┃       ┃           ┃   ┃
+┣━━━━━━━┻━━━━━━━    ┃   ┃
+┃                   ┃   ┃
+┃   ┏━━━        ┏━━━┛   ┃
+┃   ┃       ┃   ┃       ┃
+┃   ┃       ┃   ┣━━━    ┃
+┃   ┃   ┃   ┃   ┃       ┃
+┗━━━┻━━━┻━━━┻━━━┻━━━━━━━┛
+```
 
 ## Testing
 
