@@ -6,29 +6,14 @@ I'm reading the [Mazes for Programmers](http://www.mazesforprogrammers.com) book
 
 ## Implemented algorithms
 
-- Binary Tree
-- Sidewinder
+- `BinaryTree`
+- `Sidewinder`
 
 Note: This list will grow as I progress with the book.
 
-## Setup
+## Implemented renderers
 
-Note: Code is typed using the great library `mypy`.
-
-```
-pip install -r requirements.txt
-```
-
-## Running
-
-To run any demo:
-```
-PYTHONPATH=. python3 demos/binary_tree_demo.py
-```
-
-Each demo will, whenever possible, use the following renders:
-
-- ASCII renderer: outputs to console
+- `ASCIIRenderer`: outputs to console
 ```
 +---+---+---+---+---+---+
 |                       |
@@ -45,12 +30,12 @@ Each demo will, whenever possible, use the following renders:
 +---+---+---+---+---+---+
 ```
 
-- PNG renderer: outputs to a PNG file on the project root folder (filename will be current datetime)
+- `PNGRenderer`: outputs to a PNG file on the project root folder (filename will be current datetime)
 
 ![](doc/sample_binary_tree.png)
 
 
-- UNICODE renderer: outputs to console
+- `UNICODERenderer`: outputs to console
 ```
 ┏━━━━━━━━━━━━━━━━━━━━━━━┓
 ┃                       ┃
@@ -66,6 +51,25 @@ Each demo will, whenever possible, use the following renders:
 ┃   ┃   ┃   ┃   ┃       ┃
 ┗━━━┻━━━┻━━━┻━━━┻━━━━━━━┛
 ```
+
+## Setup
+
+Note: Code is typed using the great library `mypy`.
+
+```
+pip install -r requirements.txt
+```
+
+## Execute
+
+Run:
+```
+PYTHONPATH=. python3 demos/demo.py
+```
+
+And read the instructions of required and optional parameters.
+
+Usually you have to choose a desired grid size (in number of rows and columns) and the algorithm to use. Optionally you can select other parameters like the renderer (default is `UNICODERenderer`) or if you wish to apply a number of 90 degree, clockwise rotations to the generated map.
 
 ## Testing
 

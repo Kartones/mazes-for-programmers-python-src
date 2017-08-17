@@ -77,7 +77,7 @@ def get_topmost_junction(cell: Cell) -> str:
 
 
 def get_south_east_junction(cell: Cell) -> str:
-    # Taking advantage that we always go forward east and south, just need to calculate available posibilities
+    # Taking advantage that we always go forward     east and south, just need to calculate available posibilities
     #
     #    [ X ]      [X-east]
     #
@@ -107,5 +107,8 @@ def get_south_east_junction(cell: Cell) -> str:
             junction += EAST
         if not cell.south.linked_to(south_east_cell):
             junction += SOUTH
-
-    return JUNCTIONS[junction]
+    try:
+        return JUNCTIONS[junction]
+    except IndexError as ie:
+        print("junction:{} error:{}".format(junction, ie))
+        return " "
