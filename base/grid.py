@@ -58,3 +58,6 @@ class Grid:
         for row in range(self.rows):
             for column in range(self.columns):
                 yield self.get_cell(row, column)
+
+    def contents_of(self, cell: Cell) -> str:
+        return "   "

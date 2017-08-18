@@ -34,7 +34,7 @@ def render(grid: Grid) -> None:
             top = vertical_wall
             bottom = get_leftmost_junction(row[0])
             for cell in row:
-                body = "   "
+                body = grid.contents_of(cell)
                 east_boundary = " " if cell.linked_to(cell.east) else vertical_wall
                 top += body + east_boundary
                 south_boundary = "   " if cell.linked_to(cell.south) else horizontal_wall * 3

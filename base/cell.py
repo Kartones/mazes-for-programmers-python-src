@@ -1,6 +1,6 @@
-#!/usr/bin/env python3
+from typing import cast, Dict, List, Optional    # noqa: F401
 
-from typing import Dict, List, Optional, Union    # noqa: F401
+from base.distances import Distances
 
 
 class Cell:
@@ -14,7 +14,7 @@ class Cell:
         return self._column
 
     @property
-    def links(self) -> List:
+    def links(self) -> List["Cell"]:
         return list(self._links.keys())
 
     def __init__(self, row: int, column: int) -> None:
@@ -25,7 +25,7 @@ class Cell:
 
         self._row = row         # type: int
         self._column = column   # type: int
-        self._links = {}        # type: Dict
+        self._links = {}        # type: Dict[Cell, bool]
         self.north = None       # type: Optional[Cell]
         self.south = None       # type: Optional[Cell]
         self.east = None        # type: Optional[Cell]
@@ -46,8 +46,8 @@ class Cell:
     def linked_to(self, cell: "Cell") -> bool:
         return cell in self._links
 
-    def neighbors(self) -> List[Union[None, "Cell"]]:
-        neighbors_list = []         # type: List[Union[None, Cell]]
+    def neighbors(self) -> List[Optional["Cell"]]:
+        neighbors_list = []         # type: List[Optional[Cell]]
         if self.north:
             neighbors_list.append(self.north)
         if self.south:
@@ -57,6 +57,21 @@ class Cell:
         if self.west:
             neighbors_list.append(self.west)
         return neighbors_list
+
+    def distances(self) -> Distances:
+        distances = Distances(self)
+        frontier = [self]   # type: List[Cell]
+
+        while len(frontier) > 0:
+            new_frontier = []
+            for cell in frontier:
+                for linked_cell in cell.links:
+                    if distances[linked_cell] is None and distances[cell] is not None:
+                        distances[linked_cell] = cast(int, distances[cell]) + 1
+                        new_frontier.append(linked_cell)
+            frontier = new_frontier
+
+        return distances
 
     # The following methods actually lie because don't take into account neighbors/linked-cells, but for now is enough
 

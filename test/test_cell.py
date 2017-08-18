@@ -82,3 +82,19 @@ def test_has_neighbors() -> None:
     assert a_cell in yet_another_cell.neighbors()
     assert another_cell in yet_another_cell.neighbors()
     assert len(yet_another_cell.neighbors()) == 2
+
+
+def test_distances() -> None:
+    a_cell = Cell(0, 0)
+    another_cell = Cell(0, 1)
+    yet_another_cell = Cell(0, 2)
+
+    a_cell.east = another_cell
+    a_cell.link(another_cell)
+    another_cell.east = yet_another_cell
+    another_cell.link(yet_another_cell)
+    distances = a_cell.distances()
+    assert distances.cells == [yet_another_cell, another_cell, a_cell]
+    assert distances[a_cell] == 0
+    assert distances[another_cell] == 1
+    assert distances[yet_another_cell] == 2

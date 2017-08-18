@@ -1,6 +1,7 @@
-from typing import Tuple
+from typing import Tuple, Union
 
 from base.grid import Grid
+from base.distance_grid import DistanceGrid
 from base.cell import Cell
 
 
@@ -11,7 +12,7 @@ class Rotator:
     """
 
     @staticmethod
-    def on(grid: Grid) -> Grid:
+    def on(grid: Union[Grid, DistanceGrid]) -> Union[Grid, DistanceGrid]:
         # row i becomes col n-i when rotating 90 degrees clockwise
         rotated_grid = Grid(rows=grid.columns, columns=grid.rows)
 

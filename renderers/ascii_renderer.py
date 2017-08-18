@@ -15,7 +15,7 @@ def render(grid: Grid) -> None:
         bottom = "+"
         for cell in row:
             # NOTE: Book here creates dummy (-1,-1) cell. Not doing it until needed
-            body = "   "
+            body = grid.contents_of(cell)
             east_boundary = " " if cell.linked_to(cell.east) else "|"
             top += body + east_boundary
             south_boundary = "   " if cell.linked_to(cell.south) else "---"
