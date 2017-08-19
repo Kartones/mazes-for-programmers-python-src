@@ -69,7 +69,41 @@ PYTHONPATH=. python3 demos/demo.py
 
 And read the instructions of required and optional parameters.
 
-Usually you have to choose a desired grid size (in number of rows and columns) and the algorithm to use. Optionally you can select other parameters like the renderer (default is `UNICODERenderer`) or if you wish to apply a number of 90 degree, clockwise rotations to the generated map.
+Usually you have to choose a desired grid size (in number of rows and columns) and the algorithm to use. Optionally you can select a few other parameters like the renderer, if you wish to apply a number of 90 degree clockwise rotations to the generated map, and others.
+
+Maze solving is a WIP but already works for `ASCIIRenderer` and `UNICODERenderer`:
+```
+PYTHONPATH=. python3 demos/demo.py 10 10 Sidewinder UNICODERenderer 0 --pathfinding
+Algorithm: Sidewinder
+Rows: 10
+columns: 10
+Renderer: UNICODERenderer
+90deg Rotations: 0
+Pathfinding: True
+Solving maze from row 0 column 0 to row 9 column 0
+┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
+┃     1   2   3   4   5                 ┃
+┃    ━━━━━━━━━━━┳━━━     ━━━┓           ┃
+┃               ┃     6   7 ┃   ┃   ┃   ┃
+┃       ┏━━━    ┗━━━┳━━━    ┃   ┃   ┃   ┃
+┃   ┃   ┃           ┃ 9   8 ┃   ┃   ┃   ┃
+┃   ┗━━━┫    ━━━┓   ┃       ┃   ┣━━━┛   ┃
+┃       ┃       ┃   ┃ A ┃   ┃   ┃       ┃
+┃   ┏━━━┛    ━━━╋━━━┛   ┃   ┣━━━┛    ━━━┫
+┃   ┃           ┃     B ┃   ┃           ┃
+┃   ┃   ┏━━━━━━━┻━━━    ┃   ┃    ━━━┓   ┃
+┃   ┃   ┃         D   C ┃   ┃       ┃   ┃
+┃   ┃   ┣━━━         ━━━┻━━━╋━━━━━━━┛   ┃
+┃   ┃   ┃       ┃ E         ┃           ┃
+┃   ┃   ┃   ┏━━━┛   ┏━━━━━━━┛    ━━━┓   ┃
+┃   ┃   ┃   ┃     F ┃               ┃   ┃
+┣━━━┻━━━┻━━━┻━━━    ┃    ━━━┳━━━    ┗━━━┫
+┃ 14  13  12  11  10┃       ┃           ┃
+┃       ┏━━━━━━━━━━━┛       ┗━━━━━━━┓   ┃
+┃ 15┃   ┃               ┃           ┃   ┃
+┗━━━┻━━━┻━━━━━━━━━━━━━━━┻━━━━━━━━━━━┻━━━┛
+```
+
 
 ## Testing
 

@@ -108,6 +108,12 @@ if __name__ == "__main__":
         grid = Rotator.on(grid)
 
     if pathfinding:
-        grid = Dijkstra.calculate_distances(cast(DistanceGrid, grid), 0, 0)
+        start_row = 0
+        start_column = 0
+        end_row = grid.rows - 1
+        end_column = 0
+        print("Solving maze from row {} column {} to row {} column {}".format(
+            start_row, start_column, end_row, end_column))
+        grid = Dijkstra.calculate_distances(cast(DistanceGrid, grid), start_row, start_column, end_row, end_column)
 
     renderer.render(grid)

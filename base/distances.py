@@ -24,3 +24,21 @@ class Distances:
     @property
     def cells(self) -> List["Cell"]:
         return list(self._cells.keys())
+
+    def path_to(self, destination: "Cell") -> "Distances":
+        """
+        Traverses backwards, from destination to root/origin
+        """
+        current_cell = destination
+
+        breadcrumbs = Distances(self.root)
+        breadcrumbs[current_cell] = self._cells[current_cell]
+
+        while current_cell != self.root:
+            for neighbor in current_cell.links:
+                if self._cells[neighbor] < self._cells[current_cell]:
+                    breadcrumbs[neighbor] = self._cells[neighbor]
+                    current_cell = neighbor
+                    break
+
+        return breadcrumbs
