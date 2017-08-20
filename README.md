@@ -36,6 +36,12 @@ Note: This list will grow as I progress with the book.
 
 ![](doc/sample_binary_tree.png)
 
+Depending on the pathfinding and coloring flags can draw the colored solution path or a "distance-colored map" from the center.
+
+![](doc/sample_colored_pathfinding.png)
+
+![](doc/sample_colored_maze.png)
+
 
 - `UNICODERenderer`: outputs to console
 ```

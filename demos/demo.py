@@ -3,6 +3,7 @@ from typing import cast, Tuple, Type, Union     # noqa: F401
 
 from base.grid import Grid
 from base.distance_grid import DistanceGrid
+from base.colored_grid import ColoredGrid
 
 from algorithms.binary_tree import BinaryTree
 from algorithms.sidewinder import Sidewinder
@@ -78,6 +79,13 @@ def get_pathfinding() -> bool:
         return False
 
 
+def get_coloring() -> bool:
+    if len(sys.argv) > 7:
+        return sys.argv[7] == "--coloring"
+    else:
+        return False
+
+
 if __name__ == "__main__":
     if len(sys.argv) < 4:
         print("Usage:\nPYTHONPATH=. python3 demos/demo.py <rows> <columns> <algorithm> [renderer] [rotations]", end="")
@@ -94,12 +102,16 @@ if __name__ == "__main__":
     rows = int(sys.argv[1])
     columns = int(sys.argv[2])
     algorithm = get_algorithm()
+    coloring = get_coloring()
 
     print("Algorithm: {}\nRows: {}\ncolumns: {}\nRenderer: {}".format(algorithm.__name__, rows, columns, renderer_name))
-    print("90deg Rotations: {}\nPathfinding: {}".format(rotations, pathfinding))
+    print("90deg Rotations: {}\nPathfinding: {}\nColoring: {}".format(rotations, pathfinding, coloring))
 
-    if pathfinding:
-        grid = DistanceGrid(rows, columns)  # type: Union[Grid, DistanceGrid]
+    # here coloring takes precedence, because ColoredGrid inherits from DistanceGrid
+    if coloring:
+        grid = ColoredGrid(rows, columns)  # type: Union[Grid, DistanceGrid, ColoredGrid]
+    elif pathfinding:
+        grid = DistanceGrid(rows, columns)
     else:
         grid = Grid(rows, columns)
 
@@ -108,10 +120,24 @@ if __name__ == "__main__":
     for num in range(rotations):
         grid = Rotator.on(grid)
 
+    # here pathfinding first, so if also colored we'll see the route colored, else if colored will see all maze painted
     if pathfinding:
         start_row, start_column, end_row, end_column = LongestPath.calculate(cast(DistanceGrid, grid))
         print("Solving maze from row {} column {} to row {} column {}".format(
             start_row, start_column, end_row, end_column))
         grid = Dijkstra.calculate_distances(cast(DistanceGrid, grid), start_row, start_column, end_row, end_column)
+    elif coloring:
+        start_row = round(grid.rows / 2)
+        start_column = round(grid.columns / 2)
+        print("Drawing colored maze with start row {} column {}".format(start_row, start_column))
+        start_cell = grid.get_cell(start_row, start_column)
+        if start_cell is None:
+            raise IndexError("Invalid start cell row {} column {}".format(start_row, start_column))
+        grid.distances = start_cell.distances()     # type: ignore
 
-    renderer.render(grid)
+    # TODO: refactor render parameters into either "options" or kwargs
+    # TODO: Also do console_demo and png_demo to avoid options explosion
+    if coloring:
+        renderer.render(grid, coloring=True)
+    else:
+        renderer.render(grid)
