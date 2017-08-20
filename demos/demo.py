@@ -8,6 +8,7 @@ from algorithms.binary_tree import BinaryTree
 from algorithms.sidewinder import Sidewinder
 
 import pathfinders.dijkstra as Dijkstra
+import pathfinders.longest_path as LongestPath
 
 import renderers.ascii_renderer as ASCIIRenderer
 import renderers.unicode_renderer as UNICODERenderer
@@ -108,10 +109,7 @@ if __name__ == "__main__":
         grid = Rotator.on(grid)
 
     if pathfinding:
-        start_row = 0
-        start_column = 0
-        end_row = grid.rows - 1
-        end_column = 0
+        start_row, start_column, end_row, end_column = LongestPath.calculate(cast(DistanceGrid, grid))
         print("Solving maze from row {} column {} to row {} column {}".format(
             start_row, start_column, end_row, end_column))
         grid = Dijkstra.calculate_distances(cast(DistanceGrid, grid), start_row, start_column, end_row, end_column)

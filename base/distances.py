@@ -1,4 +1,4 @@
-from typing import Dict, List, Optional, TYPE_CHECKING   # noqa: F401
+from typing import Dict, List, Optional, Tuple, TYPE_CHECKING   # noqa: F401
 
 # Avoid cyclic import, as Cell uses Distances
 if TYPE_CHECKING:
@@ -24,6 +24,18 @@ class Distances:
     @property
     def cells(self) -> List["Cell"]:
         return list(self._cells.keys())
+
+    @property
+    def max(self) -> Tuple["Cell", int]:
+        max_distance = 0
+        max_cell = self.root
+
+        for cell in self._cells:
+            if self._cells[cell] > max_distance:
+                max_cell = cell
+                max_distance = self._cells[cell]
+
+        return max_cell, max_distance
 
     def path_to(self, destination: "Cell") -> "Distances":
         """

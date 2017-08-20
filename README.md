@@ -4,6 +4,8 @@
 
 I'm reading the [Mazes for Programmers](http://www.mazesforprogrammers.com) book, but source code comes in Ruby and I like Python, so I decided to rewrite them as I read. And along the way add tests, both to make sure the conversion is ok and to see a more continuous way than having to write all basic stuff and an "ASCII renderer" before being able to see anything.
 
+A small remark: Code is not a 1:1 copy of the book's. For example I built renderers instead of adding `to_s` and `to_png` methods, pathfinding is also a module that works over traversable grids (those with distances calculated), and a few other changes and extras.
+
 ## Implemented algorithms
 
 - `BinaryTree`
@@ -51,6 +53,11 @@ Note: This list will grow as I progress with the book.
 ┃   ┃   ┃   ┃   ┃       ┃
 ┗━━━┻━━━┻━━━┻━━━┻━━━━━━━┛
 ```
+
+## Implemented pathfinding algorithms
+
+- `Dijkstra`: Uses cell distances to calculate maze solution. The actual "core" logic lives at `Distances` base class.
+- `LongestPath`: Calculates "a longest path" of the maze. There can be many as it selects a cell as starting point and could be other longer ones.
 
 ## Setup
 

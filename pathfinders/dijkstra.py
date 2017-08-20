@@ -1,9 +1,5 @@
 from base.distance_grid import DistanceGrid
 
-"""
-Note: Assumes grid maze has already been generated
-"""
-
 
 def calculate_distances(grid: DistanceGrid, start_row: int, start_column: int, end_row: int,
                         end_column: int) -> DistanceGrid:
