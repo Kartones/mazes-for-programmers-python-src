@@ -1,8 +1,11 @@
-from typing import Tuple, Union
+from typing import TYPE_CHECKING, Tuple, Union
 
 from base.grid import Grid
-from base.distance_grid import DistanceGrid
 from base.cell import Cell
+
+if TYPE_CHECKING:
+    from base.distance_grid import DistanceGrid     # noqa: F401
+    from base.colored_grid import ColoredGrid       # noqa: F401
 
 
 class Rotator:
@@ -12,9 +15,11 @@ class Rotator:
     """
 
     @staticmethod
-    def on(grid: Union[Grid, DistanceGrid]) -> Union[Grid, DistanceGrid]:
+    def on(grid: Union[Grid, "DistanceGrid", "ColoredGrid"]) -> Union[Grid, "DistanceGrid", "ColoredGrid"]:
+        grid_type = type(grid)
+
         # row i becomes col n-i when rotating 90 degrees clockwise
-        rotated_grid = Grid(rows=grid.columns, columns=grid.rows)
+        rotated_grid = grid_type(rows=grid.columns, columns=grid.rows)
 
         for old_cell in grid.each_cell():
             row, column = Rotator._rotated_coordinates(old_cell, rotated_grid)

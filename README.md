@@ -75,47 +75,18 @@ pip install -r requirements.txt
 
 ## Execute
 
-Run:
+To run just execute the desired output-based demo:
 ```
-PYTHONPATH=. python3 demos/demo.py
+PYTHONPATH=. python3 demos/terminal_demo.py
+```
+or:
+```
+PYTHONPATH=. python3 demos/image_demo.py
 ```
 
-And read the instructions of required and optional parameters.
+And read the instructions of required and optional parameters (run without arguments and it will explain usage).
 
-Usually you have to choose a desired grid size (in number of rows and columns) and the algorithm to use. Optionally you can select a few other parameters like the renderer, if you wish to apply a number of 90 degree clockwise rotations to the generated map, and others.
-
-Maze solving is a WIP but already works for `ASCIIRenderer` and `UNICODERenderer`:
-```
-PYTHONPATH=. python3 demos/demo.py 10 10 Sidewinder UNICODERenderer 0 --pathfinding
-Algorithm: Sidewinder
-Rows: 10
-columns: 10
-Renderer: UNICODERenderer
-90deg Rotations: 0
-Pathfinding: True
-Solving maze from row 0 column 0 to row 9 column 0
-┏━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━━┓
-┃     1   2   3   4   5                 ┃
-┃    ━━━━━━━━━━━┳━━━     ━━━┓           ┃
-┃               ┃     6   7 ┃   ┃   ┃   ┃
-┃       ┏━━━    ┗━━━┳━━━    ┃   ┃   ┃   ┃
-┃   ┃   ┃           ┃ 9   8 ┃   ┃   ┃   ┃
-┃   ┗━━━┫    ━━━┓   ┃       ┃   ┣━━━┛   ┃
-┃       ┃       ┃   ┃ A ┃   ┃   ┃       ┃
-┃   ┏━━━┛    ━━━╋━━━┛   ┃   ┣━━━┛    ━━━┫
-┃   ┃           ┃     B ┃   ┃           ┃
-┃   ┃   ┏━━━━━━━┻━━━    ┃   ┃    ━━━┓   ┃
-┃   ┃   ┃         D   C ┃   ┃       ┃   ┃
-┃   ┃   ┣━━━         ━━━┻━━━╋━━━━━━━┛   ┃
-┃   ┃   ┃       ┃ E         ┃           ┃
-┃   ┃   ┃   ┏━━━┛   ┏━━━━━━━┛    ━━━┓   ┃
-┃   ┃   ┃   ┃     F ┃               ┃   ┃
-┣━━━┻━━━┻━━━┻━━━    ┃    ━━━┳━━━    ┗━━━┫
-┃ 14  13  12  11  10┃       ┃           ┃
-┃       ┏━━━━━━━━━━━┛       ┗━━━━━━━┓   ┃
-┃ 15┃   ┃               ┃           ┃   ┃
-┗━━━┻━━━┻━━━━━━━━━━━━━━━┻━━━━━━━━━━━┻━━━┛
-```
+Usually you have to choose a desired grid size (in number of rows and columns) and the algorithm to use. Optionally you can select a few other parameters.
 
 
 ## Testing

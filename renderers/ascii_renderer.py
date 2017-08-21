@@ -1,7 +1,9 @@
+from typing import Any
+
 from base.grid import Grid
 
 
-def render(grid: Grid) -> None:
+def render(grid: Grid, **kwargs: Any) -> None:
     """
     Renders to stdout an ASCII representation of the maze.
     Rendering starts with top walls and nortwest corner setup, so it only needs to care of each cell's east and

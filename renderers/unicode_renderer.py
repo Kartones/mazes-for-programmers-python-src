@@ -1,4 +1,4 @@
-from typing import cast
+from typing import Any, cast
 
 from base.cell import Cell
 from base.grid import Grid
@@ -17,7 +17,7 @@ EAST = 4
 SOUTH = 8
 
 
-def render(grid: Grid) -> None:
+def render(grid: Grid, **kwargs: Any) -> None:
         """
         Renders to stdout a UNICODE representation of the maze.
         Not present in the book but suggested as exercise. And looks better than ASCII mazes :)

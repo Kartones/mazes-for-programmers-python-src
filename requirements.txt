@@ -1,5 +1,7 @@
 mypy
 Pillow==4.2.1
+# 0.1.0 tagged release doesn't supports Python 3
+git+https://github.com/kennethreitz/args.git@9460f1a35eb3055e9e4de1f0a6932e0883c72d65#egg=args
 
 # test only
 pytest<4.0

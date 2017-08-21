@@ -1,14 +1,24 @@
 from time import gmtime, strftime
 from PIL import Image, ImageDraw
+from typing import Any
 
 from base.colored_grid import ColoredGrid
 
 STEP_BACKGROUND = 0
 
 
-def render(grid: ColoredGrid, cell_size: int = 10, coloring: bool = False, filename: str = None) -> None:
-    if filename is None:
-        filename = strftime("%Y%m%d%H%M%S", gmtime())
+def render(grid: ColoredGrid, **kwargs: Any) -> None:
+    filename = strftime("%Y%m%d%H%M%S", gmtime())
+    cell_size = 10
+    coloring = False
+
+    for key in kwargs:
+        if key == "filename":
+            filename = kwargs[key]
+        elif key == "cell_size":
+            cell_size = kwargs[key]
+        elif key == "coloring":
+            coloring = kwargs[key]
 
     image_width = cell_size * grid.columns
     image_height = cell_size * grid.rows
@@ -40,7 +50,6 @@ def render(grid: ColoredGrid, cell_size: int = 10, coloring: bool = False, filen
                     draw.line((x1, y2, x2, y2), fill=wall_color, width=1)
 
     image.save("{}.png".format(filename), "PNG", optimize=True)
-
 
 # -----
 # Unused at least for now: Pixel-based drawing:
