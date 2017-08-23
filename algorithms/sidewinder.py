@@ -24,7 +24,7 @@ class Sidewinder:
                     member = choice(run)
                     if member.north:
                         member.link(member.north)
-                    run = []
+                    run.clear()
                 else:
                     cell.link(cell.east)
         return grid

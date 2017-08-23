@@ -15,12 +15,12 @@ class Wilson:
 
     @staticmethod
     def on(grid: Grid) -> Grid:
-        unvisited = []  # Type: List[Cell]
+        unvisited = []
         for cell in grid.each_cell():
             unvisited.append(cell)
 
         first_cell = choice(unvisited)
-        del unvisited[unvisited.index(first_cell)]
+        unvisited.remove(first_cell)
 
         while len(unvisited) > 0:
             # start a walk
@@ -39,6 +39,6 @@ class Wilson:
             # Passage carving once has found a valid path
             for index in range(len(path) - 1):
                 path[index].link(path[index + 1])
-                del unvisited[unvisited.index(path[index])]
+                unvisited.remove(path[index])
 
         return grid

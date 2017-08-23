@@ -18,6 +18,14 @@ class Grid:
     def size(self) -> int:
         return self.rows * self.columns
 
+    @property
+    def deadends(self) -> List[Cell]:
+        deadends_list = []
+        for cell in self.each_cell():
+            if len(cell.links) == 1:
+                deadends_list.append(cell)
+        return deadends_list
+
     def __init__(self, rows: int, columns: int) -> None:
         if rows is None or rows < 0:
             raise ValueError("Rows must be a positive integer")

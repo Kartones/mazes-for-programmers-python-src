@@ -20,11 +20,11 @@ class HuntAndKill:
 
         while current_cell is not None:
             unvisited_neighbors = \
-                [neighbor for neighbor in current_cell.neighbors if len(neighbor.links) == 0]  # type: ignore
+                [neighbor for neighbor in current_cell.neighbors if len(neighbor.links) == 0]
 
             if len(unvisited_neighbors) > 0:
                 # as long as there are unvisited paths, walk them
-                neighbor = cast(Cell, choice(unvisited_neighbors))
+                neighbor = choice(unvisited_neighbors)
                 current_cell.link(neighbor)
                 current_cell = neighbor
             else:

@@ -18,8 +18,8 @@ class Cell:
         return list(self._links.keys())
 
     @property
-    def neighbors(self) -> List[Optional["Cell"]]:
-        neighbors_list = []         # type: List[Optional[Cell]]
+    def neighbors(self) -> List["Cell"]:
+        neighbors_list = []         # type: List[Cell]
         if self.north:
             neighbors_list.append(self.north)
         if self.south:
@@ -62,7 +62,7 @@ class Cell:
     @property
     def distances(self) -> Distances:
         distances = Distances(self)
-        frontier = [self]   # type: List[Cell]
+        frontier = [self]
 
         while len(frontier) > 0:
             new_frontier = []

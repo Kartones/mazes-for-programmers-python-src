@@ -30,6 +30,7 @@ def get_renderer(available_renderers: List[str], default_renderer: str) -> Tuple
         if key == "--renderer":
             try:
                 renderer_name = args.assignments[key][0]
+                # Hacky but only method I know to get an alias of an imported module
                 if renderer_name in available_renderers and renderer_name in globals():
                     renderer = globals()[renderer_name]
             except ValueError as error:
