@@ -17,7 +17,7 @@ class AldousBroder:
         unvisited_count = grid.size - 1
 
         while unvisited_count > 0:
-            neighbor = choice(current_cell.neighbors())
+            neighbor = choice(current_cell.neighbors)
             if neighbor is None:
                 raise ValueError("Aldous-Broder algorithm needs all cells to have at least one neighbor")
             if len(neighbor.links) == 0:

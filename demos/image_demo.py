@@ -67,10 +67,10 @@ if __name__ == "__main__":
         start_row = round(grid.rows / 2)
         start_column = round(grid.columns / 2)
         print("Drawing colored maze with start row {} column {}".format(start_row, start_column))
-        start_cell = grid.get_cell(start_row, start_column)
+        start_cell = grid.cell_at(start_row, start_column)
         if start_cell is None:
             raise IndexError("Invalid start cell row {} column {}".format(start_row, start_column))
-        grid.distances = start_cell.distances()     # type: ignore
+        grid.distances = start_cell.distances     # type: ignore
 
     filename = strftime("%Y%m%d%H%M%S", gmtime())
 

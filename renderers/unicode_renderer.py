@@ -27,7 +27,7 @@ def render(grid: Grid, **kwargs: Any) -> None:
 
         output = JUNCTIONS[12]
         for x in range(grid.columns - 1):
-            output += (horizontal_wall * 3 + get_topmost_junction(cast(Cell, grid.get_cell(row=0, column=x))))
+            output += (horizontal_wall * 3 + get_topmost_junction(cast(Cell, grid.cell_at(row=0, column=x))))
         output += horizontal_wall * 3 + JUNCTIONS[10] + "\n"
 
         for row in grid.each_row():

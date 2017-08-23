@@ -23,7 +23,7 @@ class Rotator:
 
         for old_cell in grid.each_cell():
             row, column = Rotator._rotated_coordinates(old_cell, rotated_grid)
-            new_cell = rotated_grid.get_cell(row, column)
+            new_cell = rotated_grid.cell_at(row, column)
             if new_cell is None:
                 raise IndexError("Cell not found at row {} column {}".format(row, column))
             Rotator._rotate_cell_neighbors(new_cell, old_cell, rotated_grid)
@@ -40,7 +40,7 @@ class Rotator:
     def _rotate_cell_neighbors(new_cell: Cell, old_cell: Cell, grid: Grid) -> None:
         for link in old_cell.links:
             row, column = Rotator._rotated_coordinates(link, grid)
-            neighbor = grid.get_cell(row, column)
+            neighbor = grid.cell_at(row, column)
             if neighbor is None:
                 raise IndexError("Cell not found at row {} column {}".format(row, column))
             new_cell.link(neighbor)

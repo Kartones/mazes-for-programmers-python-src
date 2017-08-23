@@ -17,6 +17,19 @@ class Cell:
     def links(self) -> List["Cell"]:
         return list(self._links.keys())
 
+    @property
+    def neighbors(self) -> List[Optional["Cell"]]:
+        neighbors_list = []         # type: List[Optional[Cell]]
+        if self.north:
+            neighbors_list.append(self.north)
+        if self.south:
+            neighbors_list.append(self.south)
+        if self.east:
+            neighbors_list.append(self.east)
+        if self.west:
+            neighbors_list.append(self.west)
+        return neighbors_list
+
     def __init__(self, row: int, column: int) -> None:
         if row is None or row < 0:
             raise ValueError("Row must be a positive integer")
@@ -46,18 +59,7 @@ class Cell:
     def linked_to(self, cell: "Cell") -> bool:
         return cell in self._links
 
-    def neighbors(self) -> List[Optional["Cell"]]:
-        neighbors_list = []         # type: List[Optional[Cell]]
-        if self.north:
-            neighbors_list.append(self.north)
-        if self.south:
-            neighbors_list.append(self.south)
-        if self.east:
-            neighbors_list.append(self.east)
-        if self.west:
-            neighbors_list.append(self.west)
-        return neighbors_list
-
+    @property
     def distances(self) -> Distances:
         distances = Distances(self)
         frontier = [self]   # type: List[Cell]

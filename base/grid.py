@@ -29,7 +29,7 @@ class Grid:
         self._grid = self.prepare_grid()
         self.configure_cells()
 
-    def get_cell(self, row: int, column: int) -> Optional[Cell]:
+    def cell_at(self, row: int, column: int) -> Optional[Cell]:
         if not (0 <= row < self.rows):
             return None
         if not (0 <= column < self.columns):
@@ -41,15 +41,15 @@ class Grid:
 
     def configure_cells(self) -> None:
         for cell in self.each_cell():
-            cell.north = self.get_cell(cell.row - 1, cell.column)
-            cell.south = self.get_cell(cell.row + 1, cell.column)
-            cell.east = self.get_cell(cell.row, cell.column + 1)
-            cell.west = self.get_cell(cell.row, cell.column - 1)
+            cell.north = self.cell_at(cell.row - 1, cell.column)
+            cell.south = self.cell_at(cell.row + 1, cell.column)
+            cell.east = self.cell_at(cell.row, cell.column + 1)
+            cell.west = self.cell_at(cell.row, cell.column - 1)
 
     def random_cell(self) -> Cell:
         column = randint(0, self.columns - 1)
         row = randint(0, self.rows - 1)
-        return cast(Cell, self.get_cell(row, column))
+        return cast(Cell, self.cell_at(row, column))
 
     def each_row(self) -> Generator:
         for row in range(self.rows):
@@ -58,7 +58,7 @@ class Grid:
     def each_cell(self) -> Generator:
         for row in range(self.rows):
             for column in range(self.columns):
-                yield self.get_cell(row, column)
+                yield self.cell_at(row, column)
 
     def contents_of(self, cell: Cell) -> str:
         return "   "
