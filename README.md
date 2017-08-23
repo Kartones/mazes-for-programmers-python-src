@@ -8,6 +8,7 @@ A small remark: Code is not a 1:1 copy of the book's. For example I built render
 
 ## Implemented algorithms
 
+- `AldousBroder`
 - `BinaryTree`
 - `Sidewinder`
 

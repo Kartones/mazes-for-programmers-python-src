@@ -59,6 +59,6 @@ def test_random_cell() -> None:
 
 
 def test_size() -> None:
-    assert Grid(1, 1).size() == 1
-    assert Grid(2, 2).size() == 4
-    assert Grid(3, 3).size() == 9
+    assert Grid(1, 1).size == 1
+    assert Grid(2, 2).size == 4
+    assert Grid(3, 3).size == 9

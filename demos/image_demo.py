@@ -1,3 +1,7 @@
+import platform
+import subprocess
+from time import gmtime, strftime
+
 import args
 from typing import cast, Union     # noqa: F401
 
@@ -68,4 +72,9 @@ if __name__ == "__main__":
             raise IndexError("Invalid start cell row {} column {}".format(start_row, start_column))
         grid.distances = start_cell.distances()     # type: ignore
 
-    renderer.render(grid, coloring=coloring)
+    filename = strftime("%Y%m%d%H%M%S", gmtime())
+
+    renderer.render(grid, coloring=coloring, filename=filename)
+
+    if platform.system() == "Linux":
+        subprocess.run(["xdg-open", "{}.png".format(filename)])

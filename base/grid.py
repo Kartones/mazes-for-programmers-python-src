@@ -14,6 +14,10 @@ class Grid:
     def columns(self) -> int:
         return self._columns
 
+    @property
+    def size(self) -> int:
+        return self.rows * self.columns
+
     def __init__(self, rows: int, columns: int) -> None:
         if rows is None or rows < 0:
             raise ValueError("Rows must be a positive integer")
@@ -46,9 +50,6 @@ class Grid:
         column = randint(0, self.columns - 1)
         row = randint(0, self.rows - 1)
         return cast(Cell, self.get_cell(row, column))
-
-    def size(self) -> int:
-        return self.rows * self.columns
 
     def each_row(self) -> Generator:
         for row in range(self.rows):
