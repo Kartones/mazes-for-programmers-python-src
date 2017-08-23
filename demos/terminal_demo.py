@@ -51,3 +51,5 @@ if __name__ == "__main__":
         grid = Dijkstra.calculate_distances(cast(DistanceGrid, grid), start_row, start_column, end_row, end_column)
 
     renderer.render(grid)
+
+    print("Maze has {} dead-ends".format(len(grid.deadends)))

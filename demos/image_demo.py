@@ -76,5 +76,7 @@ if __name__ == "__main__":
 
     renderer.render(grid, coloring=coloring, filename=filename)
 
+    print("Maze has {} dead-ends".format(len(grid.deadends)))
+
     if platform.system() == "Linux":
         subprocess.run(["xdg-open", "{}.png".format(filename)])
