@@ -5,12 +5,13 @@ from algorithms.binary_tree import BinaryTree
 from algorithms.sidewinder import Sidewinder
 from algorithms.aldous_broder import AldousBroder
 from algorithms.wilson import Wilson
+from algorithms.hunt_and_kill import HuntAndKill
 
 import renderers.ascii_renderer as ASCIIRenderer
 import renderers.unicode_renderer as UNICODERenderer
 import renderers.png_renderer as PNGRenderer
 
-ALGORITHMS = [BinaryTree, Sidewinder, AldousBroder, Wilson]
+ALGORITHMS = [AldousBroder, BinaryTree, HuntAndKill, Sidewinder, Wilson]
 ALL_RENDERERS = [UNICODERenderer, ASCIIRenderer, PNGRenderer]
 
 
