@@ -3,9 +3,9 @@ from random import choice
 from base.grid import Grid
 
 """
-Aldous-Broder algorithm works by always choosing a random neighbor of the current cell and linking them if not yet
-visited ("random walking"), repeating until all cells are visited once.
-Can take long to compute on big grids.
+Aldous-Broder algorithm works by always choosing a random neighbor of a randomly-selected also cell, and linking them
+if not yet visited ("random walking"), repeating until all cells are visited once.
+Can take long to compute on big grids (slow-to-finish).
 """
 
 

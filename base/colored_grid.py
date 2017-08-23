@@ -1,4 +1,4 @@
-from typing import Optional, Tuple
+from typing import cast, Optional, Tuple
 
 from base.distance_grid import DistanceGrid
 from base.cell import Cell
@@ -24,9 +24,9 @@ class ColoredGrid(DistanceGrid):
 
     def background_color_for(self, cell: Cell) -> Optional[Tuple[int, int, int]]:
         if self.distances is not None and self.maximum is not None and self.distances[cell] is not None:
-            distance = self.distances[cell]
+            distance = cast(int, self.distances[cell])
             if distance > 0:
-                intensity = float((self.maximum - distance)) / self.maximum   # type: ignore
+                intensity = float((self.maximum - distance)) / self.maximum
                 dark = round(MAX_DARK * intensity)
                 bright = MAX_BRIGHT + round(MAX_BRIGHT_INTENSITY * intensity)
                 return dark, bright, dark

@@ -4,12 +4,13 @@ from typing import List, Tuple, Type
 from algorithms.binary_tree import BinaryTree
 from algorithms.sidewinder import Sidewinder
 from algorithms.aldous_broder import AldousBroder
+from algorithms.wilson import Wilson
 
 import renderers.ascii_renderer as ASCIIRenderer
 import renderers.unicode_renderer as UNICODERenderer
 import renderers.png_renderer as PNGRenderer
 
-ALGORITHMS = [BinaryTree, Sidewinder, AldousBroder]
+ALGORITHMS = [BinaryTree, Sidewinder, AldousBroder, Wilson]
 ALL_RENDERERS = [UNICODERenderer, ASCIIRenderer, PNGRenderer]
 
 
