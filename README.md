@@ -11,6 +11,7 @@ A small remark: Code is not a 1:1 copy of the book's. For example I built render
 - `AldousBroder`
 - `BinaryTree`
 - `HuntAndKill`
+- `RecursiveBacktracker`
 - `Sidewinder`
 - `Wilson`
 
@@ -96,7 +97,6 @@ Stats demo runs all available algorithms a certain number of times and gathers s
 Sample output:
 ```
 PYTHONPATH=. python3 demos/stats_demo.py 25 25 --pathfinding
-
 Rows: 25
 columns: 25
 Total cells: 625
@@ -105,29 +105,34 @@ Pathfinding: True
 > running AldousBroder
 > running BinaryTree
 > running HuntAndKill
+> running RecursiveBacktracker
 > running Sidewinder
 > running Wilson
 
-Average dead-ends (desc):
-     AldousBroder: 181/625 (29.01%)
-           Wilson: 181/625 (28.97%)
-       Sidewinder: 170/625 (27.12%)
-       BinaryTree: 156/625 (24.93%)
-      HuntAndKill: 062/625 (9.86%)
+Average dead-ends (deadends/total-cells, sorted by % desc):
+           AldousBroder: 182/625 (29.12%)
+                 Wilson: 181/625 (28.93%)
+             Sidewinder: 171/625 (27.29%)
+             BinaryTree: 156/625 (24.97%)
+   RecursiveBacktracker: 065/625 (10.47%)
+            HuntAndKill: 061/625 (9.73%)
 
 Generation speed benchmark (seconds, sorted by average desc):
-           Wilson: avg: 0.65727073 min: 0.22471986 max: 2.18292433
-      HuntAndKill: avg: 0.08903943 min: 0.07111554 max: 0.12254786
-     AldousBroder: avg: 0.03225283 min: 0.01685291 max: 0.08700121
-       Sidewinder: avg: 0.00232661 min: 0.00208164 max: 0.00273097
-       BinaryTree: avg: 0.00217227 min: 0.00209896 max: 0.00251945
+                 Wilson: avg: 0.641611 min: 0.235594 max: 2.173624
+            HuntAndKill: avg: 0.078919 min: 0.059095 max: 0.101278
+           AldousBroder: avg: 0.038898 min: 0.015946 max: 0.180922
+   RecursiveBacktracker: avg: 0.005492 min: 0.005383 max: 0.006105
+             BinaryTree: avg: 0.002130 min: 0.002074 max: 0.002359
+             Sidewinder: avg: 0.002105 min: 0.002039 max: 0.002320
 
 Pathfinding speed benchmark (seconds, sorted by average desc):
-      HuntAndKill: avg: 0.01336081 min: 0.01190879 max: 0.02201122
-       Sidewinder: avg: 0.01306345 min: 0.01151913 max: 0.02009250
-           Wilson: avg: 0.01259966 min: 0.01147151 max: 0.01936247
-     AldousBroder: avg: 0.01224201 min: 0.01164555 max: 0.01713539
-       BinaryTree: avg: 0.01185717 min: 0.01154452 max: 0.01265934
+           AldousBroder: avg: 0.014295 min: 0.011494 max: 0.035487
+   RecursiveBacktracker: avg: 0.012775 min: 0.012238 max: 0.014378
+            HuntAndKill: avg: 0.012100 min: 0.011589 max: 0.013740
+                 Wilson: avg: 0.011712 min: 0.011262 max: 0.013362
+             Sidewinder: avg: 0.011641 min: 0.011314 max: 0.013308
+             BinaryTree: avg: 0.011561 min: 0.011267 max: 0.013016
+
 ```
 
 ## Testing
@@ -137,3 +142,9 @@ Note: Runs also some linter tests, to conform with both `mypy` and `flake8`.
 ```
 pytest
 ```
+
+## Roadmap & TODOs
+
+- Of course finish the book and implement all main code and algorithms
+- Dockerize the project -> Will allow to upgrade to Python 3.6 and perform additional mypy cleanups & improvements
+- Implement more pathfinders -> (e.g. recursive backtracking as a maze solve algorithm)

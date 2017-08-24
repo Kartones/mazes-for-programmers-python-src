@@ -31,7 +31,7 @@ class Wilson:
                 cell = choice(cell.neighbors)
                 try:
                     position = path.index(cell)
-                    # already walked, perform loop-erase
+                    # already walked, perform loop-erase. e.g. A -> B -> C -> D -> B   becomes A -> B
                     path = path[:position + 1]
                 except ValueError:
                     path.append(cell)

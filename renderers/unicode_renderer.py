@@ -7,7 +7,6 @@ from base.grid import Grid
 #    N        1
 #  W   E    2   4
 #    S        8
-
 JUNCTIONS = [" ", " ", " ", "\u251b", " ", "\u2517", "\u2501", "\u253b", " ", "\u2503", "\u2513", "\u252b", "\u250f",
              "\u2523", "\u2533", "\u254b"]
 
@@ -77,7 +76,7 @@ def get_topmost_junction(cell: Cell) -> str:
 
 
 def get_south_east_junction(cell: Cell) -> str:
-    # Taking advantage that we always go forward     east and south, just need to calculate available posibilities
+    # Taking advantage that we always go forward east and south, just need to calculate available posibilities
     #
     #    [ X ]      [X-east]
     #

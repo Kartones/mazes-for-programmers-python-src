@@ -6,12 +6,13 @@ from algorithms.sidewinder import Sidewinder
 from algorithms.aldous_broder import AldousBroder
 from algorithms.wilson import Wilson
 from algorithms.hunt_and_kill import HuntAndKill
+from algorithms.recursive_backtracker import RecursiveBacktracker
 
 import renderers.ascii_renderer as ASCIIRenderer
 import renderers.unicode_renderer as UNICODERenderer
 import renderers.png_renderer as PNGRenderer
 
-ALGORITHMS = [AldousBroder, BinaryTree, HuntAndKill, Sidewinder, Wilson]
+ALGORITHMS = [AldousBroder, BinaryTree, HuntAndKill, RecursiveBacktracker, Sidewinder, Wilson]
 ALL_RENDERERS = [UNICODERenderer, ASCIIRenderer, PNGRenderer]
 
 

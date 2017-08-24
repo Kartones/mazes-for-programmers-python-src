@@ -88,20 +88,20 @@ if __name__ == "__main__":
         }
 
     sorted_averages = sorted(algorithm_averages.items(), key=lambda x: -x[1])
-    print("\nAverage dead-ends (desc):")
+    print("\nAverage dead-ends (deadends/total-cells, sorted by % desc):")
     for algorithm, average in sorted_averages:
         percentage = average * 100.0 / size
-        print(" {:>16}: {:03.0f}/{:03d} ({:.2f}%)".format(algorithm.__name__, average, size, percentage))
+        print(" {:>22}: {:03.0f}/{:03d} ({:.2f}%)".format(algorithm.__name__, average, size, percentage))
 
     sorted_benchmarks = sorted(algorithm_benchmarks.items(), key=lambda x: -x[1]["average"])
     print("\nGeneration speed benchmark (seconds, sorted by average desc):")
     for algorithm, benchmark in sorted_benchmarks:
-        print(" {:>16}: avg: {:03.8f} min: {:03.8f} max: {:03.8f}".format(algorithm.__name__, benchmark["average"],
+        print(" {:>22}: avg: {:03.6f} min: {:03.6f} max: {:03.6f}".format(algorithm.__name__, benchmark["average"],
               benchmark["min"], benchmark["max"]))
 
     if pathfinding:
         sorted_pathfinding_benchmarks = sorted(pathfinding_benchmarks.items(), key=lambda x: -x[1]["average"])
         print("\nPathfinding speed benchmark (seconds, sorted by average desc):")
         for algorithm, benchmark in sorted_pathfinding_benchmarks:
-            print(" {:>16}: avg: {:03.8f} min: {:03.8f} max: {:03.8f}".format(algorithm.__name__, benchmark["average"],
+            print(" {:>22}: avg: {:03.6f} min: {:03.6f} max: {:03.6f}".format(algorithm.__name__, benchmark["average"],
                   benchmark["min"], benchmark["max"]))
