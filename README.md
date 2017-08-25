@@ -69,6 +69,11 @@ Depending on the pathfinding and coloring flags combination can draw the colored
 ![](doc/nmap_sample_map.png)
 ![](doc/nmap_sample_helper_map.png)
 
+Sample small map playthrough (start at blue, end at red, enemy on deadend at white zone):
+
+![hint map](doc/wolf3d_sample_hintmap.png)
+![Wolfenstein3D playthrough](doc/wolf3d_sample.gif)
+
 
 ## Implemented pathfinding algorithms
 
