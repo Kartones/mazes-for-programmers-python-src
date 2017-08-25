@@ -64,7 +64,7 @@ Depending on the pathfinding and coloring flags combination can draw the colored
 ┗━━━┻━━━┻━━━┻━━━┻━━━━━━━┛
 ```
 
-- `Wolf3DRenderer`: outputs to a LEV file, to be used from [NMAP](http://toastytech.com/files/nmap.html) tool to import as a [Wolfenstein 3D]() map. Level exit is at the pathfinding end (most distant cell from starting position), and on each dead-end there is an enemy soldier (when you attack one all will start to move around the map). Also outputs a PNG file with the maze solution. **To be used with** `game_map_demo.py` ** demo runner**.
+- `Wolf3DRenderer`: outputs to a LEV file, to be used from [NMAP](http://toastytech.com/files/nmap.html) tool to import as a [Wolfenstein 3D](https://en.wikipedia.org/wiki/Wolfenstein_3D) map. Level exit is at the pathfinding end (most distant cell from starting position), and on each dead-end there is an enemy soldier (when you attack one all will start to move around the map). Also outputs a PNG file with the maze solution. **To be used with** `game_map_demo.py` ** demo runner**.
 
 ![](doc/nmap_sample_map.png)
 ![](doc/nmap_sample_helper_map.png)
