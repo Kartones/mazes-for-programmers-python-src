@@ -1,8 +1,11 @@
+from typing import Union
+
 from base.distance_grid import DistanceGrid
+from base.colored_grid import ColoredGrid
 
 
-def calculate_distances(grid: DistanceGrid, start_row: int, start_column: int, end_row: int,
-                        end_column: int) -> DistanceGrid:
+def calculate_distances(grid: Union[DistanceGrid, ColoredGrid], start_row: int, start_column: int, end_row: int,
+                        end_column: int) -> Union[DistanceGrid, ColoredGrid]:
     start_cell = grid.cell_at(start_row, start_column)
     if start_cell is None:
         raise IndexError("Invalid start cell row {} column {}".format(start_row, start_column))

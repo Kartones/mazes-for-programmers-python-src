@@ -30,6 +30,22 @@ class Cell:
             neighbors_list.append(self.west)
         return neighbors_list
 
+    @property
+    def distances(self) -> Distances:
+        distances = Distances(self)
+        frontier = [self]
+
+        while len(frontier) > 0:
+            new_frontier = []
+            for cell in frontier:
+                for linked_cell in cell.links:
+                    if distances[linked_cell] is None and distances[cell] is not None:
+                        distances[linked_cell] = cast(int, distances[cell]) + 1
+                        new_frontier.append(linked_cell)
+            frontier = new_frontier
+
+        return distances
+
     def __init__(self, row: int, column: int) -> None:
         if row is None or row < 0:
             raise ValueError("Row must be a positive integer")
@@ -58,22 +74,6 @@ class Cell:
 
     def linked_to(self, cell: "Cell") -> bool:
         return cell in self._links
-
-    @property
-    def distances(self) -> Distances:
-        distances = Distances(self)
-        frontier = [self]
-
-        while len(frontier) > 0:
-            new_frontier = []
-            for cell in frontier:
-                for linked_cell in cell.links:
-                    if distances[linked_cell] is None and distances[cell] is not None:
-                        distances[linked_cell] = cast(int, distances[cell]) + 1
-                        new_frontier.append(linked_cell)
-            frontier = new_frontier
-
-        return distances
 
     # The following methods actually lie because don't take into account neighbors/linked-cells, but for now is enough
 

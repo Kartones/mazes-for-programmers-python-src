@@ -27,10 +27,10 @@ class Grid:
         return deadends_list
 
     def __init__(self, rows: int, columns: int) -> None:
-        if rows is None or rows < 0:
-            raise ValueError("Rows must be a positive integer")
-        if columns is None or columns < 0:
-            raise ValueError("Columns must be a positive integer")
+        if rows is None or rows < 2:
+            raise ValueError("Rows must be an integer greater than 1")
+        if columns is None or columns < 2:
+            raise ValueError("Columns must an integer greater than 1")
 
         self._rows = rows           # type: int
         self._columns = columns     # type: int
@@ -43,6 +43,9 @@ class Grid:
         if not (0 <= column < self.columns):
             return None
         return self._grid[row][column]
+
+    def set_cell_at(self, row: int, column: int, cell: Cell) -> None:
+        self._grid[row][column] = cell
 
     def prepare_grid(self) -> List[List[Cell]]:
         return [[Cell(row, column) for column in range(self.columns)] for row in range(self.rows)]

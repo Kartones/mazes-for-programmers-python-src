@@ -64,6 +64,12 @@ Depending on the pathfinding and coloring flags combination can draw the colored
 ┗━━━┻━━━┻━━━┻━━━┻━━━━━━━┛
 ```
 
+- `Wolf3DRenderer`: outputs to a LEV file, to be used from [NMAP](http://toastytech.com/files/nmap.html) tool to import as a [Wolfenstein 3D]() map. Level exit is at the pathfinding end (most distant cell from starting position), and on each dead-end there is an enemy soldier (when you attack one all will start to move around the map). Also outputs a PNG file with the maze solution. **To be used with** `game_map_demo.py` ** demo runner**.
+
+![](doc/nmap_sample_map.png)
+![](doc/nmap_sample_helper_map.png)
+
+
 ## Implemented pathfinding algorithms
 
 - `Dijkstra`: Uses cell distances to calculate maze solution. The actual "core" logic lives at `Distances` base class.
@@ -86,6 +92,7 @@ PYTHONPATH=. python3 demos/<filename>
 
 Available demo runners:
 - `terminal_demo.py`
+- `game_map_demo.py`
 - `image_demo.py`
 - `stats_demo.py`
 
@@ -146,5 +153,7 @@ pytest
 ## Roadmap & TODOs
 
 - Of course finish the book and implement all main code and algorithms
+- Check in depth mypy doc to see why all the issues with Union, probably I'm doing something wrong and doesn't detects properly hierarchies, etc.
 - Dockerize the project -> Will allow to upgrade to Python 3.6 and perform additional mypy cleanups & improvements
-- Implement more pathfinders -> (e.g. recursive backtracking as a maze solve algorithm)
+- Check to improve Wolf3DRenderer drawing of tiles so I can have bigger maps (as each cell now uses 2x2 map tiles)
+- Implement more pathfinders -> (e.g. recursive backtracking as a maze solving algorithm)

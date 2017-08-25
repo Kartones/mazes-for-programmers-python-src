@@ -4,13 +4,13 @@ from base.cell import Cell
 
 
 def test_constructor() -> None:
-    grid = Grid(1, 1)
-    assert grid.columns == 1
-    assert grid.rows == 1
-
     grid = Grid(2, 2)
     assert grid.columns == 2
     assert grid.rows == 2
+
+    grid = Grid(3, 3)
+    assert grid.columns == 3
+    assert grid.rows == 3
 
 
 def test_cell_access() -> None:
@@ -59,6 +59,6 @@ def test_random_cell() -> None:
 
 
 def test_size() -> None:
-    assert Grid(1, 1).size == 1
     assert Grid(2, 2).size == 4
     assert Grid(3, 3).size == 9
+    assert Grid(4, 4).size == 16

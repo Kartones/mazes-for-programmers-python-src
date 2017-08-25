@@ -11,9 +11,10 @@ from algorithms.recursive_backtracker import RecursiveBacktracker
 import renderers.ascii_renderer as ASCIIRenderer
 import renderers.unicode_renderer as UNICODERenderer
 import renderers.png_renderer as PNGRenderer
+from renderers.wolf3d_renderer import Wolf3DRenderer
 
 ALGORITHMS = [AldousBroder, BinaryTree, HuntAndKill, RecursiveBacktracker, Sidewinder, Wilson]
-ALL_RENDERERS = [UNICODERenderer, ASCIIRenderer, PNGRenderer]
+ALL_RENDERERS = [UNICODERenderer, ASCIIRenderer, PNGRenderer, Wolf3DRenderer]
 
 
 def validate_algorithm(desired_algorithm: str) -> Type:
@@ -38,6 +39,23 @@ def get_renderer(available_renderers: List[str], default_renderer: str) -> Tuple
                 print(error)
                 exit(1)
     return renderer, renderer_name
+
+
+# TODO: This is v2.0 with actual classes, should replace 'get_renderer'
+def renderer(available_renderers: List[str], default_renderer: str) -> Tuple["Module", str]:     # type: ignore
+    renderer_name = default_renderer
+    renderer = globals()[default_renderer]
+    for key in args.assignments:
+        if key == "--renderer":
+            try:
+                renderer_name = args.assignments[key][0]
+                # Hacky but only method I know to get an alias of an imported module
+                if renderer_name in available_renderers and renderer_name in globals():
+                    renderer = globals()[renderer_name]
+            except ValueError as error:
+                print(error)
+                exit(1)
+    return renderer(), renderer_name
 
 
 def get_rotations() -> int:
