@@ -28,6 +28,6 @@ class DistanceGrid(Grid):
 
     def contents_of(self, cell: Cell) -> str:
         if self.distances is not None and self.distances[cell]:
-            return format(self.distances[cell], "X").center(3)
+            return format(self.distances[cell], "02X").center(3)
         else:
             return super().contents_of(cell)
