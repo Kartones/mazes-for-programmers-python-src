@@ -4,7 +4,7 @@
 
 I'm reading the [Mazes for Programmers](http://www.mazesforprogrammers.com) book, but source code comes in Ruby and I like Python, so I decided to rewrite them as I read. And along the way add tests, both to make sure the conversion is ok and to see a more continuous way than having to write all basic stuff and an "ASCII renderer" before being able to see anything.
 
-A small remark: Code is not a 1:1 copy of the book's. For example I built renderers instead of adding `to_s` and `to_png` methods, pathfinding is also a module that works over traversable grids (those with distances calculated), and a few other changes and extras.
+A small remark: Code is not a 1:1 copy of the book's. For example I built exporters instead of adding `to_s` and `to_png` methods, pathfinding is also a module that works over traversable grids (those with distances calculated), and a few other changes and extras.
 
 ## Implemented algorithms
 
@@ -17,9 +17,9 @@ A small remark: Code is not a 1:1 copy of the book's. For example I built render
 
 Note: This list will grow as I progress with the book.
 
-## Implemented renderers
+## Implemented exporters
 
-- `ASCIIRenderer`: outputs to console
+- `ASCIIExporter`: outputs to console
 ```
 +---+---+---+---+---+---+
 |                       |
@@ -36,7 +36,7 @@ Note: This list will grow as I progress with the book.
 +---+---+---+---+---+---+
 ```
 
-- `PNGRenderer`: outputs to a PNG file on the project root folder (filename will be current datetime)
+- `PNGExporter`: outputs to a PNG file on the project root folder (filename will be current datetime)
 
 ![](doc/sample_binary_tree.png)
 
@@ -47,7 +47,7 @@ Depending on the pathfinding and coloring flags combination can draw the colored
 ![](doc/sample_colored_maze.png)
 
 
-- `UNICODERenderer`: outputs to console
+- `UnicodeExporter`: outputs to console (prettier than raw ASCII)
 ```
 ┏━━━━━━━━━━━━━━━━━━━━━━━┓
 ┃                       ┃
@@ -64,11 +64,11 @@ Depending on the pathfinding and coloring flags combination can draw the colored
 ┗━━━┻━━━┻━━━┻━━━┻━━━━━━━┛
 ```
 
-#### Wolfenstein 3D Renderer
+#### Wolfenstein 3D Exporter
 
-Special section for my small hack that I'm fond of, a "different" renderer (although I should say "exporter"):
+Special section for my small hack that I'm fond of, a "different" exporter:
 
-- `Wolf3DRenderer`: outputs to a LEV file, to be used from [NMAP](http://toastytech.com/files/nmap.html) tool to import as a [Wolfenstein 3D](https://en.wikipedia.org/wiki/Wolfenstein_3D) map. Level exit is at the pathfinding end (most distant cell from starting position), and on each dead-end there is an enemy soldier (when you attack one all will start to move around the map). Also outputs a PNG file with the maze solution. **To be used with** `game_map_demo.py` ** demo runner**.
+- `Wolf3DExporter`: outputs to a LEV file, to be used from [NMAP](http://toastytech.com/files/nmap.html) tool to import as a [Wolfenstein 3D](https://en.wikipedia.org/wiki/Wolfenstein_3D) map. Level exit is at the pathfinding end (most distant cell from starting position), and on each dead-end there is an enemy soldier (when you attack one all will start to move around the map). Also outputs a PNG file with the maze solution. **To be used with** `game_map_demo.py` **demo runner**.
 
 
 ![](doc/nmap_sample_map.png)
@@ -165,5 +165,5 @@ pytest
 - Of course finish the book and implement all main code and algorithms
 - Check in depth mypy doc to see why all the issues with Union, probably I'm doing something wrong and doesn't detects properly hierarchies, etc.
 - Dockerize the project -> Will allow to upgrade to Python 3.6 and perform additional mypy cleanups & improvements
-- Check to improve Wolf3DRenderer drawing of tiles so I can have bigger maps (as each cell now uses 2x2 map tiles)
+- Check to improve Wolf3DExporter drawing of tiles so I can have bigger maps (as each cell now uses 2x2 map tiles)
 - Implement more pathfinders -> (e.g. recursive backtracking as a maze solving algorithm)

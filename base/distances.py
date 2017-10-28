@@ -9,7 +9,7 @@ class Distances:
 
     def __init__(self, root: "Cell") -> None:
         self.root = root
-        self._cells = {}         # type: Dict[Cell, int]
+        self._cells = dict()         # type: Dict[Cell, int]
         self._cells[root] = 0
 
     def __getitem__(self, cell: "Cell") -> Optional[int]:

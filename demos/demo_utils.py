@@ -8,13 +8,14 @@ from algorithms.wilson import Wilson
 from algorithms.hunt_and_kill import HuntAndKill
 from algorithms.recursive_backtracker import RecursiveBacktracker
 
-import renderers.ascii_renderer as ASCIIRenderer
-import renderers.unicode_renderer as UNICODERenderer
-import renderers.png_renderer as PNGRenderer
-from renderers.wolf3d_renderer import Wolf3DRenderer
+from exporters.png_exporter import PNGExporter
+from exporters.wolf3d_exporter import Wolf3DExporter
+from exporters.unicode_exporter import UnicodeExporter
+from exporters.ascii_exporter import ASCIIExporter
+
 
 ALGORITHMS = [AldousBroder, BinaryTree, HuntAndKill, RecursiveBacktracker, Sidewinder, Wilson]
-ALL_RENDERERS = [UNICODERenderer, ASCIIRenderer, PNGRenderer, Wolf3DRenderer]
+ALL_EXPORTERS = [Wolf3DExporter, PNGExporter, UnicodeExporter, ASCIIExporter]
 
 
 def validate_algorithm(desired_algorithm: str) -> Type:
@@ -25,37 +26,20 @@ def validate_algorithm(desired_algorithm: str) -> Type:
         [algorithm.__name__ for algorithm in ALGORITHMS])))
 
 
-def get_renderer(available_renderers: List[str], default_renderer: str) -> Tuple["Module", str]:     # type: ignore
-    renderer_name = default_renderer
-    renderer = globals()[default_renderer]
+def get_exporter(available_exporters: List[str], default_exporter: str) -> Tuple["Module", str]:     # type: ignore
+    exporter_name = default_exporter
+    exporter = globals()[default_exporter]
     for key in args.assignments:
-        if key == "--renderer":
+        if key == "--exporter":
             try:
-                renderer_name = args.assignments[key][0]
+                exporter_name = args.assignments[key][0]
                 # Hacky but only method I know to get an alias of an imported module
-                if renderer_name in available_renderers and renderer_name in globals():
-                    renderer = globals()[renderer_name]
+                if exporter_name in available_exporters and exporter_name in globals():
+                    exporter = globals()[exporter_name]
             except ValueError as error:
                 print(error)
                 exit(1)
-    return renderer, renderer_name
-
-
-# TODO: This is v2.0 with actual classes, should replace 'get_renderer'
-def renderer(available_renderers: List[str], default_renderer: str) -> Tuple["Module", str]:     # type: ignore
-    renderer_name = default_renderer
-    renderer = globals()[default_renderer]
-    for key in args.assignments:
-        if key == "--renderer":
-            try:
-                renderer_name = args.assignments[key][0]
-                # Hacky but only method I know to get an alias of an imported module
-                if renderer_name in available_renderers and renderer_name in globals():
-                    renderer = globals()[renderer_name]
-            except ValueError as error:
-                print(error)
-                exit(1)
-    return renderer(), renderer_name
+    return exporter(), exporter_name
 
 
 def get_rotations() -> int:
@@ -73,10 +57,10 @@ def get_rotations() -> int:
 def get_algorithm():    # type: ignore
     try:
         algorithm = validate_algorithm(args.all[2])
+        return algorithm
     except ValueError as error:
         print(error)
         exit(1)
-    return algorithm
 
 
 def get_pathfinding() -> bool:
