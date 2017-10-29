@@ -9,51 +9,51 @@ from base.colored_grid import ColoredGrid
 
 import pathfinders.dijkstra as Dijkstra
 import pathfinders.longest_path as LongestPath
-import renderers.png_renderer as PNGRenderer
+from exporters.png_exporter import PNGExporter
 
-from demos.demo_utils import ALGORITHMS, renderer, get_algorithm
+from demos.demo_utils import ALGORITHMS, get_exporter, get_algorithm
 
 
-DEFAULT_RENDERER = "Wolf3DRenderer"
-AVAILABLE_RENDERERS = ["Wolf3DRenderer"]
+DEFAULT_EXPORTER = "Wolf3DExporter"
+AVAILABLE_EXPORTERS = ["Wolf3DExporter"]
 
 
 def store_solution(grid: ColoredGrid) -> ColoredGrid:
     start_row, start_column, end_row, end_column = LongestPath.calculate(grid)
-    grid = cast(ColoredGrid, Dijkstra.calculate_distances(grid, start_row, start_column, end_row, end_column))
-    return grid
+    solved_grid = cast(ColoredGrid, Dijkstra.calculate_distances(grid, start_row, start_column, end_row, end_column))
+    return solved_grid
 
 
 if __name__ == "__main__":
     if len(args.all) < 3:
         print("Usage:\nPYTHONPATH=. python3 demos/game_map_demo.py <rows> <columns> <algorithm> ", end="")
-        print("[--renderer=<renderer>]")
+        print("[--exporter=<exporter>]")
         print("Valid algorithms: {}".format("|".join([algorithm.__name__ for algorithm in ALGORITHMS])))
-        print("Valid renderers: {}".format("|".join(AVAILABLE_RENDERERS)))
+        print("Valid exporters: {}".format("|".join(AVAILABLE_EXPORTERS)))
         print("Rotations is an integer value measuring number of 90 degree clockwise rotations to perform")
         exit(1)
-    renderer, renderer_name = renderer(AVAILABLE_RENDERERS, DEFAULT_RENDERER)
+    exporter, exporter_name = get_exporter(AVAILABLE_EXPORTERS, DEFAULT_EXPORTER)
     pathfinding = True
     rows = int(args.all[0])
     columns = int(args.all[1])
     algorithm = get_algorithm()
-    print("Algorithm: {}\nRows: {}\ncolumns: {}\nRenderer: {}".format(algorithm.__name__, rows, columns, renderer_name))
+    print("Algorithm: {}\nRows: {}\ncolumns: {}\nExporter: {}".format(algorithm.__name__, rows, columns, exporter_name))
 
     valid_map = False
     while not valid_map:
         grid = ColoredGrid(rows, columns)
         grid = algorithm.on(grid)
-        valid_map = renderer.is_valid(grid)     # type: ignore
+        valid_map = exporter.is_valid(grid)
         if not valid_map:
             print("Generated maze has no east/west linked ending cell. Recreating...")
 
     filename = strftime("%d%H%M%S", gmtime())
 
-    renderer.render(grid, filename=filename)    # type: ignore
+    exporter.render(grid, filename=filename)
 
-    print("Generated maze map has {} enemies".format(renderer.enemies_count))     # type: ignore
+    print("Generated maze map has {} enemies".format(exporter.enemies_count))
 
     grid = store_solution(grid)
-    PNGRenderer.render(grid, coloring=True, filename=filename)
+    PNGExporter().render(grid, coloring=True, filename=filename)
     if platform.system() == "Linux":
         subprocess.run(["xdg-open", "{}.png".format(filename)])

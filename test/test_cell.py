@@ -94,7 +94,7 @@ def test_distances() -> None:
     another_cell.east = yet_another_cell
     another_cell.link(yet_another_cell)
     distances = a_cell.distances
-    assert distances.cells == [yet_another_cell, another_cell, a_cell]
+    assert set(distances.cells) == {yet_another_cell, another_cell, a_cell}
     assert distances[a_cell] == 0
     assert distances[another_cell] == 1
     assert distances[yet_another_cell] == 2

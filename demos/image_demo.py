@@ -14,11 +14,11 @@ import pathfinders.longest_path as LongestPath
 
 from utils.rotator import Rotator
 
-from demos.demo_utils import ALGORITHMS, get_renderer, get_rotations, get_algorithm, get_pathfinding
+from demos.demo_utils import ALGORITHMS, get_exporter, get_rotations, get_algorithm, get_pathfinding
 
 
-DEFAULT_RENDERER = "PNGRenderer"
-AVAILABLE_RENDERERS = ["PNGRenderer"]
+DEFAULT_EXPORTER = "PNGExporter"
+AVAILABLE_EXPORTERS = ["PNGExporter"]
 
 
 def get_coloring() -> bool:
@@ -28,20 +28,20 @@ def get_coloring() -> bool:
 if __name__ == "__main__":
     if len(args.all) < 3:
         print("Usage:\nPYTHONPATH=. python3 demos/image_demo.py <rows> <columns> <algorithm> ", end="")
-        print("[--renderer=<renderer>] [--rotations=<rotations>] [--pathfinding] [--coloring]")
+        print("[--exporter=<exporter>] [--rotations=<rotations>] [--pathfinding] [--coloring]")
         print("Valid algorithms: {}".format("|".join([algorithm.__name__ for algorithm in ALGORITHMS])))
-        print("Valid renderers: {}".format("|".join(AVAILABLE_RENDERERS)))
+        print("Valid exporters: {}".format("|".join(AVAILABLE_EXPORTERS)))
         print("Rotations is an integer value measuring number of 90 degree clockwise rotations to perform")
         print("Pathfinding flag shows distances between cells")
         exit(1)
-    renderer, renderer_name = get_renderer(AVAILABLE_RENDERERS, DEFAULT_RENDERER)
+    exporter, exporter_name = get_exporter(AVAILABLE_EXPORTERS, DEFAULT_EXPORTER)
     rotations = get_rotations()
     pathfinding = get_pathfinding()
     rows = int(args.all[0])
     columns = int(args.all[1])
     algorithm = get_algorithm()
     coloring = get_coloring()
-    print("Algorithm: {}\nRows: {}\ncolumns: {}\nRenderer: {}".format(algorithm.__name__, rows, columns, renderer_name))
+    print("Algorithm: {}\nRows: {}\ncolumns: {}\nExporter: {}".format(algorithm.__name__, rows, columns, exporter_name))
     print("90deg Rotations: {}\nPathfinding: {}\nColoring: {}".format(rotations, pathfinding, coloring))
 
     # here coloring takes precedence, because ColoredGrid inherits from DistanceGrid
@@ -74,7 +74,7 @@ if __name__ == "__main__":
 
     filename = strftime("%Y%m%d%H%M%S", gmtime())
 
-    renderer.render(grid, coloring=coloring, filename=filename)
+    exporter.render(grid, coloring=coloring, filename=filename)
 
     print("Maze has {} dead-ends".format(len(grid.deadends)))
 
