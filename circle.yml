@@ -1,0 +1,7 @@
+version: 2
+jobs:
+  test:
+    steps:
+      - run:
+        name: Run tests
+        command: pytest
