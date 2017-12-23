@@ -3,3 +3,7 @@
 *__pycache__/
 *.cache/
 .idea/
+
+demos/\.ipynb_checkpoints/
+
+demos/\.DS_Store
