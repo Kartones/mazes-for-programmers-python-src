@@ -12,38 +12,30 @@ if TYPE_CHECKING:
 
 
 class PixelExporter(BaseExporter):
+    ''' Export grid into a pixel-perfect image '''
+
     def render(self, grid: Union["Grid", ColoredGrid], **kwargs: Any) -> None:
+        ''' Main render method '''
         assert isinstance(grid, ColoredGrid)
+        f, cs, clr = self._processKwargs(**kwargs)
+        image = self._render(grid, cs, clr)
+        image.save("{}.png".format(f), "PNG", optimize=True)
 
-        filename = strftime("%Y%m%d%H%M%S", gmtime())
-        cs = 4
-        coloring = False
-        save = True
-
-        for key in kwargs:
-            if key == 'filename':
-                filename = kwargs[key]
-            elif key == 'cell_size':
-                cs = kwargs[key]
-            elif key == 'coloring':
-                coloring = kwargs[key]
-            elif key == 'save':
-                save = kwargs[key] 
-
-        wall_color = (0, 0, 0)
+    @staticmethod
+    def _render(grid, cs=4, clr=False) -> Image:
+        ''' Rendering core '''
         arr = np.ones((cs*grid.rows+2, cs*grid.columns+2, 4))
-
         # Outermost walls
         arr[ :, 0,0:3] = 0
         arr[ :,-1,0:3] = 0
         arr[ 0, :,0:3] = 0
         arr[-1, :,0:3] = 0
-
+        # Draw each cell
         for ri, row in enumerate(grid.each_row()):
             for ci, cell in enumerate(row):
-                # Figure out colors
+                # Figure out the color
                 if len(cell.links)>0:
-                    color = grid.background_color_for(cell) if coloring else (0,0,0)
+                    color = grid.background_color_for(cell) if clr else (0,0,0)
                 else:
                     color = (0,0,0) # no links therefore color cell
                 # The entire cell
@@ -61,9 +53,19 @@ class PixelExporter(BaseExporter):
                 if not cell.linked_to(cell.south): arr[rp+cs-1     , cp+1:cp+cs-1, 0:3] = 0
                 if not cell.linked_to(cell.west):  arr[rp+1:rp+cs-1, cp          , 0:3] = 0
                 if not cell.linked_to(cell.east):  arr[rp+1:rp+cs-1, cp+cs-1     , 0:3] = 0
+        return Image.fromarray(np.uint8(arr*255))
 
-        image = Image.fromarray(np.uint8(arr*255))
-        if save:
-            image.save("{}.png".format(filename), "PNG", optimize=True)
-        else:
-            return image
+    @staticmethod
+    def _processKwargs(**kwargs):
+        ''' Process kwargs '''
+        f = strftime("%Y%m%d%H%M%S", gmtime())
+        cs = 4
+        clr = False
+        for key in kwargs:
+            if key == 'filename':
+                f = kwargs[key]
+            elif key == 'cell_size':
+                cs = kwargs[key]
+            elif key == 'coloring':
+                clr = kwargs[key]
+        return f, cs, clr
