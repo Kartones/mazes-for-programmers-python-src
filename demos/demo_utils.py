@@ -1,25 +1,29 @@
-# import args
-from typing import List, Tuple, Type
-from argparse import ArgumentTypeError
+# Temporarilly add parent folder to path (if not already added)
+import os
+import sys
+module_path = os.path.abspath(os.path.join('..'))
+if module_path not in sys.path:
+    sys.path.append(module_path)
 
-from algorithms.binary_tree import BinaryTree
-from algorithms.sidewinder import Sidewinder
+from argparse import ArgumentTypeError
+from typing import List, Tuple, Type
+
 from algorithms.aldous_broder import AldousBroder
-from algorithms.wilson import Wilson
+from algorithms.binary_tree import BinaryTree
 from algorithms.hunt_and_kill import HuntAndKill
 from algorithms.recursive_backtracker import RecursiveBacktracker
+from algorithms.sidewinder import Sidewinder
+from algorithms.wilson import Wilson
 
-from exporters.png_exporter import PNGExporter
-from exporters.wolf3d_exporter import Wolf3DExporter
-from exporters.unicode_exporter import UnicodeExporter
 from exporters.ascii_exporter import ASCIIExporter
-
+from exporters.png_exporter import PNGExporter
+from exporters.unicode_exporter import UnicodeExporter
+from exporters.wolf3d_exporter import Wolf3DExporter
 
 ALGORITHMS = [AldousBroder, BinaryTree, HuntAndKill, RecursiveBacktracker, Sidewinder, Wilson]
 ALGORITHM_NAMES = ['AldousBroder', 'BinaryTree', 'HuntAndKill', 'RecursiveBacktracker', 'Sidewinder', 'Wilson']
 EXPORTERS = [Wolf3DExporter, PNGExporter, UnicodeExporter, ASCIIExporter]
 EXPORTER_NAMES = ['Wolf3DExporter', 'PNGExporter', 'UnicodeExporter', 'ASCIIExporter']
-
 
 def validate_algorithm(desired_algorithm: str) -> Type:
     ''' Check whether the algorithm name is valid and return an instance of it '''

@@ -1,4 +1,4 @@
-# Temporarilly add parent folder to path
+# Temporarilly add parent folder to path (if not already added)
 import os
 import sys
 module_path = os.path.abspath(os.path.join('..'))
