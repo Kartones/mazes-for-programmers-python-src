@@ -1,56 +1,57 @@
-import platform
-import subprocess
+# Temporarilly add parent folder to path (if not already added)
+import os
+import sys
+module_path = os.path.abspath(os.path.join('..'))
+if module_path not in sys.path:
+    sys.path.append(module_path)
+
+from platform import system
+from subprocess import run
 from time import gmtime, strftime
 
-import args
-from typing import cast, Union     # noqa: F401
+import argparse
+from typing import cast
 
 from base.grid import Grid
 from base.distance_grid import DistanceGrid
 from base.colored_grid import ColoredGrid
 
-import pathfinders.dijkstra as Dijkstra
-import pathfinders.longest_path as LongestPath
+from pathfinders import dijkstra as Dijkstra
+from pathfinders import longest_path as LongestPath
 
 from utils.rotator import Rotator
 
-from demos.demo_utils import ALGORITHMS, get_exporter, get_rotations, get_algorithm, get_pathfinding
-
+from demos.demo_utils import ALGORITHM_NAMES, str2bool, avalible_algorithm, avalible_exporter
 
 DEFAULT_EXPORTER = "PNGExporter"
-AVAILABLE_EXPORTERS = ["PNGExporter"]
-
-
-def get_coloring() -> bool:
-    return bool("--coloring" in args.flags)
-
+AVAILABLE_EXPORTERS = ["PNGExporter",]
+AVAILABLE_ALGORITHMS = ALGORITHM_NAMES
 
 if __name__ == "__main__":
-    if len(args.all) < 3:
-        print("Usage:\nPYTHONPATH=. python3 demos/image_demo.py <rows> <columns> <algorithm> ", end="")
-        print("[--exporter=<exporter>] [--rotations=<rotations>] [--pathfinding] [--coloring]")
-        print("Valid algorithms: {}".format("|".join([algorithm.__name__ for algorithm in ALGORITHMS])))
-        print("Valid exporters: {}".format("|".join(AVAILABLE_EXPORTERS)))
-        print("Rotations is an integer value measuring number of 90 degree clockwise rotations to perform")
-        print("Pathfinding flag shows distances between cells")
-        exit(1)
-    exporter, exporter_name = get_exporter(AVAILABLE_EXPORTERS, DEFAULT_EXPORTER)
-    rotations = get_rotations()
-    pathfinding = get_pathfinding()
-    rows = int(args.all[0])
-    columns = int(args.all[1])
-    algorithm = get_algorithm()
-    coloring = get_coloring()
-    print("Algorithm: {}\nRows: {}\ncolumns: {}\nExporter: {}".format(algorithm.__name__, rows, columns, exporter_name))
+    parser = argparse.ArgumentParser(description='Render a maze')
+    parser.add_argument('rows', type=int, help='number or rows')
+    parser.add_argument('cols', type=int, help='number or columns')
+    parser.add_argument('algorithm', type=str, help='algorithm to use')
+    parser.add_argument('-e', '--exporter', type=str, default=DEFAULT_EXPORTER, help='maze exporter to use')
+    parser.add_argument('-f', '--filename', type=str, default=None, help='file name to use')
+    parser.add_argument('-r', '--rotations', type=int, default=0, help='integer value measuring number of 90 degree clockwise rotations to perform')
+    parser.add_argument('-p', '--pathfinding', type=str2bool, default=False, help='whether to find the path through the maze')
+    parser.add_argument('-c', '--coloring', type=str2bool, help='whether to color the maze')
+    args = parser.parse_args()
+
+    rows = args.rows
+    cols = args.cols
+    algorithm = avalible_algorithm(args.algorithm, AVAILABLE_ALGORITHMS)
+    exporter = avalible_exporter(args.exporter, AVAILABLE_EXPORTERS)
+    filename = args.filename if args.filename else strftime("%Y%m%d%H%M%S", gmtime())
+    rotations = args.rotations
+    pathfinding = args.pathfinding
+    coloring = args.coloring
+    print("Algorithm: {}\nRows: {}\ncolumns: {}\nExporter: {}".format(args.algorithm, rows, cols, args.exporter))
     print("90deg Rotations: {}\nPathfinding: {}\nColoring: {}".format(rotations, pathfinding, coloring))
 
-    # here coloring takes precedence, because ColoredGrid inherits from DistanceGrid
-    if coloring:
-        grid = ColoredGrid(rows, columns)  # type: Union[Grid, DistanceGrid, ColoredGrid]
-    elif pathfinding:
-        grid = DistanceGrid(rows, columns)
-    else:
-        grid = Grid(rows, columns)
+    # Always use Colored Grid. Just don't color the output if colored == False
+    grid = ColoredGrid(rows, cols)
 
     grid = algorithm.on(grid)
 
@@ -72,11 +73,9 @@ if __name__ == "__main__":
             raise IndexError("Invalid start cell row {} column {}".format(start_row, start_column))
         grid.distances = start_cell.distances     # type: ignore
 
-    filename = strftime("%Y%m%d%H%M%S", gmtime())
-
     exporter.render(grid, coloring=coloring, filename=filename)
 
     print("Maze has {} dead-ends".format(len(grid.deadends)))
 
-    if platform.system() == "Linux":
-        subprocess.run(["xdg-open", "{}.png".format(filename)])
+    if system() == "Linux":
+        run(["xdg-open", "{}.png".format(filename)])
