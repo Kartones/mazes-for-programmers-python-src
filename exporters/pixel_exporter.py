@@ -24,7 +24,7 @@ class PixelExporter(BaseExporter):
     @staticmethod
     def _render(grid, cs=4, clr=False) -> Image:
         ''' Rendering core '''
-        arr = np.ones((cs*grid.rows+2, cs*grid.columns+2, 4))
+        arr = np.zeros((cs*grid.rows+2, cs*grid.columns+2, 3))
         # Outermost walls
         arr[ :, 0,0:3] = 0
         arr[ :,-1,0:3] = 0
@@ -53,7 +53,7 @@ class PixelExporter(BaseExporter):
                 if not cell.linked_to(cell.south): arr[rp+cs-1     , cp+1:cp+cs-1, 0:3] = 0
                 if not cell.linked_to(cell.west):  arr[rp+1:rp+cs-1, cp          , 0:3] = 0
                 if not cell.linked_to(cell.east):  arr[rp+1:rp+cs-1, cp+cs-1     , 0:3] = 0
-        return Image.fromarray(np.uint8(arr*255))
+        return Image.fromarray(np.uint8(arr))
 
     @staticmethod
     def _processKwargs(**kwargs):
