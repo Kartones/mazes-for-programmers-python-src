@@ -10,30 +10,17 @@ if TYPE_CHECKING:
 
 class PNGExporter(BaseExporter):
 
-    STEP_BACKGROUND = 0
-
     def render(self, grid: Union["Grid", ColoredGrid], **kwargs: Any) -> None:
         assert isinstance(grid, ColoredGrid)
+        filename, cell_size, coloring = self._processKwargs(**kwargs)
+        image = self._render(grid, cell_size, coloring)
+        image.save("{}.png".format(filename), "PNG", optimize=True)
 
-        filename = strftime("%Y%m%d%H%M%S", gmtime())
-        cell_size = 10
-        coloring = False
-
-        for key in kwargs:
-            if key == "filename":
-                filename = kwargs[key]
-            elif key == "cell_size":
-                cell_size = kwargs[key]
-            elif key == "coloring":
-                coloring = kwargs[key]
-
-        image_width = cell_size * grid.columns
-        image_height = cell_size * grid.rows
-
+    @staticmethod
+    def _render(grid, cell_size:int=4, coloring:bool=False) -> Image:
+        ''' Rendering core '''
         wall_color = (0, 0, 0)
-
-        image = Image.new("RGBA", (image_width + 1, image_height + 1), (255, 255, 255))
-
+        image = Image.new("RGBA", (cell_size*grid.columns + 1, cell_size*grid.rows + 1), (255, 255, 255))
         draw = ImageDraw.Draw(image)
 
         for draw_pass in range(2):
@@ -43,7 +30,7 @@ class PNGExporter(BaseExporter):
                 x2 = (cell.column + 1) * cell_size
                 y2 = (cell.row + 1) * cell_size
 
-                if draw_pass == self.STEP_BACKGROUND and coloring:
+                if draw_pass == 0 and coloring:
                     color = grid.background_color_for(cell)
                     draw.rectangle((x1, y1, x2, y2), fill=color)
                 else:
@@ -55,5 +42,19 @@ class PNGExporter(BaseExporter):
                         draw.line((x2, y1, x2, y2), fill=wall_color, width=1)
                     if not cell.linked_to(cell.south):
                         draw.line((x1, y2, x2, y2), fill=wall_color, width=1)
+        return image
 
-        image.save("{}.png".format(filename), "PNG", optimize=True)
+    @staticmethod
+    def _processKwargs(**kwargs):
+        ''' Process kwargs '''
+        filename = strftime("%Y%m%d%H%M%S", gmtime())
+        cell_size = 4
+        coloring = False
+        for key in kwargs:
+            if key == 'filename':
+                filename = kwargs[key]
+            elif key == 'cell_size':
+                cell_size = kwargs[key]
+            elif key == 'coloring':
+                coloring = kwargs[key]
+        return filename, cell_size, coloring
