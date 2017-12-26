@@ -1,23 +1,34 @@
 from typing import cast, Optional, Tuple
 
+from matplotlib.pyplot import get_cmap
+
 from base.distance_grid import DistanceGrid
 from base.cell import Cell
 
-MAX_DARK = 210                          # Dark meaning farther than or more distant than
-MAX_BRIGHT = round(MAX_DARK / 2)        # And thus, bright means closer than or less distant than
-MAX_BRIGHT_INTENSITY = MAX_BRIGHT - 1
-
-
 class ColoredGrid(DistanceGrid):
+
+    def __init__(self, rows: int, columns: int, cmap:str='plasma') -> None:
+        super().__init__(rows, columns)
+        self.cmap = cmap
+
+    @property
+    def cmap(self):
+        return self._cmap
+
+    @cmap.setter
+    def cmap(self, cmap):
+        self._cmap = get_cmap(cmap)
+    
+    @cmap.getter
+    def cmap(self):
+        return self._cmap.name
 
     def background_color_for(self, cell: Cell) -> Optional[Tuple[int, int, int]]:
         if self.distances is not None and self.maximum > 0 and self.distances[cell] is not None:
-            distance = cast(int, self.distances[cell])
+            distance = self.distances[cell]
             if distance > 0 and distance < self.maximum:
-                intensity = float((self.maximum - distance)) / self.maximum
-                dark = round(MAX_DARK * intensity)
-                bright = MAX_BRIGHT + round(MAX_BRIGHT_INTENSITY * intensity)
-                return dark, bright, dark
+                intensity = int((self.maximum - distance)/self.maximum*255)
+                return tuple(int(x*255) for x in self._cmap(intensity))
             elif distance == self.maximum:
                 return 128, 0, 0
             else:

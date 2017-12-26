@@ -1,42 +1,33 @@
+# Temporarilly add parent folder to path (if not already added)
+import os
+import sys
+module_path = os.path.abspath(os.path.join('..'))
+if module_path not in sys.path:
+    sys.path.append(module_path)
+
+import argparse
 import time
-
-import args
-from typing import cast, Union    # noqa: F401
-
-from base.grid import Grid
-from base.distance_grid import DistanceGrid
+from typing import Union, cast  # noqa: F401
 
 import pathfinders.dijkstra as Dijkstra
 import pathfinders.longest_path as LongestPath
-
-from demos.demo_utils import ALGORITHMS, get_pathfinding
-
-
-def get_tries() -> int:
-    tries = 100
-    for key in args.assignments:
-        if key == "--tries":
-            try:
-                tries = int(args.assignments[key][0])
-                if tries < 1:
-                    raise ValueError()
-            except ValueError:
-                tries = 100
-    return tries
-
+from base.distance_grid import DistanceGrid
+from base.grid import Grid
+from demos.demo_utils import ALGORITHMS, str2bool
 
 if __name__ == "__main__":
-    if len(args.all) < 2:
-        print("Usage:\nPYTHONPATH=. python3 demos/image_demo.py <rows> <columns> [--tries=<num>] [--pathfinding]",
-              end="")
-        exit(1)
+    parser = argparse.ArgumentParser(description='Run statistics for all algorithms')
+    parser.add_argument('rows', type=int, help='number or rows')
+    parser.add_argument('cols', type=int, help='number or columns')
+    parser.add_argument('-t', '--tries', type=int, default=100, help='number of tries')
+    parser.add_argument('-p', '--pathfinding', type=str2bool, default=False, help='whether to find the path through the maze')
+    args = parser.parse_args()
 
-    rows = int(args.all[0])
-    columns = int(args.all[1])
+    rows = args.rows
+    columns = args.cols
     size = rows * columns
-    tries = get_tries()
-
-    pathfinding = get_pathfinding()
+    tries = args.tries
+    pathfinding = args.pathfinding
 
     algorithm_averages = {}
     algorithm_benchmarks = {}
@@ -81,11 +72,11 @@ if __name__ == "__main__":
         }
         if pathfinding:
             pathfinding_timings = sorted(pathfinding_timings)
-        pathfinding_benchmarks[algorithm] = {
+            pathfinding_benchmarks[algorithm] = {
             "min": pathfinding_timings[0],
             "max": pathfinding_timings[-1],
             "average": sum(pathfinding_timings) / tries
-        }
+            }
 
     sorted_averages = sorted(algorithm_averages.items(), key=lambda x: -x[1])
     print("\nAverage dead-ends (deadends/total-cells, sorted by % desc):")
