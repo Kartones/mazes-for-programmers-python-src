@@ -5,12 +5,12 @@ module_path = os.path.abspath(os.path.join('..'))
 if module_path not in sys.path:
     sys.path.append(module_path)
 
-import platform
-import subprocess
+from platform import system
+from subprocess import run
 from time import gmtime, strftime
 
 import argparse
-from typing import cast, Union     # noqa: F401
+from typing import Union, cast     # noqa: F401
 
 from base.grid import Grid
 from base.distance_grid import DistanceGrid
@@ -34,7 +34,7 @@ if __name__ == "__main__":
     parser.add_argument('algorithm', type=str, help='algorithm to use')
     parser.add_argument('-e', '--exporter', type=str, default=DEFAULT_EXPORTER, help='maze exporter to use')
     parser.add_argument('-f', '--filename', type=str, default=None, help='file name to use')
-    parser.add_argument('-r', '--rotations', type=int, default=0, help='how many rotatins to apply')
+    parser.add_argument('-r', '--rotations', type=int, default=0, help='integer value measuring number of 90 degree clockwise rotations to perform')
     parser.add_argument('-p', '--pathfinding', type=str2bool, default=False, help='whether to find the path through the maze')
     parser.add_argument('-c', '--coloring', type=str2bool, help='whether to color the maze')
     args = parser.parse_args()
@@ -46,7 +46,7 @@ if __name__ == "__main__":
     rows = args.rows
     cols = args.cols
     coloring = args.coloring
-    print("Algorithm: {}\nRows: {}\ncolumns: {}\nExporter: {}".format(algorithm.__name__, rows, cols, 'temp'))
+    print("Algorithm: {}\nRows: {}\ncolumns: {}\nExporter: {}".format(args.algorithm, rows, cols, args.exporter))
     print("90deg Rotations: {}\nPathfinding: {}\nColoring: {}".format(rotations, pathfinding, coloring))
 
     # Always use Colored Grid. Just don't color the output if colored == False
@@ -78,5 +78,5 @@ if __name__ == "__main__":
 
     print("Maze has {} dead-ends".format(len(grid.deadends)))
 
-    if platform.system() == "Linux":
-        subprocess.run(["xdg-open", "{}.png".format(filename)])
+    if system() == "Linux":
+        run(["xdg-open", "{}.png".format(filename)])
