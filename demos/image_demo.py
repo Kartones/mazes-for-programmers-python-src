@@ -10,7 +10,7 @@ from subprocess import run
 from time import gmtime, strftime
 
 import argparse
-from typing import Union, cast     # noqa: F401
+from typing import cast
 
 from base.grid import Grid
 from base.distance_grid import DistanceGrid
@@ -39,18 +39,19 @@ if __name__ == "__main__":
     parser.add_argument('-c', '--coloring', type=str2bool, help='whether to color the maze')
     args = parser.parse_args()
 
-    algorithm = avalible_algorithm(args.algorithm, AVAILABLE_ALGORITHMS)
-    exporter = avalible_exporter(args.exporter, AVAILABLE_EXPORTERS)
-    rotations = args.rotations
-    pathfinding = args.pathfinding
     rows = args.rows
     cols = args.cols
+    algorithm = avalible_algorithm(args.algorithm, AVAILABLE_ALGORITHMS)
+    exporter = avalible_exporter(args.exporter, AVAILABLE_EXPORTERS)
+    filename = args.filename if args.filename else strftime("%Y%m%d%H%M%S", gmtime())
+    rotations = args.rotations
+    pathfinding = args.pathfinding
     coloring = args.coloring
     print("Algorithm: {}\nRows: {}\ncolumns: {}\nExporter: {}".format(args.algorithm, rows, cols, args.exporter))
     print("90deg Rotations: {}\nPathfinding: {}\nColoring: {}".format(rotations, pathfinding, coloring))
 
     # Always use Colored Grid. Just don't color the output if colored == False
-    grid = ColoredGrid(rows, cols)  # type: Union[Grid, DistanceGrid, ColoredGrid]
+    grid = ColoredGrid(rows, cols)
 
     grid = algorithm.on(grid)
 
@@ -71,8 +72,6 @@ if __name__ == "__main__":
         if start_cell is None:
             raise IndexError("Invalid start cell row {} column {}".format(start_row, start_column))
         grid.distances = start_cell.distances     # type: ignore
-
-    filename = args.filename if args.filename else strftime("%Y%m%d%H%M%S", gmtime())
 
     exporter.render(grid, coloring=coloring, filename=filename)
 
