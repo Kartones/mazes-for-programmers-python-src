@@ -25,7 +25,7 @@ class PixelExporter(BaseExporter):
     def _render(grid, cell_size:int=4, coloring:bool=False) -> Image:
         ''' Rendering core '''
         cs = cell_size
-        arr = np.zeros((cs*grid.rows+2, cs*grid.columns+2, 3))
+        arr = np.zeros((cs*grid.rows+2, cs*grid.cols+2, 3))
         # Outermost walls
         arr[ :, 0,0:3] = 0
         arr[ :,-1,0:3] = 0

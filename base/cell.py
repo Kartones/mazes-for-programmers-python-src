@@ -10,8 +10,8 @@ class Cell:
         return self._row
 
     @property
-    def column(self) -> int:
-        return self._column
+    def col(self) -> int:
+        return self._col
 
     @property
     def links(self) -> List["Cell"]:
@@ -46,14 +46,14 @@ class Cell:
 
         return distances
 
-    def __init__(self, row: int, column: int) -> None:
+    def __init__(self, row: int, col: int) -> None:
         if row is None or row < 0:
             raise ValueError("Row must be a positive integer")
-        if column is None or column < 0:
+        if col is None or col < 0:
             raise ValueError("Column must be a positive integer")
 
         self._row = row         # type: int
-        self._column = column   # type: int
+        self._col = col   # type: int
         self._links = {}        # type: Dict[Cell, bool]
         self.north = None       # type: Optional[Cell]
         self.south = None       # type: Optional[Cell]
@@ -78,13 +78,13 @@ class Cell:
     # The following methods actually lie because don't take into account neighbors/linked-cells, but for now is enough
 
     def __hash__(self) -> int:
-        return hash((self.column, self.row))
+        return hash((self.col, self.row))
 
     def __repr__(self) -> str:
-        return "({},{})".format(self.column, self.row)
+        return "({},{})".format(self.col, self.row)
 
     def __eq__(self, other_cell: "Cell") -> bool:       # type: ignore
-        return self.row == other_cell.row and self.column == other_cell.column
+        return self.row == other_cell.row and self.col == other_cell.col
 
     def __ne__(self, other_cell: "Cell") -> bool:       # type: ignore
         return not self == other_cell
