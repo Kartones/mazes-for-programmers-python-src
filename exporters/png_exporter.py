@@ -20,14 +20,14 @@ class PNGExporter(BaseExporter):
     def _render(grid, cell_size:int=4, coloring:bool=False) -> Image:
         ''' Rendering core '''
         wall_color = (0, 0, 0)
-        image = Image.new("RGBA", (cell_size*grid.columns + 1, cell_size*grid.rows + 1), (255, 255, 255))
+        image = Image.new("RGBA", (cell_size*grid.cols + 1, cell_size*grid.rows + 1), (255, 255, 255))
         draw = ImageDraw.Draw(image)
 
         for draw_pass in range(2):
             for cell in grid.each_cell():
-                x1 = cell.column * cell_size
+                x1 = cell.col * cell_size
                 y1 = cell.row * cell_size
-                x2 = (cell.column + 1) * cell_size
+                x2 = (cell.col + 1) * cell_size
                 y2 = (cell.row + 1) * cell_size
 
                 if draw_pass == 0 and coloring:

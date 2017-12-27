@@ -12,7 +12,7 @@ class ASCIIExporter(BaseExporter):
     """
 
     def render(self, grid: Grid, **kwargs: Any) -> None:
-        output = "+" + "---+" * grid.columns + "\n"
+        output = "+" + "---+" * grid.cols + "\n"
 
         for row in grid.each_row():
             top = "|"
