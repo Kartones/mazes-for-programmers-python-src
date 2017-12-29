@@ -27,8 +27,8 @@ class UnicodeExporter(BaseExporter):
         vertical_wall = "\u2503"
 
         output = self.JUNCTIONS[12]
-        for x in range(grid.columns - 1):
-            output += (horizontal_wall * 3 + self.get_topmost_junction(cast(Cell, grid.cell_at(row=0, column=x))))
+        for x in range(grid.cols - 1):
+            output += (horizontal_wall * 3 + self.get_topmost_junction(cast(Cell, grid[0,x])))
         output += horizontal_wall * 3 + self.JUNCTIONS[10] + "\n"
 
         for row in grid.each_row():

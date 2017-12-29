@@ -60,19 +60,19 @@ class Wolf3DExporter(BaseExporter):
             if key == "filename":
                 filename = kwargs[key]
 
-        if grid.rows < self.MAP_MAX_ROWS or grid.columns < self.MAP_MAX_COLUMNS:
+        if grid.rows < self.MAP_MAX_ROWS or grid.cols < self.MAP_MAX_COLUMNS:
             grid = self._expand(grid, self.MAP_MAX_ROWS, self.MAP_MAX_COLUMNS)
 
         if grid.rows > self.MAP_MAX_ROWS:
             raise ValueError("Wolfenstein3D NMap only allows maps with {} rows maximum".format(self.MAP_MAX_ROWS))
-        if grid.columns > self.MAP_MAX_COLUMNS:
+        if grid.cols > self.MAP_MAX_COLUMNS:
             raise ValueError("Wolfenstein3D NMap only allows maps with {} columns maximum".format(self.MAP_MAX_COLUMNS))
 
         grid = self._store_solution(grid)
 
         # first row is easy as it's all wall
-        walls = self.WALL_FILL + self.WALL_FILL * grid.columns * 2 + self.WALL_FILL
-        objects = self.OBJECT_FILL + self.OBJECT_FILL * grid.columns * 2 + self.OBJECT_FILL
+        walls = self.WALL_FILL + self.WALL_FILL * grid.cols * 2 + self.WALL_FILL
+        objects = self.OBJECT_FILL + self.OBJECT_FILL * grid.cols * 2 + self.OBJECT_FILL
 
         for row in grid.each_row():
             walls_top = [self.WALL_STONE, self.HEX_FILL]
@@ -112,7 +112,7 @@ class Wolf3DExporter(BaseExporter):
         Wolf3D exit wall cell is a switch that only gets rendered east and west
         """
         _, _, end_row, end_column = LongestPath.calculate(grid)
-        cell = grid.cell_at(end_row, end_column)
+        cell = grid[end_row, end_column]
         if cell is None:
             raise ValueError("Ending row not found at row {} column {}".format(end_row, end_column))
         linked_neighbor = cell.links[0]     # assume exactly one path to the exit
@@ -120,10 +120,10 @@ class Wolf3DExporter(BaseExporter):
                (cell.west is not None and cell.west == linked_neighbor)
 
     @staticmethod
-    def _expand(grid: ColoredGrid, rows: int, columns: int) -> ColoredGrid:
-        new_grid = ColoredGrid(rows, columns)
+    def _expand(grid: ColoredGrid, rows: int, cols: int) -> ColoredGrid:
+        new_grid = ColoredGrid(rows, cols)
         for cell in grid.each_cell():
-            new_grid.set_cell_at(cell.row, cell.column, cell)
+            new_grid[cell.row, cell.col] = cell
         return new_grid
 
     @staticmethod

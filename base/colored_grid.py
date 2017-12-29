@@ -26,13 +26,13 @@ class ColoredGrid(DistanceGrid):
     def background_color_for(self, cell: Cell) -> Optional[Tuple[int, int, int]]:
         if self.distances is not None and self.maximum > 0 and self.distances[cell] is not None:
             distance = self.distances[cell]
-            if distance > 0 and distance < self.maximum:
-                intensity = int((self.maximum - distance)/self.maximum*255)
-                return tuple(int(x*255) for x in self._cmap(intensity))
-            elif distance == self.maximum:
-                return 128, 0, 0
-            else:
-                # starting cell in blue
-                return 0, 148, 255
+            intensity = int((self.maximum - distance)/self.maximum*255)
+            color = tuple(int(x*255) for x in self._cmap(intensity))
+            color = color[:3] # Use RGB only
+            # Invert the starting and the ending points
+            if distance == self.maximum or distance == 0:
+                color = tuple(int(255-x) for x in color) # Invert
+                color = tuple(color[xi-2] for xi in range(len(color))) # Rotate channels
+            return color
         else:
-            return None
+            return 255, 255, 255

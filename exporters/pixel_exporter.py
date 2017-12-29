@@ -17,14 +17,15 @@ class PixelExporter(BaseExporter):
     def render(self, grid: Union["Grid", ColoredGrid], **kwargs: Any) -> None:
         ''' Main render method '''
         assert isinstance(grid, ColoredGrid)
-        f, cs, clr = self._processKwargs(**kwargs)
-        image = self._render(grid, cs, clr)
-        image.save("{}.png".format(f), "PNG", optimize=True)
+        filename, cell_size, coloring = self._processKwargs(**kwargs)
+        image = self._render(grid, cell_size, coloring)
+        image.save("{}.png".format(filename), "PNG", optimize=True)
 
     @staticmethod
-    def _render(grid, cs=4, clr=False) -> Image:
+    def _render(grid, cell_size:int=4, coloring:bool=False) -> Image:
         ''' Rendering core '''
-        arr = np.zeros((cs*grid.rows+2, cs*grid.columns+2, 3))
+        cs = cell_size
+        arr = np.zeros((cs*grid.rows+2, cs*grid.cols+2, 3))
         # Outermost walls
         arr[ :, 0,0:3] = 0
         arr[ :,-1,0:3] = 0
@@ -35,7 +36,7 @@ class PixelExporter(BaseExporter):
             for ci, cell in enumerate(row):
                 # Figure out the color
                 if len(cell.links)>0:
-                    color = grid.background_color_for(cell) if clr else (0,0,0)
+                    color = grid.background_color_for(cell) if coloring else (0,0,0)
                 else:
                     color = (0,0,0) # no links therefore color cell
                 # The entire cell
@@ -58,14 +59,14 @@ class PixelExporter(BaseExporter):
     @staticmethod
     def _processKwargs(**kwargs):
         ''' Process kwargs '''
-        f = strftime("%Y%m%d%H%M%S", gmtime())
-        cs = 4
-        clr = False
+        filename = strftime("%Y%m%d%H%M%S", gmtime())
+        cell_size = 4
+        coloring = False
         for key in kwargs:
             if key == 'filename':
                 f = kwargs[key]
             elif key == 'cell_size':
-                cs = kwargs[key]
+                cell_size = kwargs[key]
             elif key == 'coloring':
-                clr = kwargs[key]
-        return f, cs, clr
+                coloring = kwargs[key]
+        return filename, cell_size, coloring

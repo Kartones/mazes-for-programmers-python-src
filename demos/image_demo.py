@@ -23,11 +23,11 @@ from utils.rotator import Rotator
 
 from demos.demo_utils import ALGORITHM_NAMES, str2bool, avalible_algorithm, avalible_exporter
 
-DEFAULT_EXPORTER = "PNGExporter"
-AVAILABLE_EXPORTERS = ["PNGExporter",]
+DEFAULT_EXPORTER = 'PNGExporter'
+AVAILABLE_EXPORTERS = ['PNGExporter','PixelExporter']
 AVAILABLE_ALGORITHMS = ALGORITHM_NAMES
 
-if __name__ == "__main__":
+if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Render a maze')
     parser.add_argument('rows', type=int, help='number or rows')
     parser.add_argument('cols', type=int, help='number or columns')
@@ -43,12 +43,12 @@ if __name__ == "__main__":
     cols = args.cols
     algorithm = avalible_algorithm(args.algorithm, AVAILABLE_ALGORITHMS)
     exporter = avalible_exporter(args.exporter, AVAILABLE_EXPORTERS)
-    filename = args.filename if args.filename else strftime("%Y%m%d%H%M%S", gmtime())
+    filename = args.filename if args.filename else strftime('%Y%m%d%H%M%S', gmtime())
     rotations = args.rotations
     pathfinding = args.pathfinding
     coloring = args.coloring
-    print("Algorithm: {}\nRows: {}\ncolumns: {}\nExporter: {}".format(args.algorithm, rows, cols, args.exporter))
-    print("90deg Rotations: {}\nPathfinding: {}\nColoring: {}".format(rotations, pathfinding, coloring))
+    print('Algorithm: {}\nRows: {}\ncolumns: {}\nExporter: {}'.format(args.algorithm, rows, cols, args.exporter))
+    print('90deg Rotations: {}\nPathfinding: {}\nColoring: {}'.format(rotations, pathfinding, coloring))
 
     # Always use Colored Grid. Just don't color the output if colored == False
     grid = ColoredGrid(rows, cols)
@@ -61,21 +61,21 @@ if __name__ == "__main__":
     # here pathfinding first, so if also colored we'll see the route colored, else if colored will see all maze painted
     if pathfinding:
         start_row, start_column, end_row, end_column = LongestPath.calculate(cast(DistanceGrid, grid))
-        print("Solving maze from row {} column {} to row {} column {}".format(
+        print('Solving maze from row {} column {} to row {} column {}'.format(
             start_row, start_column, end_row, end_column))
         grid = Dijkstra.calculate_distances(cast(DistanceGrid, grid), start_row, start_column, end_row, end_column)
     elif coloring:
         start_row = round(grid.rows / 2)
         start_column = round(grid.columns / 2)
-        print("Drawing colored maze with start row {} column {}".format(start_row, start_column))
+        print('Drawing colored maze with start row {} column {}'.format(start_row, start_column))
         start_cell = grid.cell_at(start_row, start_column)
         if start_cell is None:
-            raise IndexError("Invalid start cell row {} column {}".format(start_row, start_column))
+            raise IndexError('Invalid start cell row {} column {}'.format(start_row, start_column))
         grid.distances = start_cell.distances     # type: ignore
 
     exporter.render(grid, coloring=coloring, filename=filename)
 
-    print("Maze has {} dead-ends".format(len(grid.deadends)))
+    print('Maze has {} dead-ends'.format(len(grid.deadends)))
 
-    if system() == "Linux":
-        run(["xdg-open", "{}.png".format(filename)])
+    if system() == 'Linux':
+        run(['xdg-open', '{}.png'.format(filename)])
