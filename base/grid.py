@@ -24,7 +24,12 @@ class Grid:
 
     @property
     def deadends(self) -> List[Cell]:
-        return [cell for cell in self.each_cell() if len(cell.links) == 1]
+        return [cell for cell in self.eachCell() if len(cell.links) == 1]
+
+    @property
+    def data(self):
+        ''' Accesses the data dictionary '''
+        return self._data
 
     def __init__(self, rows: int, cols: int) -> None:
         if rows is None or rows < 2:
@@ -34,8 +39,9 @@ class Grid:
 
         self._rows = rows     # type: int
         self._cols = cols     # type: int
-        self._grid = self.prepare_grid()
-        self.configure_cells()
+        self._data = {}
+        self._grid = self.prepareGrid()
+        self.configureCells()
 
     # def cell_at(self, row: int, column: int) -> Optional[Cell]:
     #     if not (0 <= row < self.rows):
@@ -47,13 +53,13 @@ class Grid:
     # def set_cell_at(self, row: int, column: int, cell: Cell) -> None:
     #     self._grid[row][column] = cell
 
-    def prepare_grid(self) -> List[List[Cell]]:
-        ''' Create the grid'''
+    def prepareGrid(self) -> List[List[Cell]]:
+        ''' Create the grid '''
         return [[Cell(row, column) for column in range(self.cols)] for row in range(self.rows)]
 
-    def configure_cells(self) -> None:
+    def configureCells(self) -> None:
         ''' Create all the north/sout/east/west dependencies of the cells '''
-        for cell in self.each_cell():
+        for cell in self.eachCell():
             row = cell.row
             col = cell.col
 
@@ -62,7 +68,7 @@ class Grid:
             cell.east  = self[row,col+1]
             cell.west  = self[row,col-1]
 
-    def __getitem__(self,key):
+    def __getitem__(self, key):
         ''' Get grid item method '''
         if type(key) == int:
             # One key therefore return row
@@ -89,27 +95,32 @@ class Grid:
         else:
             raise IndexError
 
-    def random_cell(self) -> Cell:
+    def randomCell(self) -> Cell:
         ''' Return random cell '''
         row = randrange(0,self.rows)
         col = randrange(0,self.cols)
         return self[row,col]
 
-    def each_row(self) -> Generator:
+    def eachRow(self) -> Generator:
         ''' Access each row '''
         for row in self._grid:
             yield row
 
-    def each_col(self) -> Generator:
+    def eachCol(self) -> Generator:
         ''' Access each column '''
         for col in zip(*self._grid):
             yield col
 
-    def each_cell(self) -> Generator:
+    def eachCell(self) -> Generator:
         ''' Access each cell '''
-        for row in self.each_row():
+        for row in self.eachRow():
             for cell in row:
                 yield cell
 
-    def contents_of(self, cell: Cell) -> str:
+    def prepareCellData(self, key, value=None) -> None:
+        ''' Prepares the _data of the cells '''
+        for cell in self.eachCell():
+            cell.data[key] = value
+
+    def contents(self, cell: Cell) -> str:
         return '   '

@@ -37,7 +37,7 @@ class Distances:
 
         return max_cell, max_distance
 
-    def path_to(self, destination: "Cell") -> "Distances":
+    def pathTo(self, destination: "Cell") -> "Distances":
         """
         Traverses backwards, from destination to root/origin
         """

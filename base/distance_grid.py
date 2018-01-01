@@ -26,8 +26,8 @@ class DistanceGrid(Grid):
         self._distances = None  # type: Optional[Distances]
         self.maximum = 0
 
-    def contents_of(self, cell: Cell) -> str:
+    def contents(self, cell: Cell) -> str:
         if self.distances is not None and self.distances[cell]:
             return format(self.distances[cell], "02X").center(3)
         else:
-            return super().contents_of(cell)
+            return super().contents(cell)
