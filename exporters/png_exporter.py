@@ -7,6 +7,7 @@ from base.colored_grid import ColoredGrid
 from base.grid import Grid  # noqa: F401
 from exporters.exporter import Exporter
 
+class PNGExporter(Exporter):
 
 class PNGExporter(Exporter):
 

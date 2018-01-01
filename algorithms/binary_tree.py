@@ -4,6 +4,7 @@ from typing import TYPE_CHECKING
 from algorithms.algorithm import AlgorithmWithLogging
 from base.cell import Cell
 from base.grid import Grid
+from base.cell import Cell
 
 
 '''
