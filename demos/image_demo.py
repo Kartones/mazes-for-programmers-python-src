@@ -53,22 +53,22 @@ if __name__ == '__main__':
     # Always use Colored Grid. Just don't color the output if colored == False
     grid = ColoredGrid(rows, cols)
 
-    grid = algorithm.on(grid)
+    algorithm().on(grid)
 
     for num in range(rotations):
         grid = Rotator.on(grid)
 
     # here pathfinding first, so if also colored we'll see the route colored, else if colored will see all maze painted
     if pathfinding:
-        start_row, start_column, end_row, end_column = LongestPath.calculate(cast(DistanceGrid, grid))
+        start_row, start_column, end_row, end_column = LongestPath.calculate(grid)
         print('Solving maze from row {} column {} to row {} column {}'.format(
             start_row, start_column, end_row, end_column))
-        grid = Dijkstra.calculate_distances(cast(DistanceGrid, grid), start_row, start_column, end_row, end_column)
+        grid = Dijkstra.calculate_distances(grid, start_row, start_column, end_row, end_column)
     elif coloring:
         start_row = round(grid.rows / 2)
-        start_column = round(grid.columns / 2)
+        start_column = round(grid.cols / 2)
         print('Drawing colored maze with start row {} column {}'.format(start_row, start_column))
-        start_cell = grid.cell_at(start_row, start_column)
+        start_cell = grid[start_row, start_column]
         if start_cell is None:
             raise IndexError('Invalid start cell row {} column {}'.format(start_row, start_column))
         grid.distances = start_cell.distances     # type: ignore

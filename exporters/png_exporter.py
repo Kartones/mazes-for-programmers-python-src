@@ -1,14 +1,14 @@
 from time import gmtime, strftime
+from typing import TYPE_CHECKING, Any, Union
+
 from PIL import Image, ImageDraw
-from typing import Any, TYPE_CHECKING, Union
 
-from exporters.base_exporter import BaseExporter
 from base.colored_grid import ColoredGrid
-if TYPE_CHECKING:
-    from base.grid import Grid  # noqa: F401
+from base.grid import Grid  # noqa: F401
+from exporters.exporter import Exporter
 
 
-class PNGExporter(BaseExporter):
+class PNGExporter(Exporter):
 
     def render(self, grid: Union["Grid", ColoredGrid], **kwargs: Any) -> None:
         assert isinstance(grid, ColoredGrid)
@@ -24,23 +24,23 @@ class PNGExporter(BaseExporter):
         draw = ImageDraw.Draw(image)
 
         for draw_pass in range(2):
-            for cell in grid.each_cell():
+            for cell in grid.eachCell():
                 x1 = cell.col * cell_size
                 y1 = cell.row * cell_size
                 x2 = (cell.col + 1) * cell_size
                 y2 = (cell.row + 1) * cell_size
 
                 if draw_pass == 0 and coloring:
-                    color = grid.background_color_for(cell)
+                    color = grid.color(cell)
                     draw.rectangle((x1, y1, x2, y2), fill=color)
                 else:
                     if not cell.north:
                         draw.line((x1, y1, x2, y1), fill=wall_color, width=1)
                     if not cell.west:
                         draw.line((x1, y1, x1, y2), fill=wall_color, width=1)
-                    if not cell.linked_to(cell.east):
+                    if not cell & cell.east:
                         draw.line((x2, y1, x2, y2), fill=wall_color, width=1)
-                    if not cell.linked_to(cell.south):
+                    if not cell & cell.south:
                         draw.line((x1, y2, x2, y2), fill=wall_color, width=1)
         return image
 

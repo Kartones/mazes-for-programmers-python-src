@@ -1,17 +1,15 @@
 from time import gmtime, strftime
+from typing import TYPE_CHECKING, Any, List, Optional, Union, cast
 
-from typing import Any, cast, List, Optional, TYPE_CHECKING, Union
-
-from exporters.base_exporter import BaseExporter
-from base.cell import Cell
-from base.colored_grid import ColoredGrid
 import pathfinders.dijkstra as Dijkstra
 import pathfinders.longest_path as LongestPath
-if TYPE_CHECKING:
-    from base.grid import Grid  # noqa: F401
+from base.cell import Cell
+from base.colored_grid import ColoredGrid
+from base.grid import Grid  # noqa: F401
+from exporters.exporter import Exporter
 
 
-class Wolf3DExporter(BaseExporter):
+class Wolf3DExporter(Exporter):
     """
     Drawing logic adapted from ASCIIRenderer: Draws topmost row (northen wall), then proceeds drawing south-east.
     """
@@ -74,7 +72,7 @@ class Wolf3DExporter(BaseExporter):
         walls = self.WALL_FILL + self.WALL_FILL * grid.cols * 2 + self.WALL_FILL
         objects = self.OBJECT_FILL + self.OBJECT_FILL * grid.cols * 2 + self.OBJECT_FILL
 
-        for row in grid.each_row():
+        for row in grid.eachRow():
             walls_top = [self.WALL_STONE, self.HEX_FILL]
             objects_top = [self.OBJECT_EMPTY, self.HEX_FILL]
 
@@ -84,14 +82,14 @@ class Wolf3DExporter(BaseExporter):
             for cell in row:
                 wall_body = self._wall_for(cell, grid)
                 object_body = self._object_for(cell, grid)
-                if cell.linked_to(cell.east):
+                if cell & cell.east:
                     wall_east_boundary = [self.WALL_EMPTY_CELL, self.HEX_FILL]
                 else:
                     wall_east_boundary = [self.WALL_STONE, self.HEX_FILL]
                 walls_top += wall_body + wall_east_boundary
                 objects_top += object_body + [self.OBJECT_EMPTY, self.HEX_FILL]
 
-                if cell.linked_to(cell.south):
+                if cell & cell.south:
                     wall_south_boundary = [self.WALL_EMPTY_CELL, self.HEX_FILL]
                 else:
                     wall_south_boundary = [self.WALL_STONE, self.HEX_FILL]

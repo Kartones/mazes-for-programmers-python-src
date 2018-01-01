@@ -13,6 +13,6 @@ def calculate_distances(grid: Union[DistanceGrid, ColoredGrid], start_row: int, 
     if destination_cell is None:
         raise IndexError("Invalid destination cell row {} column {}".format(end_row, end_row))
     distances = start_cell.distances
-    grid.distances = distances.path_to(destination_cell)
+    grid.distances = distances.pathTo(destination_cell)
 
     return grid

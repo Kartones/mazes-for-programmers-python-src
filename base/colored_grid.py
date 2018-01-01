@@ -23,7 +23,7 @@ class ColoredGrid(DistanceGrid):
     def cmap(self):
         return self._cmap.name
 
-    def background_color_for(self, cell: Cell) -> Optional[Tuple[int, int, int]]:
+    def color(self, cell: Cell) -> Optional[Tuple[int, int, int]]:
         if self.distances is not None and self.maximum > 0 and self.distances[cell] is not None:
             distance = self.distances[cell]
             intensity = int((self.maximum - distance)/self.maximum*255)

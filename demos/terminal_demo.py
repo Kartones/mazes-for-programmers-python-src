@@ -46,7 +46,7 @@ if __name__ == "__main__":
     else:
         grid = Grid(rows, cols)
 
-    grid = algorithm.on(grid)
+    algorithm().on(grid)
 
     for num in range(rotations):
         grid = Rotator.on(grid)

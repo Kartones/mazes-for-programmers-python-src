@@ -48,7 +48,7 @@ if __name__ == "__main__":
                 grid = Grid(rows, columns)
 
             time_start = time.perf_counter()
-            grid = algorithm.on(grid)    # type: ignore
+            algorithm().on(grid)    # type: ignore
             time_end = time.perf_counter()
 
             deadend_counts.append(len(grid.deadends))

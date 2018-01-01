@@ -5,13 +5,11 @@ import numpy as np
 from PIL import Image, ImageDraw
 
 from base.colored_grid import ColoredGrid
-from exporters.base_exporter import BaseExporter
-
-if TYPE_CHECKING:
-    from base.grid import Grid  # noqa: F401
+from base.grid import Grid  # noqa: F401
+from exporters.exporter import Exporter
 
 
-class PixelExporter(BaseExporter):
+class PixelExporter(Exporter):
     ''' Export grid into a pixel-perfect image '''
 
     def render(self, grid: Union["Grid", ColoredGrid], **kwargs: Any) -> None:
@@ -32,11 +30,11 @@ class PixelExporter(BaseExporter):
         arr[ 0, :,0:3] = 0
         arr[-1, :,0:3] = 0
         # Draw each cell
-        for ri, row in enumerate(grid.each_row()):
+        for ri, row in enumerate(grid.eachRow()):
             for ci, cell in enumerate(row):
                 # Figure out the color
                 if len(cell.links)>0:
-                    color = grid.background_color_for(cell) if coloring else (0,0,0)
+                    color = grid.color(cell) if coloring else (0,0,0)
                 else:
                     color = (0,0,0) # no links therefore color cell
                 # The entire cell
@@ -50,10 +48,10 @@ class PixelExporter(BaseExporter):
                 arr[rp      ,cp+cs-1 , 0:3] = 0
                 arr[rp+cs-1 ,cp+cs-1 , 0:3] = 0
                 # Walls
-                if not cell.linked_to(cell.north): arr[rp          , cp+1:cp+cs-1, 0:3] = 0
-                if not cell.linked_to(cell.south): arr[rp+cs-1     , cp+1:cp+cs-1, 0:3] = 0
-                if not cell.linked_to(cell.west):  arr[rp+1:rp+cs-1, cp          , 0:3] = 0
-                if not cell.linked_to(cell.east):  arr[rp+1:rp+cs-1, cp+cs-1     , 0:3] = 0
+                if not cell & cell.north: arr[rp          , cp+1:cp+cs-1, 0:3] = 0
+                if not cell & cell.south: arr[rp+cs-1     , cp+1:cp+cs-1, 0:3] = 0
+                if not cell & cell.west:  arr[rp+1:rp+cs-1, cp          , 0:3] = 0
+                if not cell & cell.east:  arr[rp+1:rp+cs-1, cp+cs-1     , 0:3] = 0
         return Image.fromarray(np.uint8(arr))
 
     @staticmethod

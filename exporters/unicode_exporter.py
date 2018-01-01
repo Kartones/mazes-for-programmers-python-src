@@ -1,11 +1,11 @@
-from typing import Any, cast
+from typing import TYPE_CHECKING, Any, cast
 
-from exporters.base_exporter import BaseExporter
 from base.cell import Cell
 from base.grid import Grid
+from exporters.exporter import Exporter
 
 
-class UnicodeExporter(BaseExporter):
+class UnicodeExporter(Exporter):
     """
     Renders to stdout a UNICODE representation of the maze.
     Not present in the book but suggested as exercise. And looks better than ASCII mazes :)
@@ -28,17 +28,17 @@ class UnicodeExporter(BaseExporter):
 
         output = self.JUNCTIONS[12]
         for x in range(grid.cols - 1):
-            output += (horizontal_wall * 3 + self.get_topmost_junction(cast(Cell, grid[0,x])))
+            output += (horizontal_wall * 3 + self.get_topmost_junction(grid[0,x]))
         output += horizontal_wall * 3 + self.JUNCTIONS[10] + "\n"
 
-        for row in grid.each_row():
+        for row in grid.eachRow():
             top = vertical_wall
             bottom = self.get_leftmost_junction(row[0])
             for cell in row:
-                body = grid.contents_of(cell)
-                east_boundary = " " if cell.linked_to(cell.east) else vertical_wall
+                body = grid.contents(cell)
+                east_boundary = " " if cell & cell.east else vertical_wall
                 top += body + east_boundary
-                south_boundary = "   " if cell.linked_to(cell.south) else horizontal_wall * 3
+                south_boundary = "   " if cell & cell.south else horizontal_wall * 3
                 bottom += south_boundary + self.get_south_east_junction(cell)
             output += top + "\n"
             output += bottom + "\n"
@@ -56,7 +56,7 @@ class UnicodeExporter(BaseExporter):
 
         if cell.south:
             junction += UnicodeExporter.SOUTH
-            if not cell.linked_to(cell.south):
+            if not cell & cell.south:
                 junction += UnicodeExporter.EAST
         else:
             junction += UnicodeExporter.EAST
@@ -71,7 +71,7 @@ class UnicodeExporter(BaseExporter):
         #
         junction = UnicodeExporter.EAST + UnicodeExporter.WEST
 
-        if not cell.linked_to(cast(Cell, cell.east)):
+        if not cell & cell.east:
             junction += UnicodeExporter.SOUTH
 
         return UnicodeExporter.JUNCTIONS[junction]
@@ -87,7 +87,7 @@ class UnicodeExporter(BaseExporter):
         junction = 0
 
         if cell.east:
-            if not cell.linked_to(cell.east):
+            if not cell & cell.east:
                 junction += UnicodeExporter.NORTH
             if not cell.east.south:
                 junction += UnicodeExporter.EAST
@@ -95,7 +95,7 @@ class UnicodeExporter(BaseExporter):
             junction += UnicodeExporter.NORTH
 
         if cell.south:
-            if not cell.linked_to(cell.south):
+            if not cell & cell.south:
                 junction += UnicodeExporter.WEST
             if not cell.south.east:
                 junction += UnicodeExporter.SOUTH
@@ -103,10 +103,9 @@ class UnicodeExporter(BaseExporter):
             junction += UnicodeExporter.WEST
 
         if cell.east and cell.south:
-            south_east_cell = cast(Cell, cell.south.east)
-            if not cell.east.linked_to(south_east_cell):
+            if not cell.east & cell.south.east:
                 junction += UnicodeExporter.EAST
-            if not cell.south.linked_to(south_east_cell):
+            if not cell.south & cell.south.east:
                 junction += UnicodeExporter.SOUTH
         try:
             return UnicodeExporter.JUNCTIONS[junction]
