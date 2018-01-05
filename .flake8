@@ -1,3 +1,8 @@
 [flake8]
 max-line-length = 120
 inline-quotes = "
+ignore = 
+    # Multiple statements in a single line
+    E701, E704
+    # Multiple spaces after :
+    E241

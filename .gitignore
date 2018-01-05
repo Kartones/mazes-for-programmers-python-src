@@ -7,3 +7,7 @@
 demos/\.ipynb_checkpoints/
 
 demos/\.DS_Store
+
+\.vscode/
+
+\.DS_Store

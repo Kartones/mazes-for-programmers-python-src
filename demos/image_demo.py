@@ -58,6 +58,8 @@ if __name__ == '__main__':
     for num in range(rotations):
         grid = Rotator.on(grid)
 
+    exporter.render(grid, coloring=coloring, filename=filename)
+
     # here pathfinding first, so if also colored we'll see the route colored, else if colored will see all maze painted
     if pathfinding:
         start_row, start_column, end_row, end_column = LongestPath.calculate(grid)
@@ -73,7 +75,7 @@ if __name__ == '__main__':
             raise IndexError('Invalid start cell row {} column {}'.format(start_row, start_column))
         grid.distances = start_cell.distances     # type: ignore
 
-    exporter.render(grid, coloring=coloring, filename=filename)
+    exporter.render(grid, coloring=coloring, filename=filename + '_col')
 
     print('Maze has {} dead-ends'.format(len(grid.deadends)))
 
