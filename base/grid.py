@@ -1,7 +1,7 @@
 from random import randrange
-from typing import Any, Dict, Generator, Hashable, List, Optional, Tuple, cast
+from typing import Dict, Generator, List, Optional, Tuple, cast
 
-from base.cell import Cell
+from base.cell import Cell, isCell
 
 Key = Tuple[int, int]
 ListOfCells = List[Cell]
@@ -63,7 +63,7 @@ class Grid:
 
     def __getitem__(self, key: Key) -> Optional[Cell]:
         ''' Get grid item method '''
-        if self._isCorrectKey(key):
+        if isKey(key):
             row, col = key
             if row < 0 or row > self.rows - 1: return None
             if col < 0 or col > self.cols - 1: return None
@@ -73,12 +73,21 @@ class Grid:
 
     def __setitem__(self, key: Key, item: Cell) -> None:
         ''' Set grid item method '''
-        if self._isCorrectKey(key) and isinstance(item, Cell):
+        if isKey(key) and isinstance(item, Cell):
             row, col = key
             if 0 <= row <= self.rows - 1 and 0 <= col <= self.cols - 1:
                 self._grid[row][col] = item
         else:
             raise IndexError('Only grid[row,col] __setitem__ calls are supported')
+
+    def __contains__(self, other: Cell) -> bool:
+        ''' '''
+        if isCell(other):
+            for cell in self.eachCell():
+                if cell == other: return True
+            return False
+        else:
+            return False
 
     def randomCell(self) -> Cell:
         ''' Return random cell '''
@@ -102,15 +111,15 @@ class Grid:
             for cell in row:
                 yield cell
 
-    def prepareCellData(self, key: Hashable, value: Any = None) -> None:
-        ''' Prepares the _data of the cells '''
-        for cell in self.eachCell():
-            cell.data[key] = value
-
     def contents(self, cell: Cell) -> str:
         return '   '
 
-    @staticmethod
-    def _isCorrectKey(key: Key) -> bool:
-        ''' Runtime check for key correctness '''
-        return type(key) == tuple and len(key) == 2 and not any(type(x) != int for x in key)
+
+def isKey(key: Key) -> bool:
+    ''' Runtime check for key correctness '''
+    return type(key) == tuple and len(key) == 2 and not any(type(x) != int for x in key)
+
+
+def isGrid(grid: Grid) -> bool:
+    ''' Runtime class check '''
+    return isinstance(grid, Grid)

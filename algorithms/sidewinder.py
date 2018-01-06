@@ -2,7 +2,8 @@ from random import choice, randint
 from typing import TYPE_CHECKING
 
 from algorithms.algorithm import Algorithm
-from base.grid import Grid
+if TYPE_CHECKING:
+    from base.grid import Grid
 
 
 '''
@@ -28,5 +29,5 @@ class Sidewinder(Algorithm):
                         member += member.north
                     run.clear()
                 else:
-                    cell += cell.east
+                    cell += cell.east  # type: ignore # Made sure cell is not at eastern boundry
                 self.step()

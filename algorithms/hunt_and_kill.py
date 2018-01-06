@@ -1,8 +1,11 @@
 from random import choice
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Optional  # noqa: F401
 
 from algorithms.algorithm import AlgorithmWithLogging
-from base.grid import Grid
+
+if TYPE_CHECKING:  # Dont actually need Grid
+    from base.grid import Grid
+    from base.cell import Cell  # noqa: F401
 
 
 '''
@@ -14,15 +17,14 @@ that is unvisted and has at least one visited neighbour; then starts walking aga
 
 class HuntAndKill(AlgorithmWithLogging):
 
-    def on(self, grid: Grid) -> Grid:
+    def on(self, grid: Grid) -> None:
         self._prepareLogGrid(grid)
 
-        cell = grid.randomCell()     # type: Optional[Cell]
-        step_count = 0
+        cell = grid.randomCell()  # type: Optional[Cell]
 
         while cell is not None:
             self._logVisit(cell)
-            unvisited = [n for n in cell.neighbours if n.nl == 0]
+            unvisited = [n for n in cell.neighbours if n.nLinks == 0]
 
             if len(unvisited) > 0:
                 # as long as there are unvisited paths, walk them
@@ -37,14 +39,14 @@ class HuntAndKill(AlgorithmWithLogging):
 
                 for c in grid.eachCell():
                     self._logVisit(c)
-                    visited = [n for n in c.neighbours if n.nl > 0] # visited neighbours
+                    visited = [n for n in c.neighbours if n.nLinks > 0]  # visited neighbours
 
-                    if c.nl == 0 and len(visited) > 0:
+                    if c.nLinks == 0 and len(visited) > 0:
                         cell = c
                         neighbour = choice(visited)
                         cell += neighbour
                         self._logLink(cell, neighbour)
-                        break # from the 'for' loop
+                        break  # from the 'for' loop
                     self.step()
 
             self.step()

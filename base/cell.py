@@ -1,5 +1,5 @@
 from random import choice
-from typing import Dict, Hashable, List, Optional, cast
+from typing import Dict, Hashable, List, Optional, cast, Any
 
 from base.distances import Distances
 
@@ -73,8 +73,11 @@ class Cell:
 
     def link(self, cell: 'Cell', bidi: bool = True) -> None:
         ''' Link yourself to another cell '''
-        self._links[cell] = True
-        if bidi: cell.link(self, False)
+        if isCell(cell):
+            self._links[cell] = True
+            if bidi: cell.link(self, False)
+        else:
+            raise ValueError('Link can be made/broken only between two cells')
 
     def __iadd__(self, cell: 'Cell') -> 'Cell':
         ''' Overload for the += operator with the link method '''
@@ -83,8 +86,12 @@ class Cell:
 
     def unlink(self, cell: 'Cell', bidi: bool = True) -> None:
         ''' Unlink yourself from another cell '''
-        if self.linked(cell): del self._links[cell]
-        if bidi: cell.unlink(self, False)
+        if isCell(cell):
+            if cell in self.links:
+                del self._links[cell]
+                if bidi: cell.unlink(self, False)
+        else:
+            raise ValueError('Link can be made/broken only between two cells')
 
     def __isub__(self, cell: 'Cell') -> 'Cell':
         ''' Overload for the -= operator with the unlink method '''
@@ -93,7 +100,10 @@ class Cell:
 
     def linked(self, cell: 'Cell') -> bool:
         ''' Check if this cell is linked to another '''
-        return cell is not None and cell in self.links
+        if isCell(cell):
+            return cell in self.links
+        else:
+            raise ValueError('Cells can be linked only to other cells')
 
     def __and__(self, other: 'Cell') -> bool:
         ''' Overload for the & operator with the linked? method '''
@@ -119,8 +129,16 @@ class Cell:
 
     # The following methods actually lie because don't take into account neighbors/linked-cells, but for now is enough
 
-    def __eq__(self, other: 'Cell') -> bool:  # type: ignore
-        return hash(self) == hash(other)
+    def __eq__(self, other: Any) -> bool:
+        if isCell(other):
+            return hash(self) == hash(other)
+        else:
+            return False
 
-    def __ne__(self, other: 'Cell') -> bool:  # type: ignore
+    def __ne__(self, other: Any) -> bool:
         return not self == other
+
+
+def isCell(cell: Cell) -> bool:
+    ''' Runtime class check '''
+    return isinstance(cell, Cell)

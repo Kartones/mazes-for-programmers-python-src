@@ -1,9 +1,10 @@
 from random import choice
-from typing import TYPE_CHECKING, Optional
+from typing import TYPE_CHECKING
 
 from algorithms.algorithm import Algorithm
-from base.cell import Cell
-from base.grid import Grid
+
+if TYPE_CHECKING:
+    from base.grid import Grid
 
 
 '''
@@ -30,10 +31,10 @@ class Wilson(Algorithm):
             path = [cell]
 
             while cell in unvisited:
-                cell = cell.randomNeighbour()
+                cell = cell.randomNeighbour()  # type: ignore
                 try:
                     position = path.index(cell)
-                    # already walked, perform loop-erase. e.g. A -> B -> C -> D -> B   becomes A -> B
+                    # already walked, perform loop-erase. e.g. 'A -> B -> C -> D -> B' becomes 'A -> B'
                     path = path[:position + 1]
                 except ValueError:
                     path.append(cell)

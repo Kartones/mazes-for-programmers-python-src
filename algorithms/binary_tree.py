@@ -2,9 +2,9 @@ from random import choice
 from typing import TYPE_CHECKING
 
 from algorithms.algorithm import AlgorithmWithLogging
-from base.cell import Cell
-from base.grid import Grid
-from base.cell import Cell
+
+if TYPE_CHECKING:  # Dont actually need Grid
+    from base.grid import Grid
 
 
 '''
@@ -15,7 +15,7 @@ Causes topmost row and rightmost column to always be straight lines.
 
 class BinaryTree(AlgorithmWithLogging):
 
-    def on(self, grid: Grid) -> Grid:
+    def on(self, grid: Grid) -> None:
         self._prepareLogGrid(grid)
 
         for cell in grid.eachCell():
