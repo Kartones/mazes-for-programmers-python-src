@@ -1,5 +1,5 @@
 from random import randrange
-from typing import Dict, Generator, List, Optional, Tuple, cast
+from typing import Any, Dict, Generator, List, Optional, Tuple, cast
 
 from base.cell import Cell, isCell
 
@@ -120,6 +120,6 @@ def isKey(key: Key) -> bool:
     return type(key) == tuple and len(key) == 2 and not any(type(x) != int for x in key)
 
 
-def isGrid(grid: Grid) -> bool:
+def isGrid(grid: Any) -> bool:
     ''' Runtime class check '''
     return isinstance(grid, Grid)

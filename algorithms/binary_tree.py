@@ -5,6 +5,8 @@ from algorithms.algorithm import AlgorithmWithLogging
 
 if TYPE_CHECKING:  # Dont actually need Grid
     from base.grid import Grid
+else:
+    Grid = 'Grid'
 
 
 '''

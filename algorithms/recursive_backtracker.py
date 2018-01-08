@@ -2,12 +2,12 @@ from random import choice
 from typing import TYPE_CHECKING, Optional
 
 from algorithms.algorithm import AlgorithmWithLogging
-from base.cell import isCell
+from base.cell import Cell, isCell
 
 if TYPE_CHECKING:
-    from base.cell import Cell
     from base.grid import Grid
-
+else:
+    Grid = 'Grid'
 
 '''
 Recursive Backtracker algorithm picks a random starting cell and randomly walks. It cannot walk on an already visited

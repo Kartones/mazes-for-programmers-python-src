@@ -1,19 +1,17 @@
+import warnings
 from random import choice
-from typing import Dict, Hashable, List, Optional, cast, Any
+from typing import Any, Dict, Hashable, List, Optional, cast, Tuple
 
 from base.distances import Distances
 
 Links = Dict['Cell', bool]
 ListOfCells = List['Cell']
+TwoCells = Tuple['Cell', 'Cell']
 
 
 class Cell:
 
     @property
-    def links(self) -> Links:
-        return self._links
-
-    @links.getter
     def links(self) -> ListOfCells:
         return list(self._links.keys())
 
@@ -84,12 +82,14 @@ class Cell:
         self.link(cell)
         return self
 
-    def unlink(self, cell: 'Cell', bidi: bool = True) -> None:
+    def unlink(self, cell: Optional['Cell'], bidi: bool = True) -> None:
         ''' Unlink yourself from another cell '''
         if isCell(cell):
             if cell in self.links:
                 del self._links[cell]
                 if bidi: cell.unlink(self, False)
+        elif cell is None:
+            warnings.warn('Attempted link to None. No link has been made.', UserWarning)
         else:
             raise ValueError('Link can be made/broken only between two cells')
 
@@ -98,14 +98,16 @@ class Cell:
         self.unlink(cell)
         return self
 
-    def linked(self, cell: 'Cell') -> bool:
+    def linked(self, cell: Optional['Cell']) -> bool:
         ''' Check if this cell is linked to another '''
         if isCell(cell):
             return cell in self.links
+        elif cell is None:
+            return False
         else:
             raise ValueError('Cells can be linked only to other cells')
 
-    def __and__(self, other: 'Cell') -> bool:
+    def __and__(self, other: Optional['Cell']) -> bool:
         ''' Overload for the & operator with the linked? method '''
         return self.linked(other)
 
@@ -123,7 +125,7 @@ class Cell:
         return hash((self.col, self.row, id(self)))
 
     def __repr__(self) -> str:
-        ''' print representation '''
+        ''' Representation of cell for print()/format() calls '''
         ID = str(hex(id(self)))
         return 'Cell at ({},{}) with memory address of {}'.format(self.row, self.col, ID)
 
@@ -139,6 +141,6 @@ class Cell:
         return not self == other
 
 
-def isCell(cell: Cell) -> bool:
+def isCell(cell: Any) -> bool:
     ''' Runtime class check '''
     return isinstance(cell, Cell)

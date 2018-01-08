@@ -4,7 +4,8 @@ from typing import TYPE_CHECKING
 from algorithms.algorithm import Algorithm
 if TYPE_CHECKING:
     from base.grid import Grid
-
+else:
+    Grid = 'Grid'
 
 '''
 A sidewinder visits each cell in the grid and chooses to carve a passage either north or east (similar to Binary Tree),

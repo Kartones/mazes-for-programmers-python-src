@@ -3,39 +3,41 @@ from typing import Dict, List, Optional, Tuple, TYPE_CHECKING
 # Avoid cyclic import, as Cell uses Distances
 if TYPE_CHECKING:
     from base.cell import Cell  # noqa: F401  # Ignore the fact that Cell is not actually used
+else:
+    Cell = 'Cell'
 
 Cells = Dict['Cell', int]
 
 
 class Distances:
 
-    def __init__(self, root: 'Cell') -> None:
-        if not self._isCell(root):
+    def __init__(self, root: Cell) -> None:
+        if not isCell(root):
             raise ValueError('Root must be a cell')
 
         self.root = root       # type: Cell
         self._cells = dict()   # type: Cells
         self._cells[root] = 0
 
-    def __getitem__(self, cell: 'Cell') -> Optional[int]:
-        if not self._isCell(cell):
+    def __getitem__(self, cell: Cell) -> Optional[int]:
+        if not isCell(cell):
             raise IndexError('Distances must be indexed with a cell')
         if cell in self._cells.keys():
             return self._cells[cell]
         else:
             return None
 
-    def __setitem__(self, cell: 'Cell', distance: int) -> None:
-        if not self._isCell(cell):
+    def __setitem__(self, cell: Cell, distance: int) -> None:
+        if not isCell(cell):
             raise IndexError('Distances must be indexed with a cell')
         self._cells[cell] = distance
 
     @property
-    def cells(self) -> List['Cell']:
+    def cells(self) -> List[Cell]:
         return list(self._cells.keys())
 
     @property
-    def max(self) -> Tuple['Cell', int]:
+    def max(self) -> Tuple[Cell, int]:
         max_distance = 0
         max_cell = self.root
 
@@ -46,9 +48,9 @@ class Distances:
 
         return max_cell, max_distance
 
-    def pathTo(self, destination: 'Cell') -> 'Distances':
+    def pathTo(self, destination: Cell) -> 'Distances':
         ''' Traverses backwards, from destination to root/origin '''
-        if not self._isCell(destination):
+        if not isCell(destination):
             raise ValueError('Destination must be a cell')
 
         current_cell = destination
@@ -63,7 +65,7 @@ class Distances:
                     break
         return breadcrumbs
 
-    @staticmethod
-    def _isCell(cell: 'Cell') -> bool:
-        ''' Runtime typecheck '''
-        return type(cell).__name__ == 'Cell'
+
+def isCell(cell: Cell) -> bool:
+    ''' Runtime typecheck '''
+    return type(cell).__name__ == Cell

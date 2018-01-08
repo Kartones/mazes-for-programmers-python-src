@@ -5,7 +5,8 @@ from algorithms.algorithm import Algorithm
 
 if TYPE_CHECKING:
     from base.grid import Grid
-
+else:
+    Grid = 'Grid'
 
 '''
 Wilson algorithm works by choosing a random cell as origin, another as destination, and performs as loop-erased

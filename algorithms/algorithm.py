@@ -1,8 +1,12 @@
 from abc import ABCMeta, abstractmethod
-from typing import Any, Union, Dict  # noqa: F401
+from typing import Any, Union, Dict, TYPE_CHECKING  # noqa: F401
 
-from base.grid import Grid
-from base.cell import Cell
+if TYPE_CHECKING:
+    from base.grid import Grid
+    from base.cell import Cell
+else:
+    Grid = 'Grid'
+    Cell = 'Cell'
 
 DIRECTIONS = ['north', 'n', 'south', 's', 'east', 'e', 'west', 'w']
 

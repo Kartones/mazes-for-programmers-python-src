@@ -6,6 +6,9 @@ from algorithms.algorithm import AlgorithmWithLogging
 if TYPE_CHECKING:  # Dont actually need Grid
     from base.grid import Grid
     from base.cell import Cell  # noqa: F401
+else:
+    Grid = 'Grid'
+    Cell = 'Cell'
 
 
 '''

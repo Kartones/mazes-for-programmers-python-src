@@ -1,47 +1,52 @@
 from typing import TYPE_CHECKING, Any, cast
 
-from base.cell import Cell
-from base.grid import Grid
 from exporters.exporter import Exporter
+
+if TYPE_CHECKING:
+    from base.cell import Cell
+    from base.grid import Grid
+else:
+    Cell = 'Cell'
+    Grid = 'Grid'
 
 
 class UnicodeExporter(Exporter):
-    """
+    '''
     Renders to stdout a UNICODE representation of the maze.
     Not present in the book but suggested as exercise. And looks better than ASCII mazes :)
-    """
+    '''
 
     #  if not linked/closed, add that side's value to find position at array:
     #    N        1
     #  W   E    2   4
     #    S        8
-    JUNCTIONS = [" ", " ", " ", "\u251b", " ", "\u2517", "\u2501", "\u253b", " ", "\u2503", "\u2513", "\u252b",
-                 "\u250f", "\u2523", "\u2533", "\u254b"]
+    JUNCTIONS = [' ', ' ', ' ', '\u251b', ' ', '\u2517', '\u2501', '\u253b', ' ', '\u2503', '\u2513', '\u252b',
+                 '\u250f', '\u2523', '\u2533', '\u254b']
     NORTH = 1
     WEST = 2
     EAST = 4
     SOUTH = 8
 
     def render(self, grid: Grid, **kwargs: Any) -> None:
-        horizontal_wall = "\u2501"
-        vertical_wall = "\u2503"
+        horizontal_wall = '\u2501'
+        vertical_wall = '\u2503'
 
         output = self.JUNCTIONS[12]
         for x in range(grid.cols - 1):
-            output += (horizontal_wall * 3 + self.get_topmost_junction(grid[0,x]))
-        output += horizontal_wall * 3 + self.JUNCTIONS[10] + "\n"
+            output += (horizontal_wall * 3 + self.get_topmost_junction(cast(Cell, grid[0, x])))
+        output += horizontal_wall * 3 + self.JUNCTIONS[10] + '\n'
 
         for row in grid.eachRow():
             top = vertical_wall
             bottom = self.get_leftmost_junction(row[0])
             for cell in row:
                 body = grid.contents(cell)
-                east_boundary = " " if cell & cell.east else vertical_wall
+                east_boundary = ' ' if cell & cell.east else vertical_wall
                 top += body + east_boundary
-                south_boundary = "   " if cell & cell.south else horizontal_wall * 3
+                south_boundary = '   ' if cell & cell.south else horizontal_wall * 3
                 bottom += south_boundary + self.get_south_east_junction(cell)
-            output += top + "\n"
-            output += bottom + "\n"
+            output += top + '\n'
+            output += bottom + '\n'
 
         print(output)
 
@@ -110,5 +115,5 @@ class UnicodeExporter(Exporter):
         try:
             return UnicodeExporter.JUNCTIONS[junction]
         except IndexError as ie:
-            print("junction:{} error:{}".format(junction, ie))
-            return " "
+            print('junction:{} error:{}'.format(junction, ie))
+            return ' '

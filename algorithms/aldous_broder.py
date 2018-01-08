@@ -4,6 +4,8 @@ from algorithms.algorithm import AlgorithmWithLogging
 
 if TYPE_CHECKING:  # Dont actually need Grid
     from base.grid import Grid
+else:
+    Grid = 'Grid'
 
 '''
 Aldous-Broder algorithm works by always choosing a random neighbor of a randomly-selected cell, and linking them

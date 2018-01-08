@@ -3,16 +3,21 @@ from typing import TYPE_CHECKING, Any, List, Optional, Union, cast
 
 import pathfinders.dijkstra as Dijkstra
 import pathfinders.longest_path as LongestPath
-from base.cell import Cell
 from base.colored_grid import ColoredGrid
-from base.grid import Grid  # noqa: F401
 from exporters.exporter import Exporter
+
+if TYPE_CHECKING:
+    from base.cell import Cell
+    from base.grid import Grid
+else:
+    Cell = 'Cell'
+    Grid = 'Grid'
 
 
 class Wolf3DExporter(Exporter):
-    """
+    '''
     Drawing logic adapted from ASCIIRenderer: Draws topmost row (northen wall), then proceeds drawing south-east.
-    """
+    '''
 
     HEX_FILL = 0x00
 
@@ -49,22 +54,22 @@ class Wolf3DExporter(Exporter):
     def __init__(self) -> None:
         self._enemies_count = 0
 
-    def render(self, grid: Union["Grid", ColoredGrid], **kwargs: Any) -> None:
+    def render(self, grid: Union[Grid, ColoredGrid], **kwargs: Any) -> None:
         assert isinstance(grid, ColoredGrid)
 
-        filename = strftime("%d%H%M%S", gmtime())
+        filename = strftime('%d%H%M%S', gmtime())
 
         for key in kwargs:
-            if key == "filename":
+            if key == 'filename':
                 filename = kwargs[key]
 
         if grid.rows < self.MAP_MAX_ROWS or grid.cols < self.MAP_MAX_COLUMNS:
             grid = self._expand(grid, self.MAP_MAX_ROWS, self.MAP_MAX_COLUMNS)
 
         if grid.rows > self.MAP_MAX_ROWS:
-            raise ValueError("Wolfenstein3D NMap only allows maps with {} rows maximum".format(self.MAP_MAX_ROWS))
+            raise ValueError('Wolfenstein3D NMap only allows maps with {} rows maximum'.format(self.MAP_MAX_ROWS))
         if grid.cols > self.MAP_MAX_COLUMNS:
-            raise ValueError("Wolfenstein3D NMap only allows maps with {} columns maximum".format(self.MAP_MAX_COLUMNS))
+            raise ValueError('Wolfenstein3D NMap only allows maps with {} columns maximum'.format(self.MAP_MAX_COLUMNS))
 
         grid = self._store_solution(grid)
 
@@ -106,13 +111,11 @@ class Wolf3DExporter(Exporter):
 
     @staticmethod
     def is_valid(grid: ColoredGrid) -> bool:
-        """
-        Wolf3D exit wall cell is a switch that only gets rendered east and west
-        """
-        _, _, end_row, end_column = LongestPath.calculate(grid)
-        cell = grid[end_row, end_column]
+        ''' Wolf3D exit wall cell is a switch that only gets rendered east and west '''
+        _, end = LongestPath.calculate(grid)
+        cell = grid[end[0], end[1]]
         if cell is None:
-            raise ValueError("Ending row not found at row {} column {}".format(end_row, end_column))
+            raise ValueError('Ending row not found at row {} column {}'.format(*end))
         linked_neighbor = cell.links[0]     # assume exactly one path to the exit
         return (cell.east is not None and cell.east == linked_neighbor) or \
                (cell.west is not None and cell.west == linked_neighbor)
@@ -120,19 +123,19 @@ class Wolf3DExporter(Exporter):
     @staticmethod
     def _expand(grid: ColoredGrid, rows: int, cols: int) -> ColoredGrid:
         new_grid = ColoredGrid(rows, cols)
-        for cell in grid.each_cell():
+        for cell in grid.eachCell():
             new_grid[cell.row, cell.col] = cell
         return new_grid
 
     @staticmethod
     def _store_solution(grid: ColoredGrid) -> ColoredGrid:
-        start_row, start_column, end_row, end_column = LongestPath.calculate(grid)
-        grid = cast(ColoredGrid, Dijkstra.calculate_distances(grid, start_row, start_column, end_row, end_column))
+        start, end = LongestPath.calculate(grid)
+        grid = cast(ColoredGrid, Dijkstra.calculate_distances(grid, start, end))
         return grid
 
     @staticmethod
     def _write_data(filename: str, walls: List[int], objects: List[int]) -> None:
-        with open(filename, "wb") as file:
+        with open(filename, 'wb') as file:
             # write walls
             file.write(bytes(walls))
             # padding with walls until exactly 8192 bytes
@@ -145,7 +148,7 @@ class Wolf3DExporter(Exporter):
             padding = [Wolf3DExporter.OBJECT_EMPTY, Wolf3DExporter.HEX_FILL] * round((8192 - len(objects)) / 2)
             file.write(bytes(padding))
 
-        print("Filename: {}".format(filename))
+        print('Filename: {}'.format(filename))
 
     @staticmethod
     def _cell_distance(cell: Cell, grid: ColoredGrid) -> Optional[int]:

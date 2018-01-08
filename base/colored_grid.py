@@ -1,12 +1,15 @@
-from typing import Optional, Tuple, Union, cast
+from numbers import Real
+from typing import Any, Optional, Tuple, Union, cast
 
 from matplotlib.colors import Colormap
 from matplotlib.pyplot import get_cmap
 
-from base.cell import Cell
+from base.cell import Cell, isCell
 from base.distance_grid import DistanceGrid
 
 RGBColor = Tuple[int, int, int]
+RGBAColor = Tuple[int, int, int, int]
+Color = Union[RGBColor, RGBAColor]
 
 
 class ColoredGrid(DistanceGrid):
@@ -29,15 +32,12 @@ class ColoredGrid(DistanceGrid):
 
     def _getColor(self, value: int) -> RGBColor:
         color = self._cmap(value)
-        if not self._isValidColor(color): return (255, 255, 255)  # Return white if colormap returns an invalid color
-        return cast(RGBColor, tuple(int(x * 255) for x in color))  # Convert to [0, 255] range
+        if not isValidColor(color): return (255, 255, 255)  # Return white if colormap returns an invalid color
+        return cast(RGBColor, tuple(int(x * 255) for x in color[:3]))  # Convert to [0, 255] range
 
-    @staticmethod
-    def _isValidColor(color: RGBColor) -> bool:
-        ''' Runtime check for color correctness '''
-        return type(color) == tuple and len(color) == 3 and not any(type(x) != int for x in color)
-
-    def color(self, cell: Cell) -> Optional[Tuple[int, int, int]]:
+    def color(self, cell: Cell) -> Optional[RGBColor]:
+        if not isCell(cell):
+            raise ValueError('Only instances of Cell can have a color')
         if self.distances is not None and self.maximum > 0 and self.distances[cell] is not None:
             distance = cast(int, self.distances[cell])
             intensity = int((self.maximum - distance) / self.maximum * 255)
@@ -49,3 +49,16 @@ class ColoredGrid(DistanceGrid):
             return color
         else:
             return 255, 255, 255
+
+
+def isValidColor(color: Color) -> bool:
+    ''' Runtime check for color correctness '''
+    return (type(color) == tuple and
+            (len(color) == 3 or len(color) == 4) and
+            not any(not isinstance(x, Real) for x in color) and
+            not any(not 0 <= x <= 1 for x in color))
+
+
+def isColoredGrid(grid: Any) -> bool:
+    ''' Runtime class check '''
+    return isinstance(grid, ColoredGrid)
