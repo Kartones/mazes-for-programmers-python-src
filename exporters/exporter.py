@@ -11,3 +11,8 @@ class Exporter(metaclass=ABCMeta):
     @abstractmethod
     def render(self, grid: Grid, **kwargs: Any) -> None:
         raise NotImplementedError
+
+    @property
+    def name(self) -> str:
+        ''' Name of the exporter '''
+        return self.__class__.__name__

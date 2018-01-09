@@ -3,6 +3,10 @@ max-line-length = 120
 inline-quotes = "
 ignore = 
     # Multiple statements in a single line
-    E701, E704
+    E701, E704,
+    # Module level import not at top of file
+    E402,
     # Multiple spaces after :
-    E241
+    E241,
+    # Expected 2 blank lines, found 1
+    E302, E305
