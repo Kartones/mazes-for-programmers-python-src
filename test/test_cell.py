@@ -5,7 +5,7 @@ from base.cell import Cell
 def test_equality() -> None:
     a_cell = Cell(1, 1)
     another_cell = Cell(1, 1)
-    assert a_cell == another_cell
+    assert a_cell != another_cell
 
 
 def test_linking() -> None:
@@ -75,13 +75,13 @@ def test_has_neighbors() -> None:
 
     assert another_cell in a_cell.neighbours
     assert yet_another_cell not in a_cell.neighbours
-    assert a_cell.nn == 1
+    assert a_cell.nNeighbours == 1
     assert a_cell not in another_cell.neighbours
     assert yet_another_cell in another_cell.neighbours
-    assert another_cell.nn == 1
+    assert another_cell.nNeighbours == 1
     assert a_cell in yet_another_cell.neighbours
     assert another_cell in yet_another_cell.neighbours
-    assert yet_another_cell.nn == 2
+    assert yet_another_cell.nNeighbours == 2
 
 
 def test_distances() -> None:

@@ -10,11 +10,10 @@ from typing import Union, cast  # noqa: F401
 
 from base.distance_grid import DistanceGrid
 # from base.grid import Grid
+from base.rotator import Rotator
 
 import pathfinders.dijkstra as Dijkstra
 import pathfinders.longest_path as LongestPath
-
-from utils.rotator import Rotator
 
 from demos.demo_utils import ALGORITHM_NAMES, str2bool, avalible_algorithm, avalible_exporter
 

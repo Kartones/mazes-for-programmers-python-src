@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, Any
 
 from base.grid import Grid
 from base.cell import Cell
@@ -31,3 +31,8 @@ class DistanceGrid(Grid):
             return format(self.distances[cell], '02X').center(3)
         else:
             return super().contents(cell)
+
+
+def isDistanceGrid(grid: Any) -> bool:
+    ''' Runtime class check '''
+    return isinstance(grid, DistanceGrid)

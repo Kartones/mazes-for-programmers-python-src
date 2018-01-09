@@ -12,14 +12,11 @@ from time import gmtime, strftime
 import argparse
 # from typing import cast
 
-# from base.grid import Grid
-# from base.distance_grid import DistanceGrid
 from base.colored_grid import ColoredGrid
+from base.rotator import Rotator
 
 from pathfinders import dijkstra as Dijkstra
 from pathfinders import longest_path as LongestPath
-
-from utils.rotator import Rotator
 
 from demos.demo_utils import ALGORITHM_NAMES, str2bool, avalible_algorithm, avalible_exporter
 
