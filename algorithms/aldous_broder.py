@@ -1,28 +1,38 @@
-from random import choice
+from typing import TYPE_CHECKING
 
-from base.grid import Grid
+from algorithms.algorithm import AlgorithmWithLogging
 
-"""
-Aldous-Broder algorithm works by always choosing a random neighbor of a randomly-selected also cell, and linking them
-if not yet visited ("random walking"), repeating until all cells are visited once.
+if TYPE_CHECKING:  # Dont actually need Grid
+    from base.grid import Grid
+else:
+    Grid = 'Grid'
+
+'''
+Aldous-Broder algorithm works by always choosing a random neighbor of a randomly-selected cell, and linking them
+if not yet visited ('random walking'). Repeat until all cells are visited once.
 Can take long to compute on big grids (slow-to-finish).
-"""
+'''
 
 
-class AldousBroder:
+class AldousBroder(AlgorithmWithLogging):
 
-    @staticmethod
-    def on(grid: Grid) -> Grid:
-        current_cell = grid.random_cell()
-        unvisited_count = grid.size - 1
+    def on(self, grid: Grid) -> None:
+        self._prepareLogGrid(grid)
 
-        while unvisited_count > 0:
-            neighbor = choice(current_cell.neighbors)
-            if neighbor is None:
-                raise ValueError("Aldous-Broder algorithm needs all cells to have at least one neighbor")
-            if len(neighbor.links) == 0:
-                current_cell.link(neighbor)
-                unvisited_count -= 1
-            current_cell = neighbor
+        cell = grid.randomCell()
+        set_count = 0
 
-        return grid
+        while set_count < grid.size - 1:
+            self._logVisit(cell)
+            neighbour = cell.randomNeighbour()
+
+            message = 'Aldous-Broder algorithm needs all cells to have at least one neighbour'
+            assert neighbour is not None, message
+
+            if neighbour.nLinks == 0:
+                cell += neighbour
+                self._logLink(cell, neighbour)
+                set_count += 1
+            cell = neighbour
+
+            self.step()
