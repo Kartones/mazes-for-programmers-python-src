@@ -49,7 +49,7 @@ class Wolf3DExporter(Exporter):
 
     @property
     def enemies_count(self) -> int:
-        return self._enemies_count  # type: ignore
+        return self._enemies_count
 
     def __init__(self) -> None:
         self._enemies_count = 0
