@@ -1,18 +1,19 @@
-from typing import Union
+from typing import Tuple
 
 from base.distance_grid import DistanceGrid
-from base.colored_grid import ColoredGrid
+
+Point = Tuple[int, int]
 
 
-def calculate_distances(grid: Union[DistanceGrid, ColoredGrid], start_row: int, start_column: int, end_row: int,
-                        end_column: int) -> Union[DistanceGrid, ColoredGrid]:
-    start_cell = grid[start_row, start_column]
+def calculate_distances(grid: DistanceGrid, start: Point, end: Point) -> None:
+    ''' Calculate the distances in the grid using Dijkstra's algorithm '''
+
+    start_cell = grid[start]
     if start_cell is None:
-        raise IndexError("Invalid start cell row {} column {}".format(start_row, start_column))
-    destination_cell = grid[end_row, end_column]
-    if destination_cell is None:
-        raise IndexError("Invalid destination cell row {} column {}".format(end_row, end_row))
-    distances = start_cell.distances
-    grid.distances = distances.path_to(destination_cell)
+        raise IndexError('Invalid start cell row {} column {}'.format(*start))
 
-    return grid
+    end_cell = grid[end]
+    if end_cell is None:
+        raise IndexError('Invalid destination cell row {} column {}'.format(*end))
+
+    grid.distances = start_cell.distances.pathTo(end_cell)

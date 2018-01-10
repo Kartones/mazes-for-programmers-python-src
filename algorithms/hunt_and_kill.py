@@ -1,41 +1,55 @@
 from random import choice
+from typing import TYPE_CHECKING, Optional  # noqa: F401
 
-from typing import cast, Optional     # noqa: F401
+from algorithms.algorithm import AlgorithmWithLogging
 
-from base.grid import Grid
-from base.cell import Cell      # noqa: F401
+if TYPE_CHECKING:  # Dont actually need Grid
+    from base.grid import Grid
+    from base.cell import Cell  # noqa: F401
+else:
+    Grid = 'Grid'
+    Cell = 'Cell'
 
-"""
+
+'''
 Hunt-and-Kill algorithm picks a random starting cell and randomly walks. It cannot walk on an already visited cell, and
-if finds at a dead-end (no more unvisited cells around current one), "hunts" from the northwest corner the first cell
-that is unvisted and has at least one visited neighbor; then starts walking again.
-"""
+if finds at a dead-end (no more unvisited cells around current one), 'hunts' from the northwest corner the first cell
+that is unvisted and has at least one visited neighbour; then starts walking again.
+'''
 
 
-class HuntAndKill:
+class HuntAndKill(AlgorithmWithLogging):
 
-    @staticmethod
-    def on(grid: Grid) -> Grid:
-        current_cell = grid.random_cell()  # type: Optional[Cell]
+    def on(self, grid: Grid) -> None:
+        self._prepareLogGrid(grid)
 
-        while current_cell is not None:
-            unvisited_neighbors = \
-                [neighbor for neighbor in current_cell.neighbors if len(neighbor.links) == 0]
+        cell = grid.randomCell()  # type: Optional[Cell]
 
-            if len(unvisited_neighbors) > 0:
+        while cell is not None:
+            self._logVisit(cell)
+            unvisited = [n for n in cell.neighbours if n.nLinks == 0]
+
+            if len(unvisited) > 0:
                 # as long as there are unvisited paths, walk them
-                neighbor = choice(unvisited_neighbors)
-                current_cell.link(neighbor)
-                current_cell = neighbor
+                neighbour = choice(unvisited)
+                cell += neighbour
+                self._logLink(cell, neighbour)
+                cell = neighbour
             else:
                 # enter hunt mode, find first unvisited cell near any visited cell
-                current_cell = None
-                for cell in grid.each_cell():
-                    visited_neighbors = [neighbor for neighbor in cell.neighbors if len(neighbor.links) > 0]
-                    if len(cell.links) == 0 and len(visited_neighbors) > 0:
-                        current_cell = cast(Cell, cell)
-                        neighbor = choice(visited_neighbors)
-                        current_cell.link(neighbor)
-                        break
+                cell = None
+                self.step()
 
-        return grid
+                for c in grid.eachCell():
+                    self._logVisit(c)
+                    visited = [n for n in c.neighbours if n.nLinks > 0]  # visited neighbours
+
+                    if c.nLinks == 0 and len(visited) > 0:
+                        cell = c
+                        neighbour = choice(visited)
+                        cell += neighbour
+                        self._logLink(cell, neighbour)
+                        break  # from the 'for' loop
+                    self.step()
+
+            self.step()

@@ -1,19 +1,19 @@
-from typing import Optional     # noqa: F401
+from typing import Optional, Any
 
 from base.grid import Grid
 from base.cell import Cell
-from base.distances import Distances    # noqa: F401
+from base.distances import Distances
 
-"""
+'''
 Distance is represented as hexadecimal
-"""
+'''
 
 
 class DistanceGrid(Grid):
 
     @property
     def distances(self) -> Optional[Distances]:
-        return None if self._distances is None else self._distances     # mypy messes up with Any and Optional :(
+        return None if self._distances is None else self._distances  # mypy messes up with Any and Optional :(
 
     @distances.setter
     def distances(self, value: Optional[Distances]) -> None:
@@ -24,10 +24,15 @@ class DistanceGrid(Grid):
     def __init__(self, rows: int, columns: int) -> None:
         super().__init__(rows, columns)
         self._distances = None  # type: Optional[Distances]
-        self.maximum = 0
+        self.maximum = 0  # type: int
 
-    def contents_of(self, cell: Cell) -> str:
+    def contents(self, cell: Cell) -> str:
         if self.distances is not None and self.distances[cell]:
-            return format(self.distances[cell], "02X").center(3)
+            return format(self.distances[cell], '02X').center(3)
         else:
-            return super().contents_of(cell)
+            return super().contents(cell)
+
+
+def isDistanceGrid(grid: Any) -> bool:
+    ''' Runtime class check '''
+    return isinstance(grid, DistanceGrid)

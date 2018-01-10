@@ -1,1 +1,0 @@
-# TODO: Write a base class for the algorithms
