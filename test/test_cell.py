@@ -5,7 +5,7 @@ from base.cell import Cell
 def test_equality() -> None:
     a_cell = Cell(1, 1)
     another_cell = Cell(1, 1)
-    assert a_cell != another_cell
+    assert a_cell == another_cell
 
 
 def test_linking() -> None:

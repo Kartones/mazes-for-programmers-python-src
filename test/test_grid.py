@@ -16,15 +16,15 @@ def test_constructor() -> None:
 def test_cell_access() -> None:
     grid = Grid(2, 2)
 
-    assert grid[0, 0] == Cell(0, 0)    # type: ignore
-    assert grid[0, 1] == Cell(0, 1)    # type: ignore
-    assert grid[1, 0] == Cell(1, 0)    # type: ignore
-    assert grid[1, 1] == Cell(1, 1)    # type: ignore
+    assert grid[0, 0] == Cell(0, 0)
+    assert grid[0, 1] == Cell(0, 1)
+    assert grid[1, 0] == Cell(1, 0)
+    assert grid[1, 1] == Cell(1, 1)
 
     assert grid[-1,  0] is None
-    assert grid[ 0, -1] is None
-    assert grid[ 4,  0] is None
-    assert grid[ 0,  4] is None
+    assert grid[ 0, -1] is None  # noqa: E201
+    assert grid[ 4,  0] is None  # noqa: E201
+    assert grid[ 0,  4] is None  # noqa: E201
 
 
 def test_neighbors_setup_when_grid_is_created() -> None:
@@ -45,6 +45,7 @@ def test_neighbors_setup_when_grid_is_created() -> None:
     assert grid[1, 0].east == Cell(1, 1)   # type: ignore
     assert grid[1, 0].west is None         # type: ignore
 
+    # TODO: None Cell class
     assert grid[1, 1].north == Cell(0, 1)  # type: ignore
     assert grid[1, 1].south is None        # type: ignore
     assert grid[1, 1].east is None         # type: ignore

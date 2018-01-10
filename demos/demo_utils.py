@@ -18,7 +18,7 @@ from algorithms.wilson import Wilson
 
 ALGORITHMS = [AldousBroder, BinaryTree, HuntAndKill,
               RecursiveBacktracker, Sidewinder, Wilson]  # type: List[Type[Algorithm]]
-ALGORITHM_NAMES = [cast(str, x.name) for x in ALGORITHMS]  # type: List[str]
+ALGORITHM_NAMES = [x.__name__ for x in ALGORITHMS]  # type: List[str]
 
 from exporters.exporter import Exporter
 from exporters.ascii_exporter import ASCIIExporter
@@ -29,7 +29,7 @@ from exporters.wolf3d_exporter import Wolf3DExporter
 
 EXPORTERS = [Wolf3DExporter, PNGExporter, PixelExporter,
              UnicodeExporter, ASCIIExporter]  # type: List[Type[Exporter]]
-EXPORTER_NAMES = [cast(str, x.name) for x in EXPORTERS]  # type: List[str]
+EXPORTER_NAMES = [x.__name__ for x in EXPORTERS]  # type: List[str]
 
 def validate_algorithm(desired_algorithm: str) -> Algorithm:
     ''' Check whether the algorithm name is valid and return an instance of it '''

@@ -72,7 +72,8 @@ if __name__ == '__main__':
             raise IndexError('Invalid start cell row {} column {}'.format(*start))
         grid.distances = start_cell.distances
 
-    exporter.render(grid, coloring=coloring, filename=filename + '_col')
+    if coloring or pathfinding:
+        exporter.render(grid, coloring=coloring, filename=filename + '_col')
 
     print('Maze has {} dead-ends'.format(len(grid.deadends)))
 

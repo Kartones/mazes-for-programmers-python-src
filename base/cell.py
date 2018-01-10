@@ -122,7 +122,8 @@ class Cell:
 
     def __hash__(self) -> int:
         ''' Unique hash of the cell '''
-        return hash((self.col, self.row, id(self)))
+        # return hash((self.col, self.row, id(self)))
+        return hash((self.col, self.row))
 
     def __repr__(self) -> str:
         ''' Representation of cell for print()/format() calls '''
