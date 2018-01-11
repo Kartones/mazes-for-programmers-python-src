@@ -1,6 +1,6 @@
 # Mazes For Programmers Python Sources
 
-[![CircleCI](https://circleci.com/gh/Kartones/mazes-for-programmers-python-src/tree/master.svg?style=svg)](https://circleci.com/gh/Kartones/mazes-for-programmers-python-src/tree/master)
+[![TravisCI](https://travis-ci.org/MarcinKonowalczyk/mazes-for-programmers-python-src.svg?branch=master)](https://travis-ci.org/MarcinKonowalczyk/mazes-for-programmers-python-src.svg?branch=master)
 
 ## Introduction
 
