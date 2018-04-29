@@ -1,5 +1,3 @@
-import platform
-import subprocess
 from time import gmtime, strftime
 
 import args
@@ -30,7 +28,6 @@ if __name__ == "__main__":
         print("[--exporter=<exporter>]")
         print("Valid algorithms: {}".format("|".join([algorithm.__name__ for algorithm in ALGORITHMS])))
         print("Valid exporters: {}".format("|".join(AVAILABLE_EXPORTERS)))
-        print("Rotations is an integer value measuring number of 90 degree clockwise rotations to perform")
         exit(1)
     exporter, exporter_name = get_exporter(AVAILABLE_EXPORTERS, DEFAULT_EXPORTER)
     pathfinding = True
@@ -55,5 +52,3 @@ if __name__ == "__main__":
 
     grid = store_solution(grid)
     PNGExporter().render(grid, coloring=True, filename=filename)
-    if platform.system() == "Linux":
-        subprocess.run(["xdg-open", "{}.png".format(filename)])

@@ -27,7 +27,7 @@ def get_tries() -> int:
 
 if __name__ == "__main__":
     if len(args.all) < 2:
-        print("Usage:\nPYTHONPATH=. python3 demos/image_demo.py <rows> <columns> [--tries=<num>] [--pathfinding]",
+        print("Usage:\nPYTHONPATH=. python3 demos/stats_demo.py <rows> <columns> [--tries=<num>] [--pathfinding]",
               end="")
         exit(1)
 

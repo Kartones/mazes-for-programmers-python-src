@@ -1,0 +1,17 @@
+version: "2"
+services:
+  mazes-for-programmers:
+    build:
+      args:
+        uid: ${UID}
+        gid: ${GID}
+      context: ../..
+      dockerfile: build/dev/Dockerfile
+    image: mazes-for-programmers:dev
+    volumes:
+      - ../..:/code
+      - ../..:/opt/mazes-for-programmers
+      - ~/.bash_history.mazes-for-programmers:/home/mazes-for-programmers/.bash_history
+    environment:
+      - PYTHONPATH=/code
+    command: "/bin/true"

@@ -1,5 +1,3 @@
-import platform
-import subprocess
 from time import gmtime, strftime
 
 import args
@@ -77,6 +75,3 @@ if __name__ == "__main__":
     exporter.render(grid, coloring=coloring, filename=filename)
 
     print("Maze has {} dead-ends".format(len(grid.deadends)))
-
-    if platform.system() == "Linux":
-        subprocess.run(["xdg-open", "{}.png".format(filename)])

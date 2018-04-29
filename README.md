@@ -89,17 +89,34 @@ Sample small map playthrough (start at blue, end at red, enemy on deadend at whi
 
 ## Setup
 
-Note: Code is typed using the great library `mypy`.
-
-```
-pip install -r requirements.txt
-```
+You just need to have installed `make`, `docker` and `docker-compose`.
 
 ## Execute
 
-To run just execute the desired output-based demo:
+Easiest way is to run the corresponding `demo-xxxx` make command, e.g.:
+```bash
+make demo-terminal rows=<value> cols=<value> algorithm=<value>
+
+# example
+make demo-terminal rows=10 cols=10 algorithm=AldousBroder
 ```
-PYTHONPATH=. python3 demos/<filename>
+Run without arguments to see all available options
+
+Available make commands that run algorithms:
+- `demo-terminal`
+- `demo-image`
+- `demo-game-map`
+- `run-stats`
+
+
+An alternative is to open a shell into the container and then run from the inside any demo:
+
+```bash
+# start and enter into container
+make shell
+
+# then run desired demo
+python3 demos/<filename>
 ```
 
 Available demo runners:
@@ -156,16 +173,15 @@ Pathfinding speed benchmark (seconds, sorted by average desc):
 
 ## Testing
 
-Note: Runs also some linter tests, to conform with both `mypy` and `flake8`.
+Note: Runs also linter tests, to conform with both `mypy` and `flake8`.
 
-```
-pytest
+```bash
+make test
 ```
 
 ## Roadmap & TODOs
 
 - Of course finish the book and implement all main code and algorithms
 - Check in depth mypy doc to see why all the issues with Union, probably I'm doing something wrong and doesn't detects properly hierarchies, etc.
-- Dockerize the project -> Will allow to upgrade to Python 3.6 and perform additional mypy cleanups & improvements
-- Check to improve Wolf3DExporter drawing of tiles so I can have bigger maps (as each cell now uses 2x2 map tiles)
+- Check to improve Wolf3DExporter drawing of tiles so I can have bigger maps (each cell now uses 2x2 map tiles)
 - Implement more pathfinders -> (e.g. recursive backtracking as a maze solving algorithm)

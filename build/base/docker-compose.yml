@@ -1,0 +1,12 @@
+version: "2"
+services:
+  mazes-for-programmers-base:
+    build:
+      args:
+        uid: ${UID}
+        gid: ${GID}
+      context: ../..
+      dockerfile: build/base/Dockerfile
+    image: mazes-for-programmers:base
+    working_dir: /code
+    command: "/bin/true"

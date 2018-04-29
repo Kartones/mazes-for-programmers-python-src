@@ -1,6 +1,6 @@
 from time import gmtime, strftime
 from PIL import Image, ImageDraw
-from typing import Any, TYPE_CHECKING, Union
+from typing import Any, cast, TYPE_CHECKING, Union
 
 from exporters.base_exporter import BaseExporter
 from base.colored_grid import ColoredGrid
@@ -13,8 +13,6 @@ class PNGExporter(BaseExporter):
     STEP_BACKGROUND = 0
 
     def render(self, grid: Union["Grid", ColoredGrid], **kwargs: Any) -> None:
-        assert isinstance(grid, ColoredGrid)
-
         filename = strftime("%Y%m%d%H%M%S", gmtime())
         cell_size = 10
         coloring = False
@@ -26,6 +24,9 @@ class PNGExporter(BaseExporter):
                 cell_size = kwargs[key]
             elif key == "coloring":
                 coloring = kwargs[key]
+
+        if coloring:
+            assert isinstance(grid, ColoredGrid)
 
         image_width = cell_size * grid.columns
         image_height = cell_size * grid.rows
@@ -44,7 +45,7 @@ class PNGExporter(BaseExporter):
                 y2 = (cell.row + 1) * cell_size
 
                 if draw_pass == self.STEP_BACKGROUND and coloring:
-                    color = grid.background_color_for(cell)
+                    color = cast(ColoredGrid, grid).background_color_for(cell)
                     draw.rectangle((x1, y1, x2, y2), fill=color)
                 else:
                     if not cell.north:

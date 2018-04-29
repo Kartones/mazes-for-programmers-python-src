@@ -1,5 +1,11 @@
+config.py
+.idea/*
+.cache/*
+.mypy_cache/*
+*__pycache__/*
+*/__pycache__/*
+cov_html/*
+.coverage
 *.py[c|o]
-*.mypy_cache/
-*__pycache__/
-*.cache/
-.idea/
+.pytest_cache/*
+*/.mypy_cache/
