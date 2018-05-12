@@ -8,7 +8,7 @@ from exporters.wolf3d_exporter import Wolf3DExporter
 import pathfinders.dijkstra as Dijkstra
 import pathfinders.longest_path as LongestPath
 
-from demos.demo_utils_v2 import ALGORITHM_NAMES, available_algorithm, available_exporter
+from demos.demo_utils import ALGORITHM_NAMES, get_algorithm, get_exporter
 
 
 DEFAULT_EXPORTER = "Wolf3DExporter"
@@ -33,8 +33,8 @@ if __name__ == "__main__":
 
     rows = args.rows
     columns = args.columns
-    algorithm = available_algorithm(args.algorithm, AVAILABLE_ALGORITHMS)
-    exporter = cast(Wolf3DExporter, available_exporter(args.exporter, AVAILABLE_EXPORTERS))
+    algorithm = get_algorithm(args.algorithm, AVAILABLE_ALGORITHMS)
+    exporter = cast(Wolf3DExporter, get_exporter(args.exporter, AVAILABLE_EXPORTERS))
     filename = strftime("%d%H%M%S", gmtime())
 
     print("Algorithm: {}\nRows: {}\ncolumns: {}\nExporter: {}".format(args.algorithm, rows, columns, args.exporter))

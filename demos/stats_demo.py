@@ -9,7 +9,7 @@ from base.distance_grid import DistanceGrid
 import pathfinders.dijkstra as Dijkstra
 import pathfinders.longest_path as LongestPath
 
-from demos.demo_utils_v2 import ALGORITHMS, str2bool
+from demos.demo_utils import ALGORITHMS, str2bool
 
 
 if __name__ == "__main__":

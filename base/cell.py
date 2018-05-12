@@ -97,7 +97,6 @@ class Cell:
                 cell.unlink(cell=self, bidirectional=False)
         return self
 
-    # TODO: this was previously not doing integrity checks. see if worth to make it again restrictive
     def linked_to(self, cell: Optional["Cell"]) -> bool:
         if is_cell(cell):
             return cell in self._links

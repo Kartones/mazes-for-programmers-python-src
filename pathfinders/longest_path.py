@@ -18,5 +18,4 @@ def calculate(grid: DistanceGrid) -> Tuple[Point, Point]:
     new_start_cell, distance = start_cell.distances.max
     goal_cell, distance = new_start_cell.distances.max
 
-    # TODO: See if worth or not needed
     return (new_start_cell.row, new_start_cell.column), (goal_cell.row, goal_cell.column)

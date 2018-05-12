@@ -2,7 +2,7 @@ from typing import Dict, List, Optional, Tuple, TYPE_CHECKING
 
 # Avoid cyclic import, as Cell uses Distances
 if TYPE_CHECKING:
-    from base.cell import Cell  # noqa: F401
+    from base.cell import Cell
 else:
     Cell = "Cell"
 

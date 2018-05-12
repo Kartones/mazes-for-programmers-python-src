@@ -8,7 +8,7 @@ from base.rotator import Rotator
 import pathfinders.dijkstra as Dijkstra
 import pathfinders.longest_path as LongestPath
 
-from demos.demo_utils_v2 import ALGORITHM_NAMES, str2bool, available_algorithm, available_exporter
+from demos.demo_utils import ALGORITHM_NAMES, str2bool, get_algorithm, get_exporter
 
 
 DEFAULT_EXPORTER = "PNGExporter"
@@ -31,8 +31,8 @@ if __name__ == "__main__":
 
     rows = args.rows
     columns = args.columns
-    algorithm = available_algorithm(args.algorithm, AVAILABLE_ALGORITHMS)
-    exporter = available_exporter(args.exporter, AVAILABLE_EXPORTERS)
+    algorithm = get_algorithm(args.algorithm, AVAILABLE_ALGORITHMS)
+    exporter = get_exporter(args.exporter, AVAILABLE_EXPORTERS)
     filename = args.filename if args.filename else strftime("%Y%m%d%H%M%S", gmtime())
     rotations = args.rotations
     pathfinding = args.pathfinding
@@ -60,7 +60,6 @@ if __name__ == "__main__":
             raise IndexError("Invalid start cell row {} column {}".format(*starting_position))
         grid.distances = grid[starting_position].distances  # type: ignore
 
-    if coloring or pathfinding:
-        exporter.render(grid, coloring=coloring, filename=filename)
+    exporter.render(grid, coloring=coloring, filename=filename)
 
     print("Maze has {} dead-ends".format(len(grid.deadends)))

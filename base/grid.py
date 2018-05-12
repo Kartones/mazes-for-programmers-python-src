@@ -1,5 +1,5 @@
 from random import randrange
-from typing import Any, cast, Generator, List, Optional, Tuple
+from typing import cast, Generator, List, Optional, Tuple
 
 from base.cell import Cell, is_cell
 
@@ -76,11 +76,6 @@ class Grid:
         for row in range(self.rows):
             yield self._grid[row]
 
-    # TODO: Add tests
-    def each_column(self) -> Generator[CellList, None, None]:
-        for column in zip(*self._grid):
-            yield column
-
     def each_cell(self) -> Generator:
         for row in self.each_row():
             for cell in row:
@@ -120,7 +115,3 @@ def is_key(key: Key) -> bool:
     Runtime check for key correctness
     """
     return type(key) == tuple and len(key) == 2 and not any(type(value) != int for value in key)
-
-
-def is_grid(grid: Any) -> bool:
-    return isinstance(grid, Grid)
