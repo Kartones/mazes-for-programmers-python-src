@@ -1,14 +1,13 @@
 from abc import ABCMeta, abstractmethod
-from typing import Any
 
 from base.grid import Grid
 
 
-class Exporter(metaclass=ABCMeta):
+class Algorithm(metaclass=ABCMeta):
 
     @abstractmethod
-    def render(self, grid: Grid, ** kwargs: Any) -> None:
-        """Base """
+    def on(self, grid: Grid) -> None:
+        raise NotImplementedError
 
     @property
     def name(self) -> str:

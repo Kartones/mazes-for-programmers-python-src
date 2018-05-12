@@ -26,6 +26,23 @@ def test_linking() -> None:
     assert another_cell.linked_to(yet_another_cell) is False
 
 
+def test_linking_using_operator_overloads() -> None:
+    a_cell = Cell(1, 1)
+    another_cell = Cell(1, 2)
+    yet_another_cell = Cell(2, 1)
+
+    assert not a_cell & another_cell
+    assert not another_cell & a_cell
+    assert not a_cell & yet_another_cell
+    assert not another_cell & yet_another_cell
+
+    a_cell += another_cell
+    assert a_cell & another_cell
+    assert another_cell & a_cell
+    assert not a_cell & yet_another_cell
+    assert not another_cell & yet_another_cell
+
+
 def test_unlinking() -> None:
     a_cell = Cell(1, 1)
     another_cell = Cell(1, 2)
@@ -46,13 +63,32 @@ def test_unlinking() -> None:
     assert yet_another_cell.linked_to(a_cell) is True
 
 
+def test_unlinking_using_operator_overloads() -> None:
+    a_cell = Cell(1, 1)
+    another_cell = Cell(1, 2)
+    yet_another_cell = Cell(2, 1)
+    a_cell += another_cell
+    a_cell += yet_another_cell
+
+    assert a_cell & another_cell
+    assert another_cell & a_cell
+    assert a_cell & yet_another_cell
+
+    a_cell -= another_cell
+
+    assert not a_cell & another_cell
+    assert not another_cell & a_cell
+    assert a_cell & yet_another_cell
+    assert yet_another_cell & a_cell
+
+
 def test_links_listing() -> None:
     a_cell = Cell(1, 1)
     another_cell = Cell(1, 2)
     yet_another_cell = Cell(2, 1)
 
-    a_cell.link(another_cell)
-    a_cell.link(yet_another_cell)
+    a_cell += another_cell
+    a_cell += yet_another_cell
 
     assert set(a_cell.links).intersection([another_cell, yet_another_cell]) == set(a_cell.links)
     assert another_cell.links == [a_cell]
@@ -90,9 +126,9 @@ def test_distances() -> None:
     yet_another_cell = Cell(0, 2)
 
     a_cell.east = another_cell
-    a_cell.link(another_cell)
+    a_cell += another_cell
     another_cell.east = yet_another_cell
-    another_cell.link(yet_another_cell)
+    another_cell += yet_another_cell
     distances = a_cell.distances
     assert set(distances.cells) == {yet_another_cell, another_cell, a_cell}
     assert distances[a_cell] == 0

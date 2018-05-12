@@ -1,7 +1,7 @@
+import argparse
 import time
 
-import args
-from typing import cast, Union    # noqa: F401
+from typing import cast, Union
 
 from base.grid import Grid
 from base.distance_grid import DistanceGrid
@@ -9,34 +9,22 @@ from base.distance_grid import DistanceGrid
 import pathfinders.dijkstra as Dijkstra
 import pathfinders.longest_path as LongestPath
 
-from demos.demo_utils import ALGORITHMS, get_pathfinding
-
-
-def get_tries() -> int:
-    tries = 100
-    for key in args.assignments:
-        if key == "--tries":
-            try:
-                tries = int(args.assignments[key][0])
-                if tries < 1:
-                    raise ValueError()
-            except ValueError:
-                tries = 100
-    return tries
+from demos.demo_utils import ALGORITHMS, str2bool
 
 
 if __name__ == "__main__":
-    if len(args.all) < 2:
-        print("Usage:\nPYTHONPATH=. python3 demos/stats_demo.py <rows> <columns> [--tries=<num>] [--pathfinding]",
-              end="")
-        exit(1)
+    parser = argparse.ArgumentParser(description="Run statistics for all algorithms")
+    parser.add_argument("rows", type=int, help="number of rows")
+    parser.add_argument("columns", type=int, help="number of columns")
+    parser.add_argument("-t", "--tries", type=int, default=10, help="number of tries")
+    parser.add_argument("-p", "--pathfinding", type=str2bool, default=False, help="whether solve the maze")
+    args = parser.parse_args()
 
-    rows = int(args.all[0])
-    columns = int(args.all[1])
+    rows = args.rows
+    columns = args.columns
     size = rows * columns
-    tries = get_tries()
-
-    pathfinding = get_pathfinding()
+    tries = args.tries
+    pathfinding = args.pathfinding
 
     algorithm_averages = {}
     algorithm_benchmarks = {}
@@ -52,12 +40,12 @@ if __name__ == "__main__":
         deadend_counts = []
         for _ in range(tries):
             if pathfinding:
-                grid = DistanceGrid(rows, columns)  # type: Union[Grid, DistanceGrid]
+                grid: Union[Grid, DistanceGrid] = DistanceGrid(rows, columns)
             else:
                 grid = Grid(rows, columns)
 
             time_start = time.perf_counter()
-            grid = algorithm.on(grid)    # type: ignore
+            algorithm().on(grid)
             time_end = time.perf_counter()
 
             deadend_counts.append(len(grid.deadends))
@@ -65,9 +53,8 @@ if __name__ == "__main__":
 
             if pathfinding:
                 time_start = time.perf_counter()
-                start_row, start_column, end_row, end_column = LongestPath.calculate(cast(DistanceGrid, grid))
-                grid = Dijkstra.calculate_distances(cast(DistanceGrid, grid), start_row, start_column, end_row,
-                                                    end_column)
+                start, end = LongestPath.calculate(cast(DistanceGrid, grid))
+                Dijkstra.calculate_distances(cast(DistanceGrid, grid), start, end)
                 time_end = time.perf_counter()
                 pathfinding_timings.append(time_end - time_start)
 
@@ -81,11 +68,11 @@ if __name__ == "__main__":
         }
         if pathfinding:
             pathfinding_timings = sorted(pathfinding_timings)
-        pathfinding_benchmarks[algorithm] = {
-            "min": pathfinding_timings[0],
-            "max": pathfinding_timings[-1],
-            "average": sum(pathfinding_timings) / tries
-        }
+            pathfinding_benchmarks[algorithm] = {
+                "min": pathfinding_timings[0],
+                "max": pathfinding_timings[-1],
+                "average": sum(pathfinding_timings) / tries
+            }
 
     sorted_averages = sorted(algorithm_averages.items(), key=lambda x: -x[1])
     print("\nAverage dead-ends (deadends/total-cells, sorted by % desc):")
