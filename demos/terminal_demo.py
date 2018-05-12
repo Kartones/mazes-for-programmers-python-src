@@ -7,7 +7,7 @@ from base.distance_grid import DistanceGrid
 import pathfinders.dijkstra as Dijkstra
 import pathfinders.longest_path as LongestPath
 
-from utils.rotator import Rotator
+from base.rotator import Rotator
 
 from demos.demo_utils import ALGORITHMS, get_exporter, get_rotations, get_algorithm, get_pathfinding
 
