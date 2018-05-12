@@ -63,7 +63,7 @@ def test_unlinking() -> None:
     assert yet_another_cell.linked_to(a_cell) is True
 
 
-def test_unlinking_using_operator_overrides() -> None:
+def test_unlinking_using_operator_overloads() -> None:
     a_cell = Cell(1, 1)
     another_cell = Cell(1, 2)
     yet_another_cell = Cell(2, 1)

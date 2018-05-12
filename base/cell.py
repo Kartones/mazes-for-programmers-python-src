@@ -74,7 +74,7 @@ class Cell:
         """
         Links current cell to specified one
         """
-        if not self._is_cell(cell):
+        if not is_cell(cell):
             raise ValueError("Link can only be made between two cells")
 
         self._links[cell] = True
@@ -88,7 +88,7 @@ class Cell:
         """
         if cell is None:
             warnings.warn("Attempted to remove non-existant link", UserWarning)
-        elif not self._is_cell(cell):
+        elif not is_cell(cell):
             raise ValueError("Link can only be removed between two cells")
 
         if self.linked_to(cell):
@@ -99,7 +99,7 @@ class Cell:
 
     # TODO: this was previously not doing integrity checks. see if worth to make it again restrictive
     def linked_to(self, cell: Optional["Cell"]) -> bool:
-        if self._is_cell(cell):
+        if is_cell(cell):
             return cell in self._links
         elif cell is None:
             return False
@@ -114,10 +114,6 @@ class Cell:
 
     def has_data(self, key: Hashable) -> bool:
         return key in self.data.keys()
-
-    @staticmethod
-    def _is_cell(cell: Any) -> bool:
-        return isinstance(cell, Cell)
 
     def __iadd__(self, cell: "Cell") -> "Cell":
         """
@@ -147,8 +143,14 @@ class Cell:
 
     # Note: The following methods actually don't take into account neighbors/linked-cells, but for now is enough
 
-    def __eq__(self, other_cell: "Cell") -> bool:       # type: ignore
+    def __eq__(self, other_cell: Optional["Cell"]) -> bool:       # type: ignore
+        if not is_cell(other_cell) or other_cell is None:
+            return False
         return self.row == other_cell.row and self.column == other_cell.column
 
     def __ne__(self, other_cell: "Cell") -> bool:       # type: ignore
         return not self == other_cell
+
+
+def is_cell(cell: Any) -> bool:
+    return isinstance(cell, Cell)

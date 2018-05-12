@@ -1,5 +1,7 @@
 from random import randint, choice
+from typing import cast
 
+from base.cell import Cell
 from base.grid import Grid
 
 """
@@ -26,5 +28,5 @@ class Sidewinder:
                         member.link(member.north)
                     run.clear()
                 else:
-                    cell.link(cell.east)
+                    cell.link(cast(Cell, cell.east))
         return grid
