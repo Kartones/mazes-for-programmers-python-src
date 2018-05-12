@@ -1,10 +1,10 @@
 from typing import Any
 
-from exporters.base_exporter import BaseExporter
+from exporters.base_exporter import Exporter
 from base.grid import Grid
 
 
-class ASCIIExporter(BaseExporter):
+class ASCIIExporter(Exporter):
     """
     Renders to stdout an ASCII representation of the maze.
     Rendering starts with top walls and nortwest corner setup, so it only needs to care of each cell's east and

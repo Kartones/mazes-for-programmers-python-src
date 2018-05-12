@@ -23,8 +23,8 @@ class DistanceGrid(Grid):
 
     def __init__(self, rows: int, columns: int) -> None:
         super().__init__(rows, columns)
-        self._distances = None  # type: Optional[Distances]
-        self.maximum = 0
+        self._distances: Optional[Distances] = None
+        self.maximum: int = 0
 
     def contents_of(self, cell: Cell) -> str:
         if self.distances is not None and self.distances[cell]:

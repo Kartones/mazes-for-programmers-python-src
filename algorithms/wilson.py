@@ -1,20 +1,19 @@
 from random import choice
 
+from algorithms.base_algorithm import Algorithm
+
 from base.grid import Grid
-from base.cell import Cell      # noqa: F401
-
-"""
-Wilson algorithm works by choosing a random cell as origin, another as destination, and performs as loop-erased
-random walk towards it using the neighbors. Stores the path until comes to either destination or a "walked" path cell,
-former causing the algorithm to delete the loop until there and keep going.
-Takes a long to compute on big grids (slow-to-start).
-"""
 
 
-class Wilson:
+class Wilson(Algorithm):
+    """
+    Wilson algorithm works by choosing a random cell as origin, another as destination, and performs as loop-erased
+    random walk towards it using the neighbors. Stores the path until comes to either destination or a "walked" path
+    cell, former causing the algorithm to delete the loop until there and keep going.
+    Takes a long to compute on big grids (slow-to-start).
+    """
 
-    @staticmethod
-    def on(grid: Grid) -> Grid:
+    def on(self, grid: Grid) -> None:
         unvisited = []
         for cell in grid.each_cell():
             unvisited.append(cell)
@@ -28,7 +27,7 @@ class Wilson:
             path = [cell]
 
             while cell in unvisited:
-                cell = choice(cell.neighbors)
+                cell = cell.random_neighbour()
                 try:
                     position = path.index(cell)
                     # already walked, perform loop-erase. e.g. A -> B -> C -> D -> B   becomes A -> B
@@ -38,7 +37,5 @@ class Wilson:
 
             # Passage carving once has found a valid path
             for index in range(len(path) - 1):
-                path[index].link(path[index + 1])
+                path[index] += path[index + 1]
                 unvisited.remove(path[index])
-
-        return grid

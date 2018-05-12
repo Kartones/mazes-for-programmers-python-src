@@ -1,11 +1,11 @@
 from typing import Any, cast
 
-from exporters.base_exporter import BaseExporter
+from exporters.base_exporter import Exporter
 from base.cell import Cell
 from base.grid import Grid
 
 
-class UnicodeExporter(BaseExporter):
+class UnicodeExporter(Exporter):
     """
     Renders to stdout a UNICODE representation of the maze.
     Not present in the book but suggested as exercise. And looks better than ASCII mazes :)

@@ -2,13 +2,13 @@ from time import gmtime, strftime
 from PIL import Image, ImageDraw
 from typing import Any, cast, TYPE_CHECKING, Union
 
-from exporters.base_exporter import BaseExporter
+from exporters.base_exporter import Exporter
 from base.colored_grid import ColoredGrid
 if TYPE_CHECKING:
     from base.grid import Grid  # noqa: F401
 
 
-class PNGExporter(BaseExporter):
+class PNGExporter(Exporter):
 
     STEP_BACKGROUND = 0
 

@@ -27,10 +27,6 @@ class Grid:
         return self.rows, self.columns
 
     @property
-    def data(self) -> Dict:
-        return self._data
-
-    @property
     def deadends(self) -> List[Cell]:
         return [cell for cell in self.each_cell() if len(cell.links) == 1]
 
@@ -42,7 +38,6 @@ class Grid:
 
         self._rows: int = rows
         self._columns: int = columns
-        self._data: Dict = {}
         self._grid: List[List[Cell]] = self.prepare_grid()
         self.configure_cells()
 

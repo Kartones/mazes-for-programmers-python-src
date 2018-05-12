@@ -2,7 +2,7 @@ from time import gmtime, strftime
 
 from typing import Any, cast, List, Optional, TYPE_CHECKING, Union
 
-from exporters.base_exporter import BaseExporter
+from exporters.base_exporter import Exporter
 from base.cell import Cell
 from base.colored_grid import ColoredGrid
 import pathfinders.dijkstra as Dijkstra
@@ -11,7 +11,7 @@ if TYPE_CHECKING:
     from base.grid import Grid  # noqa: F401
 
 
-class Wolf3DExporter(BaseExporter):
+class Wolf3DExporter(Exporter):
     """
     Drawing logic adapted from ASCIIRenderer: Draws topmost row (northen wall), then proceeds drawing south-east.
     """

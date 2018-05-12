@@ -1,23 +1,21 @@
-from random import randint, choice
-from typing import cast
+from random import choice, randint
 
-from base.cell import Cell
+from algorithms.base_algorithm import Algorithm
 from base.grid import Grid
 
-"""
-A sidewinder visits each cell in the grid and chooses to carve a passage either north or east (similar to Binary Tree),
-but running row by row.
-Causes topmost row to always be a straight line.
-"""
 
+class Sidewinder(Algorithm):
+    """
+    A sidewinder visits each cell in the grid and chooses to carve a passage either north or east
+    (similar to Binary Tree), but running row by row.
+    Causes topmost row to always be a straight line.
+    """
 
-class Sidewinder:
-
-    @staticmethod
-    def on(grid: Grid) -> Grid:
+    def on(self, grid: Grid) -> None:
         for row in grid.each_row():
             run = []
             for cell in row:
+
                 run.append(cell)
                 at_eastern_boundary = cell.east is None
                 at_northen_boundary = cell.north is None
@@ -25,8 +23,7 @@ class Sidewinder:
                 if should_close_out:
                     member = choice(run)
                     if member.north:
-                        member.link(member.north)
+                        member += member.north
                     run.clear()
                 else:
-                    cell.link(cast(Cell, cell.east))
-        return grid
+                    cell += cell.east
