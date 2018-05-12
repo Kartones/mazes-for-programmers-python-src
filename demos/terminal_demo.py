@@ -17,8 +17,8 @@ AVAILABLE_ALGORITHMS = ALGORITHM_NAMES
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Render a maze")
-    parser.add_argument("rows", type=int, help="number or rows")
-    parser.add_argument("columns", type=int, help="number or columns")
+    parser.add_argument("rows", type=int, help="number of rows")
+    parser.add_argument("columns", type=int, help="number of columns")
     parser.add_argument("algorithm", type=str, help="algorithm to use")
     parser.add_argument("-e", "--exporter", type=str, default=DEFAULT_EXPORTER, help="maze exporter to use")
     parser.add_argument("-r", "--rotations", type=int, default=0,
@@ -36,7 +36,6 @@ if __name__ == "__main__":
     print("90deg Rotations: {}\nPathfinding: {}".format(rotations, pathfinding))
 
     grid = DistanceGrid(rows, columns)
-
     algorithm.on(grid)
 
     for num in range(rotations):

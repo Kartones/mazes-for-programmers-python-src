@@ -56,4 +56,4 @@ demo-game-map: build
 	$(COMPOSE_CMD) python3 demos/game_map_demo.py $(rows) $(cols) $(algorithm)
 
 run-stats: build
-	$(COMPOSE_CMD) python3 demos/stats_demo.py $(rows) $(cols) $(tries) --pathfinding
+	$(COMPOSE_CMD) python3 demos/stats_demo.py $(rows) $(cols) --tries=$(tries) --pathfinding=true

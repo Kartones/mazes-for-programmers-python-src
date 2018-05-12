@@ -1,14 +1,13 @@
 from time import gmtime, strftime
 
-from typing import Any, cast, List, Optional, TYPE_CHECKING, Union
+from typing import Any, cast, List, Optional, Union
 
-from exporters.base_exporter import Exporter
 from base.cell import Cell
+from base.grid import Grid
 from base.colored_grid import ColoredGrid
+from exporters.base_exporter import Exporter
 import pathfinders.dijkstra as Dijkstra
 import pathfinders.longest_path as LongestPath
-if TYPE_CHECKING:
-    from base.grid import Grid  # noqa: F401
 
 
 class Wolf3DExporter(Exporter):
@@ -49,9 +48,9 @@ class Wolf3DExporter(Exporter):
         return self._enemies_count
 
     def __init__(self) -> None:
-        self._enemies_count = 0
+        self._enemies_count: int = 0
 
-    def render(self, grid: Union["Grid", ColoredGrid], **kwargs: Any) -> None:
+    def render(self, grid: Union[Grid, ColoredGrid], **kwargs: Any) -> None:
         assert isinstance(grid, ColoredGrid)
 
         filename = strftime("%d%H%M%S", gmtime())
@@ -111,10 +110,10 @@ class Wolf3DExporter(Exporter):
         """
         Wolf3D exit wall cell is a switch that only gets rendered east and west
         """
-        _, _, end_row, end_column = LongestPath.calculate(grid)
-        cell = grid.cell_at(end_row, end_column)
+        _, end = LongestPath.calculate(grid)
+        cell = grid[end[0], end[1]]
         if cell is None:
-            raise ValueError("Ending row not found at row {} column {}".format(end_row, end_column))
+            raise ValueError("Ending row not found at row {} column {}".format(*end))
         linked_neighbor = cell.links[0]     # assume exactly one path to the exit
         return (cell.east is not None and cell.east == linked_neighbor) or \
                (cell.west is not None and cell.west == linked_neighbor)
@@ -128,8 +127,8 @@ class Wolf3DExporter(Exporter):
 
     @staticmethod
     def _store_solution(grid: ColoredGrid) -> ColoredGrid:
-        start_row, start_column, end_row, end_column = LongestPath.calculate(grid)
-        grid = cast(ColoredGrid, Dijkstra.calculate_distances(grid, start_row, start_column, end_row, end_column))
+        start, end = LongestPath.calculate(grid)
+        Dijkstra.calculate_distances(grid, start, end)
         return grid
 
     @staticmethod

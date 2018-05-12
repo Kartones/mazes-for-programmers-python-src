@@ -1,5 +1,5 @@
 from random import randrange
-from typing import Any, cast, Dict, Generator, List, Optional, Tuple
+from typing import Any, cast, Generator, List, Optional, Tuple
 
 from base.cell import Cell, is_cell
 

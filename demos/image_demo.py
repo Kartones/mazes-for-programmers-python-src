@@ -18,8 +18,8 @@ AVAILABLE_ALGORITHMS = ALGORITHM_NAMES
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Render a maze")
-    parser.add_argument("rows", type=int, help="number or rows")
-    parser.add_argument("columns", type=int, help="number or columns")
+    parser.add_argument("rows", type=int, help="number of rows")
+    parser.add_argument("columns", type=int, help="number of columns")
     parser.add_argument("algorithm", type=str, help="algorithm to use")
     parser.add_argument("-e", "--exporter", type=str, default=DEFAULT_EXPORTER, help="maze exporter to use")
     parser.add_argument("-f", "--filename", type=str, default=None, help="file name to use")
@@ -47,8 +47,6 @@ if __name__ == "__main__":
 
     for num in range(rotations):
         grid = cast(ColoredGrid, Rotator().on(grid))
-
-    # exporter.render(grid, coloring=coloring, filename=filename)
 
     # here pathfinding first, so if also colored we"ll see the route colored, else if colored will see all maze painted
     if pathfinding:
