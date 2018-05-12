@@ -18,8 +18,6 @@ class HuntAndKill(Algorithm):
         current_cell: Optional[Cell] = grid.random_cell()
 
         while current_cell is not None:
-            current_cell = cast(Cell, current_cell)  # Mypy doesn't detects while condition
-
             unvisited_neighbors = [neighbor for neighbor in current_cell.neighbors if len(neighbor.links) == 0]
             if len(unvisited_neighbors) > 0:
                 # as long as there are unvisited paths, walk them

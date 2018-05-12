@@ -26,12 +26,12 @@ if __name__ == "__main__":
     parser.add_argument("-p", "--pathfinding", type=str2bool, default=False, help="whether solve the maze")
     args = parser.parse_args()
 
+    rows = args.rows
+    columns = args.columns
     algorithm = available_algorithm(args.algorithm, AVAILABLE_ALGORITHMS)
     exporter = available_exporter(args.exporter, AVAILABLE_EXPORTERS)
     rotations = args.rotations
     pathfinding = args.pathfinding
-    rows = args.rows
-    columns = args.columns
     print("Algorithm: {}\nRows: {}\ncolumns: {}\nExporter: {}".format(args.algorithm, rows, columns, args.exporter))
     print("90deg Rotations: {}\nPathfinding: {}".format(rotations, pathfinding))
 

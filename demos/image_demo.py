@@ -1,77 +1,68 @@
+import argparse
 from time import gmtime, strftime
+from typing import cast
 
-import args
-from typing import cast, Union     # noqa: F401
-
-from base.grid import Grid
-from base.distance_grid import DistanceGrid
 from base.colored_grid import ColoredGrid
+from base.rotator import Rotator
 
 import pathfinders.dijkstra as Dijkstra
 import pathfinders.longest_path as LongestPath
 
-from base.rotator import Rotator
-
-from demos.demo_utils import ALGORITHMS, get_exporter, get_rotations, get_algorithm, get_pathfinding
+from demos.demo_utils_v2 import ALGORITHM_NAMES, str2bool, available_algorithm, available_exporter
 
 
 DEFAULT_EXPORTER = "PNGExporter"
 AVAILABLE_EXPORTERS = ["PNGExporter"]
-
-
-def get_coloring() -> bool:
-    return bool("--coloring" in args.flags)
+AVAILABLE_ALGORITHMS = ALGORITHM_NAMES
 
 
 if __name__ == "__main__":
-    if len(args.all) < 3:
-        print("Usage:\nPYTHONPATH=. python3 demos/image_demo.py <rows> <columns> <algorithm> ", end="")
-        print("[--exporter=<exporter>] [--rotations=<rotations>] [--pathfinding] [--coloring]")
-        print("Valid algorithms: {}".format("|".join([algorithm.__name__ for algorithm in ALGORITHMS])))
-        print("Valid exporters: {}".format("|".join(AVAILABLE_EXPORTERS)))
-        print("Rotations is an integer value measuring number of 90 degree clockwise rotations to perform")
-        print("Pathfinding flag shows distances between cells")
-        exit(1)
-    exporter, exporter_name = get_exporter(AVAILABLE_EXPORTERS, DEFAULT_EXPORTER)
-    rotations = get_rotations()
-    pathfinding = get_pathfinding()
-    rows = int(args.all[0])
-    columns = int(args.all[1])
-    algorithm = get_algorithm()
-    coloring = get_coloring()
-    print("Algorithm: {}\nRows: {}\ncolumns: {}\nExporter: {}".format(algorithm.__name__, rows, columns, exporter_name))
+    parser = argparse.ArgumentParser(description="Render a maze")
+    parser.add_argument("rows", type=int, help="number or rows")
+    parser.add_argument("columns", type=int, help="number or columns")
+    parser.add_argument("algorithm", type=str, help="algorithm to use")
+    parser.add_argument("-e", "--exporter", type=str, default=DEFAULT_EXPORTER, help="maze exporter to use")
+    parser.add_argument("-f", "--filename", type=str, default=None, help="file name to use")
+    parser.add_argument("-r", "--rotations", type=int, default=0,
+                        help="number of 90 degree clockwise rotations to perform")
+    parser.add_argument("-p", "--pathfinding", type=str2bool, default=False, help="whether solve the maze")
+    parser.add_argument("-c", "--coloring", type=str2bool, help="whether to color the maze solution")
+    args = parser.parse_args()
+
+    rows = args.rows
+    columns = args.columns
+    algorithm = available_algorithm(args.algorithm, AVAILABLE_ALGORITHMS)
+    exporter = available_exporter(args.exporter, AVAILABLE_EXPORTERS)
+    filename = args.filename if args.filename else strftime("%Y%m%d%H%M%S", gmtime())
+    rotations = args.rotations
+    pathfinding = args.pathfinding
+    coloring = args.coloring
+    print("Algorithm: {}\nRows: {}\ncolumns: {}\nExporter: {}".format(args.algorithm, rows, columns, args.exporter))
     print("90deg Rotations: {}\nPathfinding: {}\nColoring: {}".format(rotations, pathfinding, coloring))
 
-    # here coloring takes precedence, because ColoredGrid inherits from DistanceGrid
-    if coloring:
-        grid = ColoredGrid(rows, columns)  # type: Union[Grid, DistanceGrid, ColoredGrid]
-    elif pathfinding:
-        grid = DistanceGrid(rows, columns)
-    else:
-        grid = Grid(rows, columns)
+    # Always use Colored Grid. Just don"t color the output if colored == False
+    grid = ColoredGrid(rows, columns)
 
-    grid = algorithm.on(grid)
+    algorithm.on(grid)
 
     for num in range(rotations):
-        grid = Rotator.on(grid)
+        grid = cast(ColoredGrid, Rotator().on(grid))
 
-    # here pathfinding first, so if also colored we'll see the route colored, else if colored will see all maze painted
+    # exporter.render(grid, coloring=coloring, filename=filename)
+
+    # here pathfinding first, so if also colored we"ll see the route colored, else if colored will see all maze painted
     if pathfinding:
-        start_row, start_column, end_row, end_column = LongestPath.calculate(cast(DistanceGrid, grid))
-        print("Solving maze from row {} column {} to row {} column {}".format(
-            start_row, start_column, end_row, end_column))
-        grid = Dijkstra.calculate_distances(cast(DistanceGrid, grid), start_row, start_column, end_row, end_column)
+        start, end = LongestPath.calculate(grid)
+        print("Solving maze from row {} column {} to row {} column {}".format(*start, *end))
+        Dijkstra.calculate_distances(grid, start, end)
     elif coloring:
-        start_row = round(grid.rows / 2)
-        start_column = round(grid.columns / 2)
-        print("Drawing colored maze with start row {} column {}".format(start_row, start_column))
-        start_cell = grid.cell_at(start_row, start_column)
-        if start_cell is None:
-            raise IndexError("Invalid start cell row {} column {}".format(start_row, start_column))
-        grid.distances = start_cell.distances     # type: ignore
+        starting_position = (round(grid.rows / 2), round(grid.columns / 2))
+        print("Drawing colored maze with start row {} column {}".format(*starting_position))
+        if grid[starting_position] is None:
+            raise IndexError("Invalid start cell row {} column {}".format(*starting_position))
+        grid.distances = grid[starting_position].distances  # type: ignore
 
-    filename = strftime("%Y%m%d%H%M%S", gmtime())
-
-    exporter.render(grid, coloring=coloring, filename=filename)
+    if coloring or pathfinding:
+        exporter.render(grid, coloring=coloring, filename=filename)
 
     print("Maze has {} dead-ends".format(len(grid.deadends)))

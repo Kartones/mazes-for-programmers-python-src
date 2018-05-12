@@ -15,4 +15,4 @@ def calculate_distances(grid: DistanceGrid, start: Point, end: Point) -> None:
     if grid[end] is None:
         raise IndexError("Invalid destination cell row {} column {}".format(*end))
 
-    grid.distances = grid[start].distances.path_to(grid[end])
+    grid.distances = grid[start].distances.path_to(grid[end])  # type: ignore

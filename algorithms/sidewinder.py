@@ -1,7 +1,9 @@
 from random import choice, randint
+from typing import cast
 
 from algorithms.base_algorithm import Algorithm
 from base.grid import Grid
+from base.cell import Cell
 
 
 class Sidewinder(Algorithm):
@@ -26,4 +28,4 @@ class Sidewinder(Algorithm):
                         member += member.north
                     run.clear()
                 else:
-                    cell += cell.east
+                    cell += cast(Cell, cell.east)
