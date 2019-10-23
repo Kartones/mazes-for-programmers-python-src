@@ -1,4 +1,4 @@
-Pillow==4.2.1
+Pillow==6.2.1
 
 
 # test-related (but not separated for now)
