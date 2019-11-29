@@ -1,7 +1,6 @@
 Pillow==6.2.1
 
-
 # test-related (but not separated for now)
-mypy
-pytest>=3.2
-flake8>=3.5
+mypy==0.750
+pytest==5.3.1
+flake8==3.7.9
