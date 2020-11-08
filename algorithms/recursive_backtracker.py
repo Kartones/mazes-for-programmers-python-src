@@ -26,11 +26,11 @@ class RecursiveBacktracker(Algorithm):
         walked_path = []
         walked_path.append(self.starting_cell)
 
-        while len(walked_path) > 0:
+        while walked_path:
             current_cell = walked_path[-1]
 
-            unvisited_neighbors = [neighbor for neighbor in current_cell.neighbors if len(neighbor.links) == 0]
-            if len(unvisited_neighbors) == 0:
+            unvisited_neighbors = [neighbor for neighbor in current_cell.neighbors if not neighbor.links]
+            if not unvisited_neighbors:
                 walked_path.pop()
             else:
                 neighbor = choice(unvisited_neighbors)

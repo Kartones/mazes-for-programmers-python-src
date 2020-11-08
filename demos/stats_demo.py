@@ -1,8 +1,9 @@
 import argparse
 import time
 
-from typing import cast, Union
+from typing import cast, Dict, Type, Union
 
+from algorithms.base_algorithm import Algorithm
 from base.grid import Grid
 from base.distance_grid import DistanceGrid
 
@@ -27,8 +28,8 @@ if __name__ == "__main__":
     pathfinding = args.pathfinding
 
     algorithm_averages = {}
-    algorithm_benchmarks = {}
-    pathfinding_benchmarks = {}
+    algorithm_benchmarks = {}       # type: Dict[Type[Algorithm], Dict[str, float]]
+    pathfinding_benchmarks = {}     # type: Dict[Type[Algorithm], Dict[str, float]]
 
     print("Rows: {}\ncolumns: {}\nTotal cells: {}\nRuns per algorithm: {}".format(rows, columns, size, tries))
     print("Pathfinding: {}".format(pathfinding))

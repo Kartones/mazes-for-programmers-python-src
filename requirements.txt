@@ -1,6 +1,6 @@
-Pillow==7.1.0
+Pillow==7.2.0
 
 # test-related (but not separated for now)
-mypy==0.770
-pytest==5.4.1
-flake8==3.7.9
+mypy==0.790
+pytest==6.1.2
+flake8==3.8.4
