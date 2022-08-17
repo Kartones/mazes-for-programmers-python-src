@@ -1,4 +1,4 @@
-FROM python:3.8-slim
+FROM python:3.10-slim
 
 LABEL title "Mazes-for-programmers-Python-src"
 LABEL maintainer "Diego / Kartones"
