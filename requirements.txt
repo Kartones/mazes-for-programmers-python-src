@@ -3,4 +3,4 @@ Pillow==9.0.1
 # test-related (but not separated for now)
 mypy==0.901
 pytest==6.2.4
-flake8==3.8.4
+flake8==3.9.2
