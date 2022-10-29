@@ -1,4 +1,4 @@
-Pillow==9.2.0
+Pillow==9.3.0
 
 # test-related (but not separated for now)
 mypy==0.982
