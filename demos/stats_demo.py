@@ -28,8 +28,8 @@ if __name__ == "__main__":
     pathfinding = args.pathfinding
 
     algorithm_averages = {}
-    algorithm_benchmarks = {}       # type: Dict[Type[Algorithm], Dict[str, float]]
-    pathfinding_benchmarks = {}     # type: Dict[Type[Algorithm], Dict[str, float]]
+    algorithm_benchmarks: Dict[Type[Algorithm], Dict[str, float]] = {}
+    pathfinding_benchmarks: Dict[Type[Algorithm], Dict[str, float]] = {}
 
     print("Rows: {}\ncolumns: {}\nTotal cells: {}\nRuns per algorithm: {}".format(rows, columns, size, tries))
     print("Pathfinding: {}".format(pathfinding))
