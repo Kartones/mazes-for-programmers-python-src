@@ -99,6 +99,9 @@ make demo-terminal rows=<value> cols=<value> algorithm=<value>
 
 # example
 make demo-terminal rows=10 cols=10 algorithm=AldousBroder
+
+# example of how to send optional params through make
+make demo-terminal rows=15 cols=15 algorithm=AldousBroder pathfinding=-p=true
 ```
 Run without arguments to see all available options
 
