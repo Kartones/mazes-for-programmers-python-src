@@ -1,3 +1,4 @@
+from itertools import chain
 from random import randrange
 from typing import cast, Generator, List, Optional, Tuple
 
@@ -76,13 +77,22 @@ class Grid:
         for row in range(self.rows):
             yield self._grid[row]
 
-    def each_cell(self) -> Generator:
+    def each_cell(self) -> Generator[Cell, None, None]:
+        return chain.from_iterable(self.nested_each_cell())
+
+    def nested_each_cell(self) -> Generator[Cell, None, None]:
         for row in self.each_row():
+            yield self.each_cell_in_row(row)
+
+    def each_cell_in_row(self, row) -> Generator[Cell, None, None]:
             for cell in row:
                 yield cell
 
     def contents_of(self, cell: Cell) -> str:
-        return "   "
+        if cell.row == -1 and cell.column == -1:
+            return "XXX"
+        else:
+            return "   "
 
     def __getitem__(self, key: Key) -> Optional[Cell]:
         if not is_key(key):

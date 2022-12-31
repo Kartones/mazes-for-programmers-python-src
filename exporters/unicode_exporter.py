@@ -34,7 +34,7 @@ class UnicodeExporter(Exporter):
         for row in grid.each_row():
             top = vertical_wall
             bottom = self.get_leftmost_junction(row[0])
-            for cell in row:
+            for cell in grid.each_cell_in_row(row):
                 body = grid.contents_of(cell)
                 east_boundary = " " if cell.linked_to(cell.east) else vertical_wall
                 top += body + east_boundary
@@ -102,12 +102,13 @@ class UnicodeExporter(Exporter):
         else:
             junction += UnicodeExporter.WEST
 
-        if cell.east and cell.south:
+        if cell.east and cell.south and cell.south.east:
             south_east_cell = cast(Cell, cell.south.east)
             if not cell.east.linked_to(south_east_cell):
                 junction += UnicodeExporter.EAST
             if not cell.south.linked_to(south_east_cell):
                 junction += UnicodeExporter.SOUTH
+
         try:
             return UnicodeExporter.JUNCTIONS[junction]
         except IndexError as ie:
