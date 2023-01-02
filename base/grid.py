@@ -1,5 +1,6 @@
 from itertools import chain
 from random import randrange
+import random
 from typing import cast, Generator, List, Optional, Tuple
 
 from base.cell import Cell, is_cell
@@ -93,6 +94,12 @@ class Grid:
             return "XXX"
         else:
             return "   "
+
+    def braid(self, p: float = 1.0):
+        for cell in random.sample(self.deadends, len(self.deadends)):
+            if len(cell.links) == 1 and random.random() < p:
+                n = list(filter(lambda c: c.linked_to(cell) is not True, cell.neighbors))
+                cell.link(n[0])
 
     def __getitem__(self, key: Key) -> Optional[Cell]:
         if not is_key(key):
