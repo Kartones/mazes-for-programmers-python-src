@@ -17,7 +17,7 @@ class ASCIIExporter(Exporter):
         for row in grid.each_row():
             top = "|"
             bottom = "+"
-            for cell in row:
+            for cell in grid.each_cell_in_row(row):
                 # NOTE: Book here creates dummy (-1,-1) cell. Not doing it until needed
                 body = grid.contents_of(cell)
                 east_boundary = " " if cell.linked_to(cell.east) else "|"

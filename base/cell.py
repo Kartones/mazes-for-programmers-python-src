@@ -56,9 +56,9 @@ class Cell:
         return self._data
 
     def __init__(self, row: int, column: int) -> None:
-        if row is None or row < 0:
+        if row is None or row < -1: # -1 is a special cell used for drawing blanks
             raise ValueError("Row must be a positive integer")
-        if column is None or column < 0:
+        if column is None or column < -1: # -1 is a special cell used for drawing blanks
             raise ValueError("Column must be a positive integer")
 
         self._row: int = row
