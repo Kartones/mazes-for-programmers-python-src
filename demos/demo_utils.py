@@ -4,6 +4,7 @@ from typing import List, Type
 from algorithms.base_algorithm import Algorithm
 from algorithms.aldous_broder import AldousBroder
 from algorithms.binary_tree import BinaryTree
+from algorithms.binary_tree3d import BinaryTree3d
 from algorithms.hunt_and_kill import HuntAndKill
 from algorithms.recursive_backtracker import RecursiveBacktracker
 from algorithms.sidewinder import Sidewinder
@@ -13,12 +14,13 @@ from exporters.ascii_exporter import ASCIIExporter
 from exporters.png_exporter import PNGExporter
 from exporters.unicode_exporter import UnicodeExporter
 from exporters.wolf3d_exporter import Wolf3DExporter
+from exporters.game_exporter import GameExporter
 
 
-ALGORITHMS: List[Type[Algorithm]] = [AldousBroder, BinaryTree, HuntAndKill, RecursiveBacktracker, Sidewinder, Wilson]
+ALGORITHMS: List[Type[Algorithm]] = [AldousBroder, BinaryTree, HuntAndKill, RecursiveBacktracker, Sidewinder, Wilson, BinaryTree3d]
 ALGORITHM_NAMES: List[str] = [x.__name__ for x in ALGORITHMS]
 # TODO: Add PixelExporter
-EXPORTERS: List[Type[Exporter]] = [Wolf3DExporter, PNGExporter, UnicodeExporter, ASCIIExporter]
+EXPORTERS: List[Type[Exporter]] = [Wolf3DExporter, PNGExporter, UnicodeExporter, ASCIIExporter,GameExporter]
 EXPORTER_NAMES: List[str] = [x.__name__ for x in EXPORTERS]
 
 

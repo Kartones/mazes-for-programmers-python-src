@@ -73,4 +73,7 @@ class Distances:
 
 
 def is_cell(cell: Cell) -> bool:
-    return type(cell).__name__ == Cell
+    for cls in type(cell).__mro__:
+        if cls.__name__ == "Cell":
+            return True
+    return False
