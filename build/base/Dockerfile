@@ -18,7 +18,11 @@ RUN getent passwd $uid || useradd -m -u $uid -g $gid mazes-for-programmers
 
 RUN chown -R $uid:$gid /usr/local
 
+RUN apt-get clean && apt-get -y update
+
 USER $uid
+
+RUN pip install --upgrade pip
 
 COPY requirements.txt /code/requirements.txt
 RUN pip install -r /code/requirements.txt
