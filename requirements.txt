@@ -1,6 +1,6 @@
 Pillow==9.4.0
 
 # test-related (but not separated for now)
-mypy==1.0.0
+mypy==1.0.1
 pytest==7.2.1
 flake8==6.0.0
