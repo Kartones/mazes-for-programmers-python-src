@@ -114,4 +114,4 @@ def is_key(key: Key) -> bool:
     """
     Runtime check for key correctness
     """
-    return type(key) == tuple and len(key) == 2 and not any(type(value) != int for value in key)
+    return isinstance(key, tuple) and len(key) == 2 and not any(not isinstance(value, int) for value in key)
