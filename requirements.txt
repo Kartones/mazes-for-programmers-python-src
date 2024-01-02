@@ -1,4 +1,4 @@
-Pillow==10.1.0
+Pillow==10.2.0
 
 # test-related (but not separated for now)
 mypy==1.8.0
