@@ -2,6 +2,7 @@ from time import gmtime, strftime
 from typing import Any, cast, Tuple
 
 from PIL import Image, ImageDraw
+from PIL.Image import Image as ImageType
 
 from exporters.base_exporter import Exporter
 from base.colored_grid import ColoredGrid
@@ -21,7 +22,7 @@ class PNGExporter(Exporter):
         image.save("{}.png".format(filename), "PNG", optimize=True)
 
     @staticmethod
-    def _render(grid: Grid, cell_size: int = 4, coloring: bool = False) -> Image:
+    def _render(grid: Grid, cell_size: int = 4, coloring: bool = False) -> ImageType:
         wall_color = (0, 0, 0)
         image_width = cell_size * grid.columns
         image_height = cell_size * grid.rows
