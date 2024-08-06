@@ -186,6 +186,10 @@ make test
 ## Roadmap & TODOs
 
 - Of course finish the book and implement all main code and algorithms
-- Check in depth mypy doc to see why all the issues with Union, probably I'm doing something wrong and doesn't detects properly hierarchies, etc.
+- Check in depth mypy doc to see why all the issues with Union, probably I'm doing something wrong and doesn't detects properly hierarchies and the like.
 - Check to improve Wolf3DExporter drawing of tiles so I can have bigger maps (each cell now uses 2x2 map tiles)
-- Implement more pathfinders -> (e.g. recursive backtracking as a maze solving algorithm)
+- Implement more pathfinders? e.g. recursive backtracking as a maze solving algorithm
+
+## Additional Resources
+
+- [Visual A* Pathfinding and Maze Generation in Python](https://github.com/Dicklesworthstone/visual_astar_python): Great visualization system, advanced maze generation algorithms (15 different ones!), and great details and metrics in the A* implementation used for the path finding.
