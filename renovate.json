@@ -17,7 +17,8 @@
       "groupSlug": "all-minor-patch",
       "labels": [
         "dependencies"
-      ]
+      ],
+      "automerge": true
     },
     {
       "matchPackagePatterns": [
