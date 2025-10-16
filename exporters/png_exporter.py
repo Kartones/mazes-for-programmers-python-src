@@ -19,7 +19,9 @@ class PNGExporter(Exporter):
 
         filename, cell_size, coloring = self._process_kwargs(**kwargs)
         image = self._render(grid, cell_size, coloring and has_color)
-        image.save("{}.png".format(filename), "PNG", optimize=True)
+        output_filename = "{}.png".format(filename)
+        image.save(output_filename, "PNG", optimize=True)
+        print("Filename: {}".format(output_filename))
 
     @staticmethod
     def _render(grid: Grid, cell_size: int = 4, coloring: bool = False) -> ImageType:
