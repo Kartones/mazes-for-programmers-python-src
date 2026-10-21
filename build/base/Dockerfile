@@ -1,4 +1,4 @@
-FROM python:3.14-slim
+FROM python:3.15-slim
 
 LABEL title "Mazes-for-programmers-Python-src"
 LABEL maintainer "Diego / Kartones"
@@ -22,6 +22,6 @@ RUN apt-get update -y \
 
 USER $uid
 
-RUN pip install --upgrade pip
+RUN pip install --upgrade pip==26.2.2
 COPY requirements.txt /code/requirements.txt
 RUN pip install -r /code/requirements.txt
